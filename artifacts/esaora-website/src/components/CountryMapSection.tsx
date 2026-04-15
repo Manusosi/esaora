@@ -1,12 +1,36 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { X, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+} from 'react-simple-maps';
 
 gsap.registerPlugin(ScrollTrigger);
 
 type CountryKey = 'kenya' | 'tanzania' | 'mozambique' | 'madagascar';
+
+// ISO 3166-1 numeric codes for our 4 countries
+const MEMBER_COUNTRY_ISO: Record<string, CountryKey> = {
+  '404': 'kenya',
+  '834': 'tanzania',
+  '508': 'mozambique',
+  '450': 'madagascar',
+};
+
+// ISO numeric codes for African countries (to filter and show only Africa)
+const AFRICA_ISO_NUMERIC = new Set([
+  '012','024','072','086','108','120','132','140','148','174',
+  '175','178','180','204','218','226','231','232','262','266',
+  '270','288','324','384','404','426','430','434','450','454',
+  '466','478','480','508','516','562','566','624','638','646',
+  '686','694','706','710','716','728','729','748','768','788',
+  '800','818','834','854','894',
+]);
 
 const COUNTRY_FLAGS: Record<CountryKey, string> = {
   kenya: '🇰🇪',
@@ -16,70 +40,67 @@ const COUNTRY_FLAGS: Record<CountryKey, string> = {
 };
 
 const COUNTRY_IMAGES: Record<CountryKey, string> = {
-  kenya: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
-  tanzania: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80',
-  mozambique: 'https://images.unsplash.com/photo-1546016366-bf061374d54d?w=600&q=80',
-  madagascar: 'https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=600&q=80',
+  kenya: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500&q=75',
+  tanzania: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=500&q=75',
+  mozambique: 'https://images.unsplash.com/photo-1504184988885-f3c6e36f8db8?w=500&q=75',
+  madagascar: 'https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=500&q=75',
 };
 
-// Simplified SVG paths for East/Southern Africa countries
-// These represent the rough outlines of the four countries
-const COUNTRY_SVG_PATHS: Record<CountryKey, { d: string; cx: number; cy: number }> = {
-  kenya: {
-    d: "M170,80 L195,75 L215,85 L220,105 L205,120 L200,135 L185,140 L175,130 L160,125 L155,110 L160,95 Z",
-    cx: 188, cy: 108,
-  },
-  tanzania: {
-    d: "M175,135 L185,140 L200,135 L210,145 L215,160 L210,180 L205,195 L185,200 L170,195 L160,180 L158,165 L162,150 Z",
-    cx: 186, cy: 167,
-  },
-  mozambique: {
-    d: "M185,205 L200,200 L215,205 L220,220 L218,240 L215,260 L210,278 L200,290 L188,285 L180,268 L178,248 L180,228 Z",
-    cx: 199, cy: 247,
-  },
-  madagascar: {
-    d: "M255,170 L268,165 L278,175 L280,195 L275,215 L268,230 L258,235 L250,228 L248,210 L248,190 L250,175 Z",
-    cx: 264, cy: 200,
-  },
-};
-
-const CONNECTOR_LINES = [
-  { from: { x: 188, y: 108 }, to: { x: 186, y: 167 } },
-  { from: { x: 186, y: 167 }, to: { x: 199, y: 247 } },
-  { from: { x: 199, y: 247 }, to: { x: 264, y: 200 } },
-  { from: { x: 188, y: 108 }, to: { x: 264, y: 200 } },
-];
+const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 export function CountryMapSection() {
   const { t } = useLanguage();
   const [activeCountry, setActiveCountry] = useState<CountryKey | null>(null);
+  const [hoveredCountry, setHoveredCountry] = useState<CountryKey | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const mapRef = useRef<SVGSVGElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
-    const cards = cardsRef.current?.children ? Array.from(cardsRef.current.children) : [];
     gsap.fromTo(
-      cards,
-      { opacity: 0, y: 40 },
+      sectionRef.current.querySelector('.map-container'),
+      { opacity: 0, scale: 0.97 },
       {
-        opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
-        scrollTrigger: { trigger: cardsRef.current, start: 'top 80%' },
+        opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
       }
     );
   }, []);
 
+  useEffect(() => {
+    if (panelRef.current && activeCountry) {
+      gsap.fromTo(panelRef.current, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+    }
+  }, [activeCountry]);
+
   const countries = t.map.countries;
+
+  const getCountryFill = (isoNum: string) => {
+    const key = MEMBER_COUNTRY_ISO[isoNum];
+    if (key) {
+      if (key === activeCountry) return '#0E7B74';
+      if (key === hoveredCountry) return '#16A99F';
+      return '#22C4A3';
+    }
+    return '#C8D8E4';
+  };
+
+  const getCountryStroke = (isoNum: string) => {
+    const key = MEMBER_COUNTRY_ISO[isoNum];
+    if (key === activeCountry) return '#0A5F5A';
+    if (key) return '#0E7B74';
+    return '#B0C4D4';
+  };
+
+  const orderedCountries: CountryKey[] = ['kenya', 'tanzania', 'mozambique', 'madagascar'];
 
   return (
     <section ref={sectionRef} className="bg-[#FAFAFA] py-20 px-4 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <svg viewBox="0 0 800 600" className="w-full h-full">
-          <circle cx="400" cy="300" r="300" fill="none" stroke="#0E7B74" strokeWidth="1" />
-          <circle cx="400" cy="300" r="200" fill="none" stroke="#0E7B74" strokeWidth="1" />
-          <circle cx="400" cy="300" r="100" fill="none" stroke="#0E7B74" strokeWidth="1" />
+      {/* Subtle bg decoration */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <svg viewBox="0 0 1200 700" className="w-full h-full">
+          <circle cx="600" cy="350" r="450" fill="none" stroke="#0E7B74" strokeWidth="0.5" />
+          <circle cx="600" cy="350" r="280" fill="none" stroke="#0E7B74" strokeWidth="0.5" />
         </svg>
       </div>
 
@@ -92,118 +113,141 @@ export function CountryMapSection() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* SVG Map */}
-          <div className="flex-shrink-0 mx-auto relative" style={{ width: 340, height: 380 }}>
-            <svg ref={mapRef} width="340" height="380" viewBox="100 50 250 320" className="drop-shadow-xl">
-              {/* Ocean background */}
-              <rect x="100" y="50" width="250" height="320" fill="#1A6BA0" opacity="0.08" rx="12" />
+          {/* Map */}
+          <div className="map-container flex-1 min-w-0 bg-[#EAF4FB] rounded-3xl overflow-hidden shadow-lg" style={{ minHeight: 420 }}>
+            <ComposableMap
+              projection="geoMercator"
+              projectionConfig={{
+                center: [30, -5],
+                scale: 480,
+              }}
+              style={{ width: '100%', height: '100%', minHeight: 420 }}
+            >
+              <ZoomableGroup zoom={1} minZoom={0.8} maxZoom={3}>
+                <Geographies geography={GEO_URL}>
+                  {({ geographies }) =>
+                    geographies
+                      .filter((geo) => AFRICA_ISO_NUMERIC.has(geo.id))
+                      .map((geo) => {
+                        const isoNum = String(geo.id);
+                        const memberKey = MEMBER_COUNTRY_ISO[isoNum];
+                        const isMember = Boolean(memberKey);
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            fill={getCountryFill(isoNum)}
+                            stroke={getCountryStroke(isoNum)}
+                            strokeWidth={isMember ? 1.5 : 0.5}
+                            style={{
+                              default: { outline: 'none', cursor: isMember ? 'pointer' : 'default' },
+                              hover: { outline: 'none', fill: isMember ? '#16A99F' : '#BDD0DC', cursor: isMember ? 'pointer' : 'default' },
+                              pressed: { outline: 'none' },
+                            }}
+                            onMouseEnter={() => { if (memberKey) setHoveredCountry(memberKey); }}
+                            onMouseLeave={() => setHoveredCountry(null)}
+                            onClick={() => {
+                              if (memberKey) setActiveCountry(activeCountry === memberKey ? null : memberKey);
+                            }}
+                          />
+                        );
+                      })
+                  }
+                </Geographies>
+              </ZoomableGroup>
+            </ComposableMap>
 
-              {/* Connector dotted lines */}
-              {CONNECTOR_LINES.map((line, i) => (
-                <line
-                  key={i}
-                  x1={line.from.x} y1={line.from.y}
-                  x2={line.to.x} y2={line.to.y}
-                  stroke="#0E7B74"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 4"
-                  opacity="0.4"
-                  className="animated-dash"
-                />
-              ))}
-
-              {/* Country paths */}
-              {(Object.entries(COUNTRY_SVG_PATHS) as [CountryKey, { d: string; cx: number; cy: number }][]).map(([key, { d, cx, cy }]) => (
-                <g key={key} onClick={() => setActiveCountry(activeCountry === key ? null : key)} style={{ cursor: 'pointer' }}>
-                  <path
-                    d={d}
-                    fill={activeCountry === key ? '#0E7B74' : '#1A6BA0'}
-                    opacity={activeCountry && activeCountry !== key ? 0.5 : 0.85}
-                    stroke="white"
-                    strokeWidth="1.5"
-                    className="country-path transition-all duration-200"
-                  />
-                  {/* Country dot + label */}
-                  <circle cx={cx} cy={cy} r="4" fill="white" opacity="0.9" />
-                  <text x={cx + 6} y={cy + 4} fill="white" fontSize="9" fontWeight="600" opacity="0.9">
-                    {key.charAt(0).toUpperCase() + key.slice(1)}
-                  </text>
-                </g>
-              ))}
-
-              {/* Indian Ocean label */}
-              <text x="270" y="230" fill="#1A6BA0" fontSize="9" opacity="0.5" fontStyle="italic" transform="rotate(-15, 270, 230)">Indian Ocean</text>
-            </svg>
-
-            <p className="text-center text-[#718096] text-xs mt-2">Click a country to explore</p>
+            {/* Map legend */}
+            <div className="px-4 pb-3 flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-sm bg-[#22C4A3]" />
+                <span className="text-xs text-[#718096]">ESA-ORA Members</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-sm bg-[#C8D8E4]" />
+                <span className="text-xs text-[#718096]">Other African Nations</span>
+              </div>
+              <span className="text-xs text-[#718096] italic ml-auto">Click a country to learn more</span>
+            </div>
           </div>
 
-          {/* Country modal / info panel */}
-          {activeCountry && (
-            <div className="flex-1 max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-              <div className="relative h-40">
-                <img
-                  src={COUNTRY_IMAGES[activeCountry]}
-                  alt={countries[activeCountry].name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <button
-                  onClick={() => setActiveCountry(null)}
-                  className="absolute top-3 right-3 bg-black/40 rounded-full p-1 text-white hover:bg-black/60 transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-                <div className="absolute bottom-3 left-4 flex items-center gap-2">
-                  <span className="text-2xl">{COUNTRY_FLAGS[activeCountry]}</span>
-                  <h3 className="text-white font-bold text-xl font-display">{countries[activeCountry].name}</h3>
-                </div>
-              </div>
-              <div className="p-5">
-                <p className="text-[#718096] text-sm leading-relaxed mb-4">{countries[activeCountry].description}</p>
-                <div className="mb-4">
-                  <div className="text-xs text-[#0E7B74] font-bold uppercase tracking-wider mb-2">Focus Areas</div>
-                  <div className="flex flex-wrap gap-2">
-                    {countries[activeCountry].focus.map((f) => (
-                      <span key={f} className="bg-[#0E7B74]/10 text-[#0E7B74] text-xs px-3 py-1 rounded-full font-medium">{f}</span>
-                    ))}
-                  </div>
-                </div>
-                <button className="flex items-center gap-2 text-[#0E7B74] text-sm font-semibold hover:gap-3 transition-all">
-                  {t.map.visitCountry} <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Default state - show all country cards */}
-          {!activeCountry && (
-            <div className="flex-1">
-              <div ref={cardsRef} className="grid grid-cols-2 gap-4">
-                {(Object.entries(countries) as [CountryKey, typeof countries.kenya][]).map(([key, country]) => (
-                  <div
-                    key={key}
-                    onClick={() => setActiveCountry(key)}
-                    className="bg-white rounded-xl overflow-hidden shadow-md card-hover cursor-pointer border border-gray-100"
+          {/* Right panel */}
+          <div className="lg:w-80 flex-shrink-0 space-y-3">
+            {/* Country list */}
+            {orderedCountries.map((key) => {
+              const country = countries[key];
+              const isActive = activeCountry === key;
+              return (
+                <div key={key}>
+                  <button
+                    onClick={() => setActiveCountry(isActive ? null : key)}
+                    className={`w-full text-left rounded-2xl overflow-hidden transition-all duration-200 ${
+                      isActive
+                        ? 'shadow-lg shadow-teal-100'
+                        : 'hover:shadow-md shadow-sm'
+                    }`}
                   >
-                    <div className="h-28 relative overflow-hidden">
-                      <img src={COUNTRY_IMAGES[key]} alt={country.name} className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <span className="absolute bottom-2 left-3 text-xl">{COUNTRY_FLAGS[key]}</span>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-[#0A1628] text-sm mb-1">{country.name}</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {country.focus.slice(0, 2).map((f) => (
-                          <span key={f} className="bg-[#0E7B74]/10 text-[#0E7B74] text-xs px-2 py-0.5 rounded-full">{f}</span>
-                        ))}
+                    <div className={`flex items-center gap-3 p-4 ${isActive ? 'bg-[#0E7B74]' : 'bg-white'}`}>
+                      <span className="text-2xl">{COUNTRY_FLAGS[key]}</span>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`font-bold text-sm ${isActive ? 'text-white' : 'text-[#0A1628]'}`}>{country.name}</h4>
+                        <div className="flex flex-wrap gap-1 mt-0.5">
+                          {country.focus.slice(0, 2).map((f) => (
+                            <span
+                              key={f}
+                              className={`text-xs px-1.5 py-0.5 rounded-full ${
+                                isActive ? 'bg-white/20 text-white/80' : 'bg-[#0E7B74]/10 text-[#0E7B74]'
+                              }`}
+                            >
+                              {f}
+                            </span>
+                          ))}
+                        </div>
                       </div>
+                      <svg
+                        viewBox="0 0 20 20"
+                        className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${isActive ? 'text-white rotate-180' : 'text-gray-400'}`}
+                        fill="currentColor"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                      </svg>
                     </div>
-                  </div>
-                ))}
-              </div>
+
+                    {/* Expanded detail */}
+                    {isActive && (
+                      <div ref={panelRef} className="bg-white border-t border-[#0E7B74]/10">
+                        <div className="h-28 overflow-hidden">
+                          <img
+                            src={COUNTRY_IMAGES[key]}
+                            alt={country.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="p-4">
+                          <p className="text-[#718096] text-xs leading-relaxed mb-3">{country.description}</p>
+                          <div className="flex flex-wrap gap-1.5 mb-3">
+                            {country.focus.map((f) => (
+                              <span key={f} className="bg-[#0E7B74]/10 text-[#0E7B74] text-xs px-2 py-0.5 rounded-full font-medium">{f}</span>
+                            ))}
+                          </div>
+                          <button className="flex items-center gap-1.5 text-[#0E7B74] text-xs font-semibold hover:gap-2.5 transition-all">
+                            {t.map.visitCountry} <ArrowRight className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </button>
+                </div>
+              );
+            })}
+
+            {/* Indian Ocean note */}
+            <div className="bg-[#1A6BA0]/8 rounded-xl p-3 text-center">
+              <p className="text-[#1A6BA0] text-xs italic font-medium">
+                Sharing the Indian Ocean coastline — one interconnected maritime region
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>
