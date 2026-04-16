@@ -81,7 +81,7 @@ export const translations = {
     },
     map: {
       headline: 'Our Region',
-      subheadline: 'Four interconnected countries. One shared ocean. One shared future.',
+      subheadline: 'The ESA-ORA Consortium brings together the founding member nations of Kenya, Tanzania, Mozambique, and Madagascar. With a shared coastline of over 8,000 km along the Indian Ocean, this alliance creates a unified regional network to synchronize maritime security, climate adaptation, and resource governance. This collective foundation allows us to act as one, driving the specific strategic objectives that define our shared mission for the region.',
       visitCountry: 'Explore Country',
       countries: {
         kenya: {
@@ -108,7 +108,7 @@ export const translations = {
     },
     objectives: {
       headline: 'Our Strategic Objectives',
-      subheadline: 'Seven commitments driving regional impact',
+      subheadline: 'The ESA-ORA Consortium has co-developed seven core strategic objectives to address the most pressing challenges facing our regional coastal ecosystems. These commitments form the operational backbone of our alliance, synchronizing our efforts across water security, climate resilience, and sustainable ocean governance to ensure a prosperous future for all member states.',
       items: [
         {
           title: 'Strengthen WASH Access',

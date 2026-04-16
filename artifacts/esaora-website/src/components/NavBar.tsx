@@ -49,14 +49,14 @@ export function NavBar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-[#0A1628] shadow-lg' : 'bg-transparent'
+          scrolled ? 'bg-[#000080] shadow-lg' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-10 h-10 bg-[#0E7B74] rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#00d2ff] rounded-full flex items-center justify-center">
                 <svg viewBox="0 0 32 32" className="w-6 h-6" fill="none">
                   <circle cx="16" cy="16" r="14" stroke="white" strokeWidth="1.5" />
                   <path d="M6 18 Q10 12 16 16 Q22 20 26 14" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" />
@@ -65,7 +65,7 @@ export function NavBar() {
               </div>
               <div>
                 <div className="text-white font-bold text-lg leading-none font-sora">ESA-ORA</div>
-                <div className="text-[#0E7B74] text-xs leading-none tracking-wider hidden sm:block">OCEAN RESILIENCE ALLIANCE</div>
+                <div className="text-[#00d2ff] text-xs leading-none tracking-wider hidden sm:block">OCEAN RESILIENCE ALLIANCE</div>
               </div>
             </div>
 
@@ -83,7 +83,7 @@ export function NavBar() {
                     {item.sub && <ChevronDown className="w-3 h-3 opacity-60" />}
                   </button>
                   {item.sub && activeDropdown === item.key && (
-                    <div className="absolute top-full left-0 w-52 bg-[#0A1628] border border-white/10 rounded-lg py-2 shadow-2xl">
+                    <div className="absolute top-full left-0 w-52 bg-[#000080] border border-white/10 rounded-lg py-2 shadow-2xl">
                       {item.sub.map((s) => (
                         <button key={s.label} className="w-full text-left px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition-colors">
                           {s.label}
@@ -108,13 +108,13 @@ export function NavBar() {
                   <ChevronDown className="w-3 h-3 opacity-60" />
                 </button>
                 {langOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-40 bg-[#0A1628] border border-white/10 rounded-lg py-1.5 shadow-2xl">
+                  <div className="absolute right-0 top-full mt-1 w-40 bg-[#000080] border border-white/10 rounded-lg py-1.5 shadow-2xl">
                     {LANGUAGES.map((lang) => (
                       <button
                         key={lang.code}
                         onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
                         className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                          language === lang.code ? 'text-[#0E7B74] font-medium' : 'text-white/80 hover:text-white hover:bg-white/5'
+                          language === lang.code ? 'text-[#00d2ff] font-medium' : 'text-white/80 hover:text-white hover:bg-white/5'
                         }`}
                       >
                         {lang.label}
@@ -124,7 +124,7 @@ export function NavBar() {
                 )}
               </div>
 
-              <button className="bg-[#0E7B74] hover:bg-[#0a5f5a] text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105">
+              <button className="bg-[#00d2ff] hover:bg-[#00b8e6] text-[#000080] px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105">
                 {t.nav.joinAlliance}
               </button>
             </div>
@@ -141,7 +141,7 @@ export function NavBar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div ref={mobileMenuRef} className="lg:hidden fixed inset-0 top-16 bg-[#0A1628] z-40 overflow-y-auto">
+          <div ref={mobileMenuRef} className="lg:hidden fixed inset-0 top-16 bg-[#000080] z-40 overflow-y-auto">
             <div className="px-6 py-6 space-y-1">
               {navItems.map((item) => (
                 <div key={item.key}>
@@ -168,7 +168,7 @@ export function NavBar() {
                       onClick={() => { setLanguage(lang.code); setMobileOpen(false); }}
                       className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${
                         language === lang.code
-                          ? 'border-[#0E7B74] bg-[#0E7B74] text-white'
+                          ? 'border-[#00d2ff] bg-[#00d2ff] text-white'
                           : 'border-white/30 text-white/80'
                       }`}
                     >
@@ -176,7 +176,7 @@ export function NavBar() {
                     </button>
                   ))}
                 </div>
-                <button className="bg-[#0E7B74] text-white px-6 py-3 rounded-full font-semibold text-base w-full mt-2">
+                <button className="bg-[#00d2ff] text-[#000080] px-6 py-3 rounded-full font-semibold text-base w-full mt-2">
                   {t.nav.joinAlliance}
                 </button>
               </div>

@@ -36,7 +36,7 @@ export function HeroSection() {
   return (
     <section className="relative w-full h-screen min-h-[600px] flex flex-col items-center justify-center overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-[#0A1628]">
+      <div className="absolute inset-0 bg-[#000080]">
         <div
           className="absolute inset-0 opacity-40"
           style={{
@@ -48,23 +48,20 @@ export function HeroSection() {
         <div ref={overlayRef} className="absolute inset-0 video-overlay" />
       </div>
 
-      {/* Animated wave decorations */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <svg viewBox="0 0 1440 120" className="w-full opacity-20" preserveAspectRatio="none">
-          <path d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120 Z" fill="#0E7B74" />
-        </svg>
-      </div>
+      {/* Clean Horizontal Transition (No Curves) */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10 z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#000080]/80 to-transparent z-10 pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto">
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6 text-sm text-white/80">
-          <span className="w-2 h-2 bg-[#0E7B74] rounded-full animate-pulse" />
+          <span className="w-2 h-2 bg-[#00d2ff] rounded-full animate-pulse" />
           East & Southern Africa Ocean Resilience Alliance
         </div>
 
         <h1 ref={headlineRef} className="font-display text-hero text-white mb-6 leading-tight">
           {lines.map((line, i) => (
-            <span key={i} className={`block ${i === 1 ? 'text-[#0E7B74]' : ''}`}>{line}</span>
+            <span key={i} className={`block ${i === 1 ? 'text-[#00d2ff]' : ''}`}>{line}</span>
           ))}
         </h1>
 
@@ -73,7 +70,7 @@ export function HeroSection() {
         </p>
 
         <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button className="bg-[#0E7B74] hover:bg-[#0a5f5a] text-white px-8 py-3.5 rounded-full font-semibold text-base transition-all duration-200 hover:scale-105 shadow-lg shadow-teal-900/40">
+          <button className="bg-[#00d2ff] hover:bg-[#00b8e6] text-[#000080] px-8 py-3.5 rounded-full font-semibold text-base transition-all duration-200 hover:scale-105 shadow-lg shadow-navy-900/20">
             {t.hero.discoverWork}
           </button>
           <button className="border-2 border-white/60 hover:border-white text-white px-8 py-3.5 rounded-full font-semibold text-base transition-all duration-200 hover:bg-white/10">
@@ -82,24 +79,6 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Country flags */}
-      <div ref={flagsRef} className="absolute bottom-16 left-0 right-0 z-10 flex justify-center gap-6">
-        {COUNTRY_FLAGS.map((flag) => (
-          <div key={flag.code} className="flex flex-col items-center gap-1 opacity-80 hover:opacity-100 transition-opacity cursor-pointer">
-            <span className="text-2xl">{flag.emoji}</span>
-            <span className="text-white/60 text-xs font-medium tracking-wide hidden sm:block">{flag.name}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Scroll down indicator */}
-      <button
-        onClick={scrollToContent}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-white/60 hover:text-white transition-colors animate-bounce-chevron"
-        aria-label={t.hero.scrollDown}
-      >
-        <ChevronDown className="w-8 h-8" />
-      </button>
     </section>
   );
 }

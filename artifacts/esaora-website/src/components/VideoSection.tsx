@@ -54,11 +54,11 @@ export function VideoSection() {
         }}
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A1628]/60 via-[#0A1628]/50 to-[#0A1628]/70" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000080]/60 via-[#000080]/50 to-[#000080]/70" />
 
       {/* Content */}
       <div ref={quoteRef} className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-        <div className="w-12 h-1 bg-[#0E7B74] mx-auto mb-6 rounded-full" />
+        <div className="w-12 h-1 bg-[#00d2ff] mx-auto mb-6 rounded-full" />
         <blockquote className="font-display text-2xl sm:text-3xl md:text-4xl text-white leading-snug mb-6">
           "{t.videoQuote.quote}"
         </blockquote>

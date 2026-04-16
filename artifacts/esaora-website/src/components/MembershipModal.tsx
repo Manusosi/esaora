@@ -113,10 +113,10 @@ export function MembershipModal({ open, onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(10,22,40,0.85)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0,0,128,0.85)', backdropFilter: 'blur(6px)' }}
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
-      <div className="bg-[#0D1B2E] border border-white/10 rounded-3xl w-full max-w-xl shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
+      <div className="bg-[#000080] border border-white/10 rounded-3xl w-full max-w-xl shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10 flex-shrink-0">
           <div>
@@ -141,7 +141,7 @@ export function MembershipModal({ open, onClose }: Props) {
                     <div
                       className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-all duration-200"
                       style={{
-                        background: isDone ? '#0E7B74' : isActive ? '#0E7B74' : 'rgba(255,255,255,0.08)',
+                        background: isDone ? '#00d2ff' : isActive ? '#00d2ff' : 'rgba(255,255,255,0.08)',
                         color: isDone || isActive ? 'white' : 'rgba(255,255,255,0.3)',
                       }}
                     >
@@ -149,7 +149,7 @@ export function MembershipModal({ open, onClose }: Props) {
                     </div>
                     <span className={`text-xs font-medium hidden sm:inline ${isActive ? 'text-white' : 'text-white/30'}`}>{label}</span>
                     {i < STEPS.length - 1 && (
-                      <div className="flex-1 h-px mx-1" style={{ background: step > num ? '#0E7B74' : 'rgba(255,255,255,0.1)' }} />
+                      <div className="flex-1 h-px mx-1" style={{ background: step > num ? '#00d2ff' : 'rgba(255,255,255,0.1)' }} />
                     )}
                   </div>
                 );
@@ -208,8 +208,8 @@ export function MembershipModal({ open, onClose }: Props) {
                             <div
                               className="w-4 h-4 rounded flex-shrink-0 mt-0.5 border flex items-center justify-center transition-all duration-150"
                               style={{
-                                borderColor: checked ? '#0E7B74' : 'rgba(255,255,255,0.2)',
-                                background: checked ? '#0E7B74' : 'transparent',
+                                borderColor: checked ? '#00d2ff' : 'rgba(255,255,255,0.2)',
+                                background: checked ? '#00d2ff' : 'transparent',
                               }}
                               onClick={() => toggleFocus(area)}
                             >
@@ -257,8 +257,8 @@ export function MembershipModal({ open, onClose }: Props) {
                     <div
                       className="w-5 h-5 rounded border flex-shrink-0 mt-0.5 flex items-center justify-center transition-all"
                       style={{
-                        borderColor: form.termsAgreed ? '#0E7B74' : 'rgba(255,255,255,0.2)',
-                        background: form.termsAgreed ? '#0E7B74' : 'transparent',
+                        borderColor: form.termsAgreed ? '#00d2ff' : 'rgba(255,255,255,0.2)',
+                        background: form.termsAgreed ? '#00d2ff' : 'transparent',
                       }}
                       onClick={() => set('termsAgreed', !form.termsAgreed)}
                     >
@@ -284,8 +284,8 @@ export function MembershipModal({ open, onClose }: Props) {
                 <button
                   onClick={() => setStep((s) => (s + 1) as Step)}
                   disabled={step === 1 ? !canNext1 : !canNext2}
-                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  style={{ background: '#0E7B74' }}
+                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-[#000080] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  style={{ background: '#00d2ff' }}
                 >
                   Continue →
                 </button>
@@ -293,8 +293,8 @@ export function MembershipModal({ open, onClose }: Props) {
                 <button
                   onClick={handleSubmit}
                   disabled={!canSubmit || submitting}
-                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-white flex items-center gap-2 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                  style={{ background: '#0E7B74' }}
+                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-[#000080] flex items-center gap-2 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  style={{ background: '#00d2ff' }}
                 >
                   {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : 'Submit Application'}
                 </button>
@@ -304,8 +304,8 @@ export function MembershipModal({ open, onClose }: Props) {
         ) : (
           /* Success screen */
           <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-[#0E7B74]/20 flex items-center justify-center mb-5">
-              <Check className="w-8 h-8 text-[#0E7B74]" />
+            <div className="w-16 h-16 rounded-full bg-[#00d2ff]/20 flex items-center justify-center mb-5">
+              <Check className="w-8 h-8 text-[#00d2ff]" />
             </div>
             <h3 className="text-white font-bold text-2xl mb-2">Application Submitted!</h3>
             <p className="text-white/55 text-sm leading-relaxed max-w-sm">
@@ -313,8 +313,8 @@ export function MembershipModal({ open, onClose }: Props) {
             </p>
             <button
               onClick={onClose}
-              className="mt-8 px-8 py-3 rounded-full text-white font-semibold text-sm"
-              style={{ background: '#0E7B74' }}
+              className="mt-8 px-8 py-3 rounded-full text-[#000080] font-semibold text-sm transition-all hover:scale-105"
+              style={{ background: '#00d2ff' }}
             >
               Close
             </button>
@@ -336,6 +336,6 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 const input = [
   'w-full bg-white/6 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm',
-  'focus:outline-none focus:border-[#0E7B74]/60 focus:bg-white/8 transition-all placeholder-white/25',
-  '[&>option]:bg-[#0D1B2E] [&>option]:text-white',
+  'focus:outline-none focus:border-[#00d2ff]/60 focus:bg-white/8 transition-all placeholder-white/25',
+  '[&>option]:bg-[#000080] [&>option]:text-white',
 ].join(' ');

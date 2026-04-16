@@ -30,11 +30,11 @@ const AFRICA_ISO_NUMERIC = new Set([
   '800','818','834','854','894',
 ]);
 
-const COUNTRY_FLAGS: Record<CountryKey, string> = {
-  kenya: '🇰🇪',
-  tanzania: '🇹🇿',
-  mozambique: '🇲🇿',
-  madagascar: '🇲🇬',
+const FLAG_CODES: Record<CountryKey, string> = {
+  kenya: 'ke',
+  tanzania: 'tz',
+  mozambique: 'mz',
+  madagascar: 'mg',
 };
 
 const COUNTRY_COASTLINE: Record<CountryKey, string> = {
@@ -63,10 +63,10 @@ export function CountryMapSection() {
     if (!sectionRef.current) return;
     gsap.fromTo(
       sectionRef.current.querySelector('.map-container'),
-      { opacity: 0, scale: 0.97 },
+      { opacity: 0, y: 20 },
       {
-        opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+        opacity: 1, y: 0, duration: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       }
     );
   }, []);
@@ -76,190 +76,182 @@ export function CountryMapSection() {
   const getCountryFill = (isoNum: string) => {
     const key = MEMBER_COUNTRY_ISO[isoNum];
     if (key) {
-      if (key === activeCountry) return '#0A5F5A';
-      if (key === hoveredCountry) return '#16A99F';
-      return '#1DB89A';
+      if (key === activeCountry) return '#000080'; // Navy for active
+      if (key === hoveredCountry) return '#00b8e6'; // Dark Cyan for hover
+      return '#00d2ff'; // Brand Cyan for members
     }
-    return '#C8D8E4';
+    return '#E2E8F0';
   };
 
   const getCountryStroke = (isoNum: string) => {
     const key = MEMBER_COUNTRY_ISO[isoNum];
-    if (key === activeCountry) return '#08403D';
-    if (key) return '#0E7B74';
-    return '#AABFCE';
+    if (key === activeCountry) return '#00d2ff';
+    if (key) return '#000080';
+    return '#CBD5E1';
   };
 
   const orderedCountries: CountryKey[] = ['kenya', 'tanzania', 'mozambique', 'madagascar'];
 
   return (
-    <section ref={sectionRef} className="bg-[#F5F8FA] py-20 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+    <section ref={sectionRef} className="bg-[#F5F8FA] py-24 px-4 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
         <svg viewBox="0 0 1200 700" className="w-full h-full">
-          <circle cx="600" cy="350" r="500" fill="none" stroke="#0E7B74" strokeWidth="0.5" />
-          <circle cx="600" cy="350" r="300" fill="none" stroke="#0E7B74" strokeWidth="0.5" />
+          <circle cx="600" cy="350" r="500" fill="none" stroke="#00d2ff" strokeWidth="0.5" />
+          <circle cx="600" cy="350" r="300" fill="none" stroke="#00d2ff" strokeWidth="0.5" />
         </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto relative">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-12">
-          <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold">Our Region</span>
-          <h2 className="font-display text-section text-[#0A1628] mt-2">{t.map.headline}</h2>
-          <p className="text-[#718096] mt-3 text-base max-w-xl mx-auto">{t.map.subheadline}</p>
+        <div className="text-center mb-16">
+          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-full">
+            Regional Presence
+          </span>
+          <h2 className="font-display text-4xl lg:text-5xl text-[#000080] mt-6 font-bold">{t.map.headline}</h2>
+          <p className="text-[#5A7080] mt-4 text-lg max-w-4xl mx-auto">{t.map.subheadline}</p>
         </div>
 
         {/* 60/40 layout */}
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch">
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
 
           {/* MAP — 60% */}
-          <div className="map-container lg:w-[60%] flex-shrink-0 bg-[#E2EFF6] rounded-3xl overflow-hidden shadow-lg flex flex-col" style={{ minHeight: 480 }}>
-            <div className="flex-1">
+          <div className="map-container lg:w-[60%] flex-shrink-0 bg-[#E2EFF6]/50 rounded-[8px] border border-black/5 overflow-hidden flex flex-col" style={{ minHeight: 520 }}>
+            <div className="flex-1 relative">
               <ComposableMap
                 projection="geoMercator"
-                projectionConfig={{ center: [28, -5], scale: 440 }}
-                style={{ width: '100%', height: '100%', minHeight: 440 }}
+                projectionConfig={{ center: [37, -15], scale: 650 }}
+                style={{ width: '100%', height: '100%', minHeight: 480 }}
               >
-                <ZoomableGroup zoom={1} minZoom={0.8} maxZoom={4}>
-                  <Geographies geography={GEO_URL}>
-                    {({ geographies }) =>
-                      geographies
-                        .filter((geo) => AFRICA_ISO_NUMERIC.has(geo.id))
-                        .map((geo) => {
-                          const isoNum = String(geo.id);
-                          const memberKey = MEMBER_COUNTRY_ISO[isoNum];
-                          const isMember = Boolean(memberKey);
-                          return (
-                            <Geography
-                              key={geo.rsmKey}
-                              geography={geo}
-                              fill={getCountryFill(isoNum)}
-                              stroke={getCountryStroke(isoNum)}
-                              strokeWidth={isMember ? 1.5 : 0.4}
-                              style={{
-                                default: { outline: 'none', cursor: isMember ? 'pointer' : 'default' },
-                                hover: { outline: 'none', fill: isMember ? '#16A99F' : '#B8CDD9', cursor: isMember ? 'pointer' : 'default' },
-                                pressed: { outline: 'none' },
-                              }}
-                              onMouseEnter={() => { if (memberKey) setHoveredCountry(memberKey); }}
-                              onMouseLeave={() => setHoveredCountry(null)}
-                              onClick={() => {
-                                if (memberKey) setActiveCountry(activeCountry === memberKey ? null : memberKey);
-                              }}
-                            />
-                          );
-                        })
-                    }
-                  </Geographies>
-                </ZoomableGroup>
+                <Geographies geography={GEO_URL}>
+                  {({ geographies }: { geographies: any[] }) =>
+                    geographies
+                      .filter((geo: any) => AFRICA_ISO_NUMERIC.has(geo.id))
+                      .map((geo: any) => {
+                        const isoNum = String(geo.id);
+                        const memberKey = MEMBER_COUNTRY_ISO[isoNum];
+                        const isMember = Boolean(memberKey);
+                        return (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            fill={getCountryFill(isoNum)}
+                            stroke={getCountryStroke(isoNum)}
+                            strokeWidth={isMember ? 1.5 : 0.6}
+                            style={{
+                              default: { outline: 'none', cursor: isMember ? 'pointer' : 'default' },
+                              hover: { outline: 'none', fill: isMember ? '#00b8e6' : '#CBD5E1', cursor: isMember ? 'pointer' : 'default' },
+                              pressed: { outline: 'none' },
+                            }}
+                            onMouseEnter={() => { if (memberKey) setHoveredCountry(memberKey); }}
+                            onMouseLeave={() => setHoveredCountry(null)}
+                            onClick={() => {
+                              if (memberKey) setActiveCountry(activeCountry === memberKey ? null : memberKey);
+                            }}
+                          />
+                        );
+                      })
+                  }
+                </Geographies>
               </ComposableMap>
             </div>
 
             {/* Legend */}
-            <div className="px-5 pb-4 pt-1 flex items-center gap-5 flex-wrap border-t border-black/5">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-sm bg-[#1DB89A]" />
-                <span className="text-xs text-[#5A7080]">ESA-ORA Members</span>
+            <div className="px-8 pb-6 pt-2 flex items-center gap-6 flex-wrap border-t border-black/5 bg-white/30 backdrop-blur-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3.5 h-3.5 rounded-full bg-[#00d2ff] shadow-sm shadow-[#00d2ff]/40" />
+                <span className="text-xs font-bold text-[#000080] uppercase tracking-widest">ESA-ORA Members</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-sm bg-[#C8D8E4]" />
-                <span className="text-xs text-[#5A7080]">Other African Nations</span>
+              <div className="flex items-center gap-2">
+                <div className="w-3.5 h-3.5 rounded-full bg-[#C8D8E4] border border-black/5" />
+                <span className="text-xs font-bold text-[#000080]/70 uppercase tracking-widest">African Nations</span>
               </div>
-              <span className="text-xs text-[#5A7080] italic ml-auto hidden sm:inline">
-                Click a highlighted country to learn more
-              </span>
             </div>
           </div>
 
           {/* PANEL — 40% */}
-          <div className="lg:w-[40%] flex-shrink-0 flex flex-col gap-3">
-            {orderedCountries.map((key) => {
-              const country = countries[key];
-              const isActive = activeCountry === key;
-              return (
-                <div
-                  key={key}
-                  className={`rounded-2xl overflow-hidden transition-all duration-300 ${
-                    isActive ? 'shadow-xl shadow-teal-100' : 'shadow-sm hover:shadow-md'
-                  }`}
-                >
-                  {/* Header row — always visible */}
-                  <button
-                    onClick={() => setActiveCountry(isActive ? null : key)}
-                    className={`w-full text-left flex items-center gap-4 px-4 py-3.5 transition-colors duration-200 ${
-                      isActive ? 'bg-[#0E7B74]' : 'bg-white hover:bg-gray-50'
+          <div className="lg:w-[40%] flex-shrink-0 flex flex-col">
+            <div className="bg-white/40 rounded-[8px] border border-black/5 overflow-hidden">
+              {orderedCountries.map((key, index) => {
+                const country = countries[key];
+                const isActive = activeCountry === key;
+                return (
+                  <div
+                    key={key}
+                    className={`transition-all duration-300 border-b border-black/5 last:border-0 ${
+                      isActive ? 'bg-white' : 'hover:bg-white/30'
                     }`}
                   >
-                    {/* Flag emoji — large */}
-                    <span className="text-3xl leading-none flex-shrink-0" role="img" aria-label={country.name}>
-                      {COUNTRY_FLAGS[key]}
-                    </span>
-
-                    <div className="flex-1 min-w-0">
-                      <p className={`font-bold text-sm ${isActive ? 'text-white' : 'text-[#0A1628]'}`}>
-                        {country.name}
-                      </p>
-                      <p className={`text-xs mt-0.5 ${isActive ? 'text-white/70' : 'text-[#718096]'}`}>
-                        {COUNTRY_COASTLINE[key]}
-                      </p>
-                    </div>
-
-                    <svg
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
-                        isActive ? 'rotate-180 text-white/60' : 'text-gray-300'
-                      }`}
+                    <button
+                      onClick={() => setActiveCountry(isActive ? null : key)}
+                      className={`w-full text-left flex items-center gap-5 px-6 py-5 relative group`}
                     >
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                  </button>
+                      {/* Active Indicator Line */}
+                      <div className={`absolute left-0 top-0 bottom-0 w-1 transition-all duration-300 ${
+                        isActive ? 'bg-[#00d2ff]' : 'bg-transparent'
+                      }`} />
 
-                  {/* Expanded detail panel */}
-                  {isActive && (
-                    <div className="bg-white">
-                      {/* Country image */}
-                      <div className="h-32 overflow-hidden">
-                        <img
-                          src={COUNTRY_IMAGES[key]}
+                      {/* Flag - Clean SVG Image */}
+                      <div className="w-12 h-8 rounded-md overflow-hidden bg-gray-100 border border-black/5 flex-shrink-0 shadow-sm">
+                        <img 
+                          src={`https://flagcdn.com/w80/${FLAG_CODES[key]}.png`}
                           alt={country.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
-                      {/* Info */}
-                      <div className="p-4">
-                        <p className="text-[#4A5568] text-sm leading-relaxed mb-3">
+                      <div className="flex-1 min-w-0">
+                        <p className={`font-display font-bold text-lg leading-none ${isActive ? 'text-[#000080]' : 'text-[#000080]/80'}`}>
+                          {country.name}
+                        </p>
+                        <p className={`text-xs mt-1 font-medium tracking-wide uppercase ${isActive ? 'text-[#00d2ff]' : 'text-[#718096]'}`}>
+                          {COUNTRY_COASTLINE[key]}
+                        </p>
+                      </div>
+
+                      <div className={`transition-transform duration-300 ${isActive ? 'rotate-180 text-[#00d2ff]' : 'text-gray-300'}`}>
+                        <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                        </svg>
+                      </div>
+                    </button>
+
+                    {/* Detailed Info (Seamless list expansion) */}
+                    <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                      isActive ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                      <div className="px-6 pb-6 pt-1">
+                        <p className="text-[#5A7080] text-sm leading-relaxed mb-5 font-normal">
                           {country.description}
                         </p>
 
-                        {/* Focus tags — only here, not in header */}
-                        <div className="flex flex-wrap gap-1.5 mb-3">
+                        <div className="flex flex-wrap gap-2 mb-6">
                           {country.focus.map((f) => (
                             <span
                               key={f}
-                              className="bg-[#0E7B74]/10 text-[#0E7B74] text-xs px-2.5 py-1 rounded-full font-medium"
+                              className="bg-[#00d2ff]/5 text-[#00d2ff] text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border border-[#00d2ff]/10"
                             >
                               {f}
                             </span>
                           ))}
                         </div>
 
-                        <button className="flex items-center gap-1.5 text-[#0E7B74] text-xs font-semibold hover:gap-3 transition-all duration-200">
-                          {t.map.visitCountry} <ArrowRight className="w-3.5 h-3.5" />
+                        <button className="w-full bg-[#000080] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-[#000080]/90 transition-all flex items-center justify-center gap-2">
+                          {t.map.visitCountry} <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
+            </div>
 
-            {/* Indian ocean note */}
-            <div className="bg-[#1A6BA0]/8 rounded-xl p-3 text-center mt-auto">
-              <p className="text-[#1A6BA0] text-xs italic">
-                Sharing the Indian Ocean coastline — one interconnected maritime region
+            {/* Indian ocean note - Seamless integration */}
+            <div className="p-4 flex items-center justify-center gap-3">
+              <div className="h-px flex-1 bg-black/5" />
+              <p className="text-[#1A6BA0] text-[10px] font-bold uppercase tracking-[0.2em] whitespace-nowrap opacity-60">
+                Shared Maritime Heritage
               </p>
+              <div className="h-px flex-1 bg-black/5" />
             </div>
           </div>
         </div>

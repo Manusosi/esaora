@@ -8,29 +8,29 @@ gsap.registerPlugin(ScrollTrigger);
 const PILLAR_COLORS: Record<string, string> = {
   'WASH': '#1A6BA0',
   'Climate Action': '#2D7A4E',
-  'Blue Economy': '#0E7B74',
+  'Blue Economy': '#00d2ff',
   'Public Health': '#D97706',
   'Hali ya Hewa': '#2D7A4E',
-  'Uchumi wa Bluu': '#0E7B74',
+  'Uchumi wa Bluu': '#00d2ff',
   'Afya ya Umma': '#D97706',
   'MAJI & USAFI': '#1A6BA0',
   'EAH': '#1A6BA0',
   'Action climatique': '#2D7A4E',
-  "Économie bleue": '#0E7B74',
+  "Économie bleue": '#00d2ff',
   "Santé publique": '#D97706',
   'Ação Climática': '#2D7A4E',
-  'Economia Azul': '#0E7B74',
+  'Economia Azul': '#00d2ff',
   'Saúde Pública': '#D97706',
 };
 
-const PILLAR_ICONS: Record<string, JSX.Element> = {
+const PILLAR_ICONS: Record<string, React.ReactNode> = {
   water: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C7 7 4 10.5 4 14a8 8 0 0016 0c0-3.5-3-7-8-12z" /></svg>,
   climate: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2" /><circle cx="12" cy="12" r="4" /></svg>,
   ocean: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 15c2 0 3-2 5-2s3 2 5 2 3-2 5-2"/><path d="M3 19c2 0 3-2 5-2s3 2 5 2 3-2 5-2"/></svg>,
   health: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>,
 };
 
-function getIconForPillar(pillar: string): JSX.Element {
+function getIconForPillar(pillar: string): React.ReactNode {
   if (pillar.includes('WASH') || pillar.includes('Eau') || pillar.includes('Água') || pillar.includes('MAJI') || pillar.includes('EAH')) {
     return PILLAR_ICONS.water;
   } else if (pillar.includes('Climate') || pillar.includes('Clima') || pillar.includes('Hali') || pillar.includes('Action climatique') || pillar.includes('Ação')) {
@@ -43,7 +43,7 @@ function getIconForPillar(pillar: string): JSX.Element {
 }
 
 function getColorForPillar(pillar: string): string {
-  return PILLAR_COLORS[pillar] || '#0E7B74';
+  return PILLAR_COLORS[pillar] || '#00d2ff';
 }
 
 export function ObjectivesSlider() {
@@ -64,6 +64,61 @@ export function ObjectivesSlider() {
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
       }
     );
+
+    // Animate Caustics (Light ray drifting)
+    gsap.to('.caustic-orb', {
+      x: 'random(-100, 100)',
+      y: 'random(-50, 50)',
+      scale: 'random(1, 1.2)',
+      duration: 'random(10, 20)',
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    // Animate Marine Snow (Drifting particles)
+    gsap.to('.marine-snow', {
+      y: '+=100',
+      x: '+=30',
+      opacity: 'random(0.1, 0.4)',
+      duration: 'random(15, 25)',
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: { amount: 10, from: 'random' }
+    });
+
+    // Topo Shelf Parallax Flow
+    gsap.to('.topo-shelf', {
+      x: '-=30',
+      duration: 30,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: 2
+    });
+
+    // Animate oceanic current flow
+    gsap.to('.ocean-current-line', {
+      strokeDashoffset: 2000,
+      duration: 120,
+      repeat: -1,
+      ease: 'none',
+      stagger: {
+        amount: 30,
+        from: 'random'
+      }
+    });
+
+    // Gentle organic shimmer
+    gsap.to('.ocean-current-line', {
+      y: '+=20',
+      rotation: 1,
+      duration: 20,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
   }, []);
 
   const scrollToIndex = (index: number) => {
@@ -98,14 +153,79 @@ export function ObjectivesSlider() {
   };
 
   return (
-    <section ref={sectionRef} className="bg-[#0A1628] py-20 px-4 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div ref={headerRef} className="text-center mb-12">
-          <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold">
+    <section ref={sectionRef} className="relative bg-[#070f33] py-24 px-4 overflow-hidden">
+      {/* Deep Sea Narrative Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        {/* Ocean Caustics (Light rays) */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="caustic-orb absolute -top-1/4 -left-1/4 w-full h-full rounded-full blur-[120px] bg-[#00d2ff15]" />
+          <div className="caustic-orb absolute -bottom-1/4 -right-1/4 w-full h-full rounded-full blur-[120px] bg-[#00d2ff10]" />
+          <div className="caustic-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/2 rounded-full blur-[150px] bg-[#00d2ff08]" />
+        </div>
+
+        {/* Marine Snow (Particles) */}
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <div 
+              key={i}
+              className="marine-snow absolute w-1 h-1 bg-white/20 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                scale: Math.random() * 0.5 + 0.5,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Ocean Current Contour Background */}
+        <svg 
+          className="absolute -top-[10%] -left-[10%] w-[120%] h-[120%]" 
+          viewBox="0 0 1000 1000" 
+          preserveAspectRatio="none"
+        >
+          {/* Layered Topographic Shelves (Fills) */}
+          {[...Array(4)].map((_, i) => {
+            const yOffset = i * 60;
+            return (
+              <path 
+                key={`shelf-${i}`}
+                className="topo-shelf"
+                d={`M-100,${300 + yOffset} C150,${100 + yOffset} 400,${900 + yOffset} 650,${500 + yOffset} C900,${100 + yOffset} 1150,${50 + yOffset} 1300,${300 + yOffset} L1300,1100 L-100,1100 Z`}
+                fill="#00d2ff"
+                fillOpacity={0.01 + (i * 0.005)}
+              />
+            );
+          })}
+
+          {/* Parallel Accent Lines */}
+          {[...Array(6)].map((_, i) => {
+            const yOffset = i * 50;
+            const opacity = 0.02 + (i * 0.01);
+            const isWhite = i % 2 === 0;
+            return (
+              <path 
+                key={`line-${i}`}
+                className={`ocean-current-line ocean-current-${i}`}
+                d={`M-100,${250 + yOffset} C150,${50 + yOffset} 400,${850 + yOffset} 650,${450 + yOffset} C900,${50 + yOffset} 1150,${0 + yOffset} 1300,${250 + yOffset}`} 
+                fill="none" 
+                stroke={isWhite ? '#ffffff' : '#00d2ff'} 
+                strokeWidth={1 + (i * 0.5)}
+                strokeOpacity={opacity}
+                strokeDasharray={i % 3 === 0 ? "50 150" : "none"}
+              />
+            );
+          })}
+        </svg>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <div ref={headerRef} className="text-center mb-16">
+          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-full">
             Strategic Impact
           </span>
-          <h2 className="font-display text-section text-white mt-2">{t.objectives.headline}</h2>
-          <p className="text-white/50 mt-3 text-base">{t.objectives.subheadline}</p>
+          <h2 className="font-display text-4xl lg:text-5xl text-white mt-6 font-bold">{t.objectives.headline}</h2>
+          <p className="text-white/70 mt-4 text-lg max-w-4xl mx-auto">{t.objectives.subheadline}</p>
         </div>
 
         {/* Scrollable card track */}
@@ -122,41 +242,61 @@ export function ObjectivesSlider() {
             return (
               <div
                 key={i}
-                className={`flex-shrink-0 w-72 bg-white/5 rounded-2xl overflow-hidden snap-start cursor-pointer transition-all duration-300 ${
-                  isActive ? 'bg-white/10 ring-1 ring-white/20' : 'hover:bg-white/8'
-                }`}
+                className={`flex-shrink-0 w-80 rounded-2xl overflow-hidden snap-start cursor-pointer transition-all duration-500 border relative group`}
+                onMouseEnter={() => {
+                  isPausedRef.current = true;
+                }}
+                onMouseLeave={() => {
+                  isPausedRef.current = false;
+                }}
                 onClick={() => goToIndex(i)}
               >
-                <div className="p-6 h-full">
+                <div className="p-6 h-full relative z-10">
                   {/* Header row */}
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
-                      style={{ color, background: color + '22' }}
+                      className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full transition-colors duration-300"
+                      style={{ 
+                        color: isActive ? '#fff' : color, 
+                        background: isActive ? color : color + '22' 
+                      }}
                     >
                       {item.pillar}
                     </span>
-                    <span style={{ color }} className="opacity-70">
+                    <span 
+                      style={{ color }} 
+                      className={`transition-transform duration-500 ${isActive ? 'scale-110 opacity-100' : 'opacity-70'}`}
+                    >
                       {getIconForPillar(item.pillar)}
                     </span>
                   </div>
 
                   {/* Number */}
-                  <div className="text-white/20 text-4xl font-bold mb-2 font-sora">
+                  <div 
+                    className="text-white/35 text-4xl font-bold mb-2 font-sora transition-colors duration-500"
+                    style={{ color: isActive ? color + '55' : undefined }}
+                  >
                     {String(i + 1).padStart(2, '0')}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-white font-bold text-lg mb-3 leading-snug">{item.title}</h3>
+                  <h3 className="text-white font-bold text-lg mb-3 leading-snug group-hover:text-white transition-colors">
+                    {item.title}
+                  </h3>
 
                   {/* Description */}
-                  <p className="text-white/55 text-sm leading-relaxed mb-4">{item.description}</p>
+                  <p className="text-white/75 text-sm leading-relaxed mb-6 group-hover:text-white/95 transition-colors">
+                    {item.description}
+                  </p>
 
                   {/* Activities */}
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {item.activities.map((a) => (
-                      <li key={a} className="flex items-center gap-2 text-white/45 text-xs">
-                        <span className="w-1 h-1 rounded-full flex-shrink-0 bg-white/30" />
+                      <li key={a} className="flex items-start gap-3 text-white/65 text-sm group-hover:text-white/85 transition-colors">
+                        <span 
+                          className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 transition-all duration-300" 
+                          style={{ background: isActive ? color : 'rgba(255,255,255,0.4)' }}
+                        />
                         {a}
                       </li>
                     ))}
@@ -176,7 +316,7 @@ export function ObjectivesSlider() {
               className="h-2 rounded-full transition-all duration-300"
               style={{
                 width: activeIndex === i ? '28px' : '8px',
-                background: '#0E7B74',
+                background: '#00d2ff',
                 opacity: activeIndex === i ? 1 : 0.3,
               }}
             />

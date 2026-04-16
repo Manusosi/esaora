@@ -8,27 +8,27 @@ gsap.registerPlugin(ScrollTrigger);
 
 type TierKey = 'steering' | 'secretariat' | 'countryLeads' | 'twgs';
 
-const TIER_ICONS: Record<TierKey, JSX.Element> = {
+const TIER_ICONS: Record<TierKey, React.ReactNode> = {
   steering: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#0E7B74" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
     </svg>
   ),
   secretariat: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#0E7B74" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="3" width="20" height="14" rx="2" />
       <path d="M8 21h8M12 17v4" />
       <path d="M7 8h10M7 12h5" />
     </svg>
   ),
   countryLeads: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#0E7B74" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
       <circle cx="12" cy="10" r="3" />
     </svg>
   ),
   twgs: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#0E7B74" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="3" />
       <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
     </svg>
@@ -84,8 +84,8 @@ export function GovernanceSection() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold">{t.governance.sectionLabel}</span>
-          <h2 className="font-display text-section text-[#0A1628] mt-2">{t.governance.headline}</h2>
+          <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold">{t.governance.sectionLabel}</span>
+          <h2 className="font-display text-section text-[#000080] mt-2">{t.governance.headline}</h2>
           <p className="text-[#718096] mt-3 text-base max-w-xl mx-auto">{t.governance.subheadline}</p>
         </div>
 
@@ -98,15 +98,15 @@ export function GovernanceSection() {
               <div key={key} className="relative">
                 {/* Card */}
                 <div
-                  className={`gov-card relative bg-[#0D1B2E] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
-                    isActive ? 'ring-2 ring-[#0E7B74]/60 shadow-2xl shadow-teal-900/30' : 'hover:shadow-xl hover:shadow-black/20'
+                  className={`gov-card relative bg-[#000080] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                    isActive ? 'ring-2 ring-[#00d2ff]/60 shadow-2xl shadow-blue-900/20' : 'hover:shadow-xl hover:shadow-black/20'
                   }`}
                   onClick={() => setActiveTier(isActive ? null : key)}
                 >
                   <div className="p-6 sm:p-8">
                     <div className="flex items-start gap-5">
                       {/* Icon */}
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#0E7B74]/15 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#00d2ff]/15 flex items-center justify-center">
                         {TIER_ICONS[key]}
                       </div>
 
@@ -114,7 +114,7 @@ export function GovernanceSection() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-2">
                           {/* Numbered badge */}
-                          <div className="w-7 h-7 rounded-full bg-[#0E7B74] flex items-center justify-center flex-shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-[#00d2ff] flex items-center justify-center flex-shrink-0">
                             <span className="text-white text-xs font-bold">{i + 1}</span>
                           </div>
                           <h3 className="text-white font-bold text-lg sm:text-xl">{tierName}</h3>
@@ -126,11 +126,11 @@ export function GovernanceSection() {
                         {/* Expanded responsibilities */}
                         {isActive && (
                           <div className="mt-5 pt-5 border-t border-white/10">
-                            <p className="text-[#0E7B74] text-xs font-bold uppercase tracking-widest mb-3">Key Responsibilities</p>
+                            <p className="text-[#00d2ff] text-xs font-bold uppercase tracking-widest mb-3">Key Responsibilities</p>
                             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {TIER_RESPONSIBILITIES_LIST[key].map((r) => (
                                 <li key={r} className="flex items-start gap-2 text-sm text-white/55">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#0E7B74] mt-1.5 flex-shrink-0" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 flex-shrink-0" />
                                   {r}
                                 </li>
                               ))}
@@ -158,9 +158,9 @@ export function GovernanceSection() {
                 {i < 3 && (
                   <div className="flex justify-center py-0">
                     <div className="flex flex-col items-center">
-                      <div className="w-px h-6 bg-[#0E7B74]/40" />
-                      <div className="w-2 h-2 rounded-full bg-[#0E7B74]/60" />
-                      <div className="w-px h-6 bg-[#0E7B74]/40" />
+                      <div className="w-px h-6 bg-[#00d2ff]/40" />
+                      <div className="w-2 h-2 rounded-full bg-[#00d2ff]/60" />
+                      <div className="w-px h-6 bg-[#00d2ff]/40" />
                     </div>
                   </div>
                 )}
@@ -171,10 +171,10 @@ export function GovernanceSection() {
 
         {/* Bottom TWGs detail - shows the 5 working groups */}
         <div className="mt-10 bg-[#0D1B2E]/5 border border-[#0D1B2E]/10 rounded-2xl p-6">
-          <p className="text-[#0E7B74] text-xs font-bold uppercase tracking-widest mb-4">Technical Working Groups — 5 Thematic Areas</p>
+          <p className="text-[#00d2ff] text-xs font-bold uppercase tracking-widest mb-4">Technical Working Groups — 5 Thematic Areas</p>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {['WASH', 'Climate Action', 'Blue Economy', 'Public Health', 'Research & Innovation'].map((twg) => (
-              <div key={twg} className="bg-[#0D1B2E] rounded-xl px-3 py-2.5 text-center">
+              <div key={twg} className="bg-[#000080] rounded-xl px-3 py-2.5 text-center">
                 <span className="text-white/70 text-xs font-medium">{twg}</span>
               </div>
             ))}
@@ -182,7 +182,7 @@ export function GovernanceSection() {
         </div>
 
         <div className="text-center mt-10">
-          <button className="inline-flex items-center gap-2 text-[#0E7B74] font-semibold text-sm hover:gap-3 transition-all">
+          <button className="inline-flex items-center gap-2 text-[#00d2ff] font-semibold text-sm hover:gap-3 transition-all hover:text-[#000080]">
             {t.governance.fullDetails} <ArrowRight className="w-4 h-4" />
           </button>
         </div>

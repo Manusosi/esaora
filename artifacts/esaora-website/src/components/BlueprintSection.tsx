@@ -9,14 +9,14 @@ gsap.registerPlugin(ScrollTrigger);
 const PILLAR_COLORS = {
   wash: '#1A6BA0',
   climate: '#2D7A4E',
-  blueEconomy: '#0E7B74',
+  blueEconomy: '#00d2ff',
   publicHealth: '#D97706',
 };
 
 const PILLAR_KEYS = ['wash', 'climate', 'blueEconomy', 'publicHealth'] as const;
 type PillarKey = typeof PILLAR_KEYS[number];
 
-const PILLAR_ICONS: Record<PillarKey, JSX.Element> = {
+const PILLAR_ICONS: Record<PillarKey, React.ReactNode> = {
   wash: (
     <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
       <path d="M12 2C7 7 4 10.5 4 14a8 8 0 0016 0c0-3.5-3-7-8-12z" />
@@ -133,11 +133,11 @@ export function BlueprintSection() {
   };
 
   return (
-    <section ref={sectionRef} className="bg-[#0A1628] py-20 md:py-28 px-4 overflow-hidden">
+    <section ref={sectionRef} className="bg-[#000080] py-20 md:py-28 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold">{t.blueprint.sectionLabel}</span>
+          <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold">{t.blueprint.sectionLabel}</span>
           <h2 className="font-display text-section text-white mt-2">{t.blueprint.headline}</h2>
           <p className="text-white/50 mt-3 text-sm max-w-xl mx-auto">{t.blueprint.centerText}</p>
         </div>
@@ -300,12 +300,12 @@ export function BlueprintSection() {
 
               {/* Center circle — ESA-ORA logo */}
               <g className="center-circle">
-                <circle cx={cx} cy={cy} r="66" fill="#0A1628" opacity="0.95" />
-                <circle cx={cx} cy={cy} r="62" fill="#0A1628" stroke="#0E7B74" strokeWidth="2" />
+                <circle cx={cx} cy={cy} r="66" fill="#000080" opacity="0.95" />
+                <circle cx={cx} cy={cy} r="62" fill="#000080" stroke="#00d2ff" strokeWidth="2" />
                 {/* Inner ring decoration */}
-                <circle cx={cx} cy={cy} r="56" fill="none" stroke="#0E7B74" strokeWidth="0.5" opacity="0.5" />
+                <circle cx={cx} cy={cy} r="56" fill="none" stroke="#00d2ff" strokeWidth="0.5" opacity="0.5" />
                 {/* Text */}
-                <text x={cx} y={cy - 12} textAnchor="middle" fill="#0E7B74" fontSize="10" fontWeight="800" letterSpacing="1.5">
+                <text x={cx} y={cy - 12} textAnchor="middle" fill="#00d2ff" fontSize="10" fontWeight="800" letterSpacing="1.5">
                   ESA-ORA
                 </text>
                 <text x={cx} y={cy + 3} textAnchor="middle" fill="white" fontSize="8" opacity="0.7" letterSpacing="0.5">
@@ -323,7 +323,7 @@ export function BlueprintSection() {
                       cx={cx + 62 * Math.cos(rad)}
                       cy={cy + 62 * Math.sin(rad)}
                       r="3"
-                      fill="#0E7B74"
+                      fill="#00d2ff"
                     />
                   );
                 })}
@@ -355,7 +355,7 @@ export function BlueprintSection() {
                 borderColor: PILLAR_COLORS[activePillar] + '40',
               }}
             >
-              <p className="text-[#0E7B74] text-xs uppercase tracking-widest font-bold mb-3">Key Activities</p>
+              <p className="text-[#00d2ff] text-xs uppercase tracking-widest font-bold mb-3">Key Activities</p>
               <ul className="grid grid-cols-2 gap-2">
                 {t.blueprint.pillars[activePillar].activities.map((a) => (
                   <li key={a} className="flex items-center gap-2 text-white/65 text-sm">

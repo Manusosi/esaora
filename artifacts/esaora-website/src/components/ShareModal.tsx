@@ -144,11 +144,11 @@ export function ShareModal({ open, onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(10,22,40,0.85)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0,0,128,0.85)', backdropFilter: 'blur(6px)' }}
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
       {/* max-h-[90vh] + flex-col so it never overflows the screen */}
-      <div className="bg-[#0D1B2E] border border-white/10 rounded-3xl w-full max-w-md shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
+      <div className="bg-[#000080] border border-white/10 rounded-3xl w-full max-w-md shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
 
         {/* Header — fixed */}
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10 flex-shrink-0">
@@ -169,7 +169,7 @@ export function ShareModal({ open, onClose }: Props) {
               Customise your message
             </label>
             <textarea
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm resize-none focus:outline-none focus:border-[#1A6BA0]/60 transition-all placeholder-white/25"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm resize-none focus:outline-none focus:border-[#00d2ff]/60 transition-all placeholder-white/25"
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -189,8 +189,8 @@ export function ShareModal({ open, onClose }: Props) {
               onClick={handleCopy}
               className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all duration-200 flex-shrink-0"
               style={{
-                background: copied ? '#0E7B74' : 'rgba(255,255,255,0.08)',
-                color: copied ? 'white' : 'rgba(255,255,255,0.6)',
+                background: copied ? '#00d2ff' : 'rgba(255,255,255,0.08)',
+                color: copied ? '#000080' : 'rgba(255,255,255,0.6)',
               }}
             >
               {copied

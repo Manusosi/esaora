@@ -13,15 +13,15 @@ const ARTICLE_IMAGES = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'Announcement': '#0E7B74',
+  'Announcement': '#00d2ff',
   'Programs': '#1A6BA0',
   'Opportunity': '#D97706',
-  'Tangazo': '#0E7B74',
+  'Tangazo': '#00d2ff',
   'Programu': '#1A6BA0',
   'Fursa': '#D97706',
-  'Annonce': '#0E7B74',
+  'Annonce': '#00d2ff',
   'Opportunité': '#D97706',
-  'Anúncio': '#0E7B74',
+  'Anúncio': '#00d2ff',
   'Oportunidade': '#D97706',
 };
 
@@ -47,17 +47,17 @@ export function NewsSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold block mb-2">Latest</span>
-            <h2 className="font-display text-section text-[#0A1628]">{t.news.headline}</h2>
+            <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold block mb-2">Latest</span>
+            <h2 className="font-display text-section text-[#000080]">{t.news.headline}</h2>
           </div>
-          <button className="hidden sm:flex items-center gap-2 text-[#0E7B74] font-semibold hover:gap-3 transition-all text-sm">
+          <button className="hidden sm:flex items-center gap-2 text-[#00d2ff] font-semibold hover:gap-3 transition-all text-sm hover:text-[#000080]">
             {t.news.viewAll} <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {t.news.articles.map((article, i) => {
-            const color = CATEGORY_COLORS[article.category] || '#0E7B74';
+            const color = CATEGORY_COLORS[article.category] || '#00d2ff';
             return (
               <article key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover group cursor-pointer">
                 <div className="h-48 overflow-hidden">
@@ -80,11 +80,11 @@ export function NewsSection() {
                       {article.date}
                     </span>
                   </div>
-                  <h3 className="font-bold text-[#0A1628] text-base leading-snug mb-2 group-hover:text-[#0E7B74] transition-colors">
+                  <h3 className="font-bold text-[#000080] text-base leading-snug mb-2 group-hover:text-[#00d2ff] transition-colors">
                     {article.title}
                   </h3>
                   <p className="text-[#718096] text-sm leading-relaxed mb-4">{article.excerpt}</p>
-                  <button className="flex items-center gap-1.5 text-sm font-semibold text-[#0E7B74] hover:gap-2.5 transition-all">
+                  <button className="flex items-center gap-1.5 text-sm font-semibold text-[#00d2ff] hover:gap-2.5 transition-all hover:text-[#000080]">
                     {t.news.readMore} <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -94,7 +94,7 @@ export function NewsSection() {
         </div>
 
         <div className="text-center mt-8 sm:hidden">
-          <button className="inline-flex items-center gap-2 text-[#0E7B74] font-semibold text-sm border border-[#0E7B74] px-5 py-2.5 rounded-full hover:bg-[#0E7B74] hover:text-white transition-all">
+          <button className="inline-flex items-center gap-2 text-[#00d2ff] font-semibold text-sm border border-[#00d2ff] px-5 py-2.5 rounded-full hover:bg-[#00d2ff] hover:text-[#000080] transition-all">
             {t.news.viewAll} <ArrowRight className="w-4 h-4" />
           </button>
         </div>

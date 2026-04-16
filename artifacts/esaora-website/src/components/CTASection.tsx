@@ -59,26 +59,16 @@ export function CTASection() {
 
   return (
     <>
-      <section ref={sectionRef} className="bg-[#0A1628] py-20 px-4 relative overflow-hidden">
-        {/* Top teal accent border */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#0E7B74] to-transparent" />
-
-        {/* Background wave decoration */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <svg viewBox="0 0 1200 400" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-            <path d="M0,200 C300,120 600,280 900,160 C1050,100 1150,180 1200,160 L1200,400 L0,400Z" fill="#0E7B74" />
-          </svg>
-        </div>
-
-        <div ref={contentRef} className="max-w-6xl mx-auto relative">
+      <section ref={sectionRef} className="bg-[#000080] py-20 px-4">
+        <div ref={contentRef} className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-[#0E7B74] uppercase tracking-widest text-sm font-semibold">Get Involved</span>
+            <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold">Get Involved</span>
             <h2 className="font-display text-section text-white mt-2">{t.cta.headline}</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* ── Fund Our Work ── */}
-            <div className="cta-card bg-[#0D1B2E] border border-white/8 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-white/15 transition-all duration-300">
+            <div className="cta-card bg-[#000080] border border-white/10 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-[#E8682A]/40 transition-all duration-300">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform group-hover:scale-110 duration-200" style={{ background: '#E8682A22', color: '#E8682A' }}>
                 <FundIcon />
               </div>
@@ -103,35 +93,31 @@ export function CTASection() {
             </div>
 
             {/* ── Join the Alliance ── */}
-            <div className="cta-card bg-[#0D1B2E] border border-white/8 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-[#0E7B74]/40 transition-all duration-300 relative overflow-hidden">
-              {/* Subtle glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 0%, #0E7B7420 0%, transparent 70%)' }} />
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform group-hover:scale-110 duration-200 relative z-10" style={{ background: '#0E7B7422', color: '#0E7B74' }}>
+            <div className="cta-card bg-[#000080] border border-white/8 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-[#00d2ff]/40 transition-all duration-300 relative overflow-hidden">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform group-hover:scale-110 duration-200 relative z-10" style={{ background: '#00d2ff22', color: '#00d2ff' }}>
                 <JoinIcon />
               </div>
               <h3 className="text-white font-bold text-xl mb-3 font-sora relative z-10">{t.cta.join.title}</h3>
               <p className="text-white/55 text-sm leading-relaxed mb-6 flex-1 relative z-10">{t.cta.join.description}</p>
               <button
                 onClick={() => setMembershipOpen(true)}
-                className="w-full py-3 rounded-full font-semibold text-sm text-white transition-all duration-200 hover:brightness-110 hover:scale-105 relative z-10"
-                style={{ background: '#0E7B74' }}
+                className="w-full py-3 rounded-full font-semibold text-sm text-[#000080] transition-all duration-200 hover:brightness-110 hover:scale-105 relative z-10"
+                style={{ background: '#00d2ff' }}
               >
                 {t.cta.join.button}
               </button>
             </div>
 
             {/* ── Share Our Mission ── */}
-            <div className="cta-card bg-[#0D1B2E] border border-white/8 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-[#1A6BA0]/40 transition-all duration-300 relative overflow-hidden">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'radial-gradient(circle at 50% 0%, #1A6BA020 0%, transparent 70%)' }} />
-              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform group-hover:scale-110 duration-200 relative z-10" style={{ background: '#1A6BA022', color: '#1A6BA0' }}>
+            <div className="cta-card bg-[#000080] border border-white/8 rounded-2xl p-7 text-center flex flex-col items-center group hover:border-white/20 transition-all duration-300 relative overflow-hidden">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 transition-transform group-hover:scale-110 duration-200 relative z-10" style={{ background: '#00d2ff15', color: '#00d2ff' }}>
                 <ShareIcon />
               </div>
               <h3 className="text-white font-bold text-xl mb-3 font-sora relative z-10">{t.cta.share.title}</h3>
               <p className="text-white/55 text-sm leading-relaxed mb-6 flex-1 relative z-10">{t.cta.share.description}</p>
               <button
                 onClick={() => setShareOpen(true)}
-                className="w-full py-3 rounded-full font-semibold text-sm text-white transition-all duration-200 hover:brightness-110 hover:scale-105 relative z-10"
-                style={{ background: '#1A6BA0' }}
+                className="w-full py-3 border border-[#00d2ff] rounded-full font-semibold text-sm text-[#00d2ff] transition-all duration-200 hover:bg-[#00d2ff] hover:text-[#000080] relative z-10"
               >
                 {t.cta.share.button}
               </button>
