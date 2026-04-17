@@ -144,19 +144,19 @@ export function ShareModal({ open, onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,128,0.85)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0, 29, 69, 0.8)', backdropFilter: 'blur(8px)' }}
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
       {/* max-h-[90vh] + flex-col so it never overflows the screen */}
-      <div className="bg-[#000080] border border-white/10 rounded-3xl w-full max-w-md shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg w-full max-w-md shadow-2xl shadow-brand-navy/20 max-h-[90vh] flex flex-col">
 
         {/* Header — fixed */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10 flex-shrink-0">
+         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100 flex-shrink-0">
           <div>
-            <h2 className="text-white font-bold text-xl">Share Our Mission</h2>
-            <p className="text-white/50 text-sm mt-0.5">Amplify the voice of coastal communities</p>
+            <h2 className="text-brand-navy font-bold text-xl">Share Our Mission</h2>
+            <p className="text-brand-navy/50 text-sm mt-0.5">Amplify the voice of coastal communities</p>
           </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-brand-navy/30 hover:text-brand-navy transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -164,33 +164,33 @@ export function ShareModal({ open, onClose }: Props) {
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
           {/* Editable message */}
-          <div>
-            <label className="block text-white/40 text-xs uppercase tracking-widest font-medium mb-2">
+           <div>
+            <label className="block text-brand-navy/40 text-[10px] font-bold uppercase tracking-widest mb-2">
               Customise your message
             </label>
             <textarea
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm resize-none focus:outline-none focus:border-[#00d2ff]/60 transition-all placeholder-white/25"
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-brand-navy text-sm resize-none focus:outline-none focus:border-brand-navy/30 focus:bg-white transition-all placeholder-gray-400"
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
             <div className="flex justify-end mt-1">
-              <span className="text-white/25 text-xs">{message.length} chars</span>
+              <span className="text-brand-navy/20 text-[10px] font-medium">{message.length} chars</span>
             </div>
           </div>
 
           {/* Link preview */}
-          <div className="bg-white/5 rounded-xl px-4 py-3 flex items-center gap-3">
-            <div className="flex-1 min-w-0">
-              <p className="text-white/40 text-xs uppercase tracking-widest font-medium mb-0.5">Link</p>
-              <p className="text-white/70 text-sm truncate">{SHARE_URL}</p>
+           <div className="bg-gray-50 rounded-lg px-4 py-3 flex items-center gap-3 border border-gray-100">
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-brand-navy/40 text-[10px] font-bold uppercase tracking-widest mb-0.5">Link</p>
+              <p className="text-brand-navy/70 text-sm truncate">{SHARE_URL}</p>
             </div>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all duration-200 flex-shrink-0"
+              className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 flex-shrink-0"
               style={{
-                background: copied ? '#00d2ff' : 'rgba(255,255,255,0.08)',
-                color: copied ? '#000080' : 'rgba(255,255,255,0.6)',
+                background: copied ? '#00d2ff' : '#e2e8f0',
+                color: copied ? '#001D45' : '#64748b',
               }}
             >
               {copied
@@ -201,23 +201,23 @@ export function ShareModal({ open, onClose }: Props) {
           </div>
 
           {/* Platform grid */}
-          <div>
-            <p className="text-white/40 text-xs uppercase tracking-widest font-medium mb-3">Share on platform</p>
+           <div>
+            <p className="text-brand-navy/40 text-[10px] font-bold uppercase tracking-widest mb-3">Share on platform</p>
             <div className="grid grid-cols-3 gap-2">
               {PLATFORMS.map((p) => (
                 <button
                   key={p.key}
                   onClick={() => handleShare(p)}
-                  className="flex flex-col items-center gap-2 py-3.5 px-2 rounded-xl border border-white/8 transition-all duration-200 hover:border-white/20 hover:scale-105 group"
-                  style={{ background: p.bgColor }}
+                  className="flex flex-col items-center gap-2 py-3.5 px-2 rounded-lg border border-gray-100 transition-all duration-200 hover:border-brand-navy/20 hover:bg-gray-50 group"
+                  style={{ background: p.key === 'twitter' ? '#f8fafc' : p.bgColor.replace('18', '08') }}
                 >
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
-                    style={{ background: p.iconColor + '22', color: p.iconColor }}
+                    style={{ background: p.key === 'twitter' ? '#00000018' : p.iconColor + '22', color: p.key === 'twitter' ? '#000000' : p.iconColor }}
                   >
                     {p.icon}
                   </div>
-                  <span className="text-white/60 text-xs font-medium">{p.label}</span>
+                  <span className="text-brand-navy/60 text-[10px] font-bold tracking-tight">{p.label}</span>
                 </button>
               ))}
             </div>
@@ -225,8 +225,8 @@ export function ShareModal({ open, onClose }: Props) {
         </div>
 
         {/* Footer — fixed */}
-        <div className="px-6 py-4 border-t border-white/8 text-center flex-shrink-0">
-          <p className="text-white/25 text-xs">
+         <div className="px-6 py-4 border-t border-gray-50 text-center flex-shrink-0">
+          <p className="text-brand-navy/30 text-[10px] font-medium leading-relaxed">
             Help us grow — every share brings more support to East & Southern Africa's coastal communities.
           </p>
         </div>

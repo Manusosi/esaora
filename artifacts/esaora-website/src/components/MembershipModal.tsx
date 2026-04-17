@@ -113,17 +113,17 @@ export function MembershipModal({ open, onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,128,0.85)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0, 29, 69, 0.8)', backdropFilter: 'blur(8px)' }}
       onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
     >
-      <div className="bg-[#000080] border border-white/10 rounded-3xl w-full max-w-xl shadow-2xl shadow-black/60 max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg w-full max-w-xl shadow-2xl shadow-brand-navy/20 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10 flex-shrink-0">
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100 flex-shrink-0">
           <div>
-            <h2 className="text-white font-bold text-xl">Apply for Membership</h2>
-            <p className="text-white/50 text-sm mt-0.5">Join the ESA-ORA Alliance</p>
+            <h2 className="text-brand-navy font-bold text-xl">Apply for Membership</h2>
+            <p className="text-brand-navy/50 text-sm mt-0.5">Join the ESA-ORA Alliance</p>
           </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-brand-navy/30 hover:text-brand-navy transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -131,7 +131,7 @@ export function MembershipModal({ open, onClose }: Props) {
         {!submitted ? (
           <>
             {/* Step indicators */}
-            <div className="flex items-center gap-2 px-6 py-4 border-b border-white/5 flex-shrink-0">
+            <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-50 flex-shrink-0">
               {STEPS.map((label, i) => {
                 const num = (i + 1) as Step;
                 const isActive = step === num;
@@ -141,15 +141,15 @@ export function MembershipModal({ open, onClose }: Props) {
                     <div
                       className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-all duration-200"
                       style={{
-                        background: isDone ? '#00d2ff' : isActive ? '#00d2ff' : 'rgba(255,255,255,0.08)',
-                        color: isDone || isActive ? 'white' : 'rgba(255,255,255,0.3)',
+                        background: isDone ? '#00d2ff' : isActive ? '#00d2ff' : '#f1f5f9',
+                        color: isDone || isActive ? 'white' : '#64748b',
                       }}
                     >
                       {isDone ? <Check className="w-3.5 h-3.5" /> : num}
                     </div>
-                    <span className={`text-xs font-medium hidden sm:inline ${isActive ? 'text-white' : 'text-white/30'}`}>{label}</span>
+                    <span className={`text-xs font-semibold hidden sm:inline ${isActive ? 'text-brand-navy' : 'text-gray-400'}`}>{label}</span>
                     {i < STEPS.length - 1 && (
-                      <div className="flex-1 h-px mx-1" style={{ background: step > num ? '#00d2ff' : 'rgba(255,255,255,0.1)' }} />
+                      <div className="flex-1 h-[2px] mx-1 rounded-lg" style={{ background: step > num ? '#00d2ff' : '#f1f5f9' }} />
                     )}
                   </div>
                 );
@@ -208,14 +208,14 @@ export function MembershipModal({ open, onClose }: Props) {
                             <div
                               className="w-4 h-4 rounded flex-shrink-0 mt-0.5 border flex items-center justify-center transition-all duration-150"
                               style={{
-                                borderColor: checked ? '#00d2ff' : 'rgba(255,255,255,0.2)',
+                                borderColor: checked ? '#00d2ff' : '#e2e8f0',
                                 background: checked ? '#00d2ff' : 'transparent',
                               }}
                               onClick={() => toggleFocus(area)}
                             >
                               {checked && <Check className="w-2.5 h-2.5 text-white" />}
                             </div>
-                            <span className="text-white/65 text-xs leading-relaxed group-hover:text-white/90 transition-colors">{area}</span>
+                            <span className="text-brand-navy/70 text-xs leading-relaxed group-hover:text-brand-navy transition-colors">{area}</span>
                           </label>
                         );
                       })}
@@ -237,34 +237,34 @@ export function MembershipModal({ open, onClose }: Props) {
                   </Field>
 
                   {/* Summary */}
-                  <div className="bg-white/5 rounded-xl p-4 space-y-2">
-                    <p className="text-white/40 text-xs uppercase tracking-widest font-medium">Application Summary</p>
+                   <div className="bg-gray-50 rounded-lg p-4 space-y-2 border border-gray-100">
+                    <p className="text-brand-navy/40 text-xs uppercase tracking-widest font-bold">Application Summary</p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
-                      <span className="text-white/40">Organisation</span>
-                      <span className="text-white/80 truncate">{form.orgName}</span>
-                      <span className="text-white/40">Type</span>
-                      <span className="text-white/80 truncate">{form.orgType.split('(')[0].trim()}</span>
-                      <span className="text-white/40">Country</span>
-                      <span className="text-white/80">{form.country}</span>
-                      <span className="text-white/40">Contact</span>
-                      <span className="text-white/80 truncate">{form.contactName}</span>
-                      <span className="text-white/40">Focus Areas</span>
-                      <span className="text-white/80">{form.focusAreas.length} selected</span>
+                      <span className="text-brand-navy/50">Organisation</span>
+                      <span className="text-brand-navy font-medium truncate">{form.orgName}</span>
+                      <span className="text-brand-navy/50">Type</span>
+                      <span className="text-brand-navy font-medium truncate">{form.orgType.split('(')[0].trim()}</span>
+                      <span className="text-brand-navy/50">Country</span>
+                      <span className="text-brand-navy font-medium">{form.country}</span>
+                      <span className="text-brand-navy/50">Contact</span>
+                      <span className="text-brand-navy font-medium truncate">{form.contactName}</span>
+                      <span className="text-brand-navy/50">Focus Areas</span>
+                      <span className="text-brand-navy font-medium">{form.focusAreas.length} selected</span>
                     </div>
                   </div>
 
-                  <label className="flex items-start gap-3 cursor-pointer">
+                   <label className="flex items-start gap-3 cursor-pointer">
                     <div
-                      className="w-5 h-5 rounded border flex-shrink-0 mt-0.5 flex items-center justify-center transition-all"
+                      className="w-5 h-5 rounded border border-gray-200 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all bg-gray-50"
                       style={{
-                        borderColor: form.termsAgreed ? '#00d2ff' : 'rgba(255,255,255,0.2)',
-                        background: form.termsAgreed ? '#00d2ff' : 'transparent',
+                        borderColor: form.termsAgreed ? '#00d2ff' : '#e2e8f0',
+                        background: form.termsAgreed ? '#00d2ff' : '#f8fafc',
                       }}
                       onClick={() => set('termsAgreed', !form.termsAgreed)}
                     >
                       {form.termsAgreed && <Check className="w-3 h-3 text-white" />}
                     </div>
-                    <span className="text-white/50 text-xs leading-relaxed">
+                    <span className="text-brand-navy/50 text-xs leading-relaxed">
                       I confirm that the information provided is accurate and that my organisation consents to ESA-ORA processing this application in accordance with its membership policy.
                     </span>
                   </label>
@@ -273,10 +273,10 @@ export function MembershipModal({ open, onClose }: Props) {
             </div>
 
             {/* Footer buttons */}
-            <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 flex-shrink-0">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 flex-shrink-0">
               <button
                 onClick={() => step > 1 ? setStep((s) => (s - 1) as Step) : onClose()}
-                className="text-white/50 hover:text-white text-sm transition-colors"
+                className="text-gray-400 hover:text-brand-navy text-sm font-medium transition-colors"
               >
                 {step === 1 ? 'Cancel' : '← Back'}
               </button>
@@ -284,7 +284,7 @@ export function MembershipModal({ open, onClose }: Props) {
                 <button
                   onClick={() => setStep((s) => (s + 1) as Step)}
                   disabled={step === 1 ? !canNext1 : !canNext2}
-                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-[#000080] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 rounded-lg text-sm font-bold text-brand-navy transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed hover:brightness-105 active:scale-95 shadow-lg shadow-brand-navy/5"
                   style={{ background: '#00d2ff' }}
                 >
                   Continue →
@@ -293,7 +293,7 @@ export function MembershipModal({ open, onClose }: Props) {
                 <button
                   onClick={handleSubmit}
                   disabled={!canSubmit || submitting}
-                  className="px-6 py-2.5 rounded-full text-sm font-semibold text-[#000080] flex items-center gap-2 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-6 py-2.5 rounded-lg text-sm font-bold text-brand-navy flex items-center gap-2 transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed hover:brightness-105 active:scale-95 shadow-lg shadow-brand-navy/5"
                   style={{ background: '#00d2ff' }}
                 >
                   {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : 'Submit Application'}
@@ -303,17 +303,17 @@ export function MembershipModal({ open, onClose }: Props) {
           </>
         ) : (
           /* Success screen */
-          <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-[#00d2ff]/20 flex items-center justify-center mb-5">
+           <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 text-center">
+            <div className="w-16 h-16 rounded-full bg-[#00d2ff]/10 flex items-center justify-center mb-5">
               <Check className="w-8 h-8 text-[#00d2ff]" />
             </div>
-            <h3 className="text-white font-bold text-2xl mb-2">Application Submitted!</h3>
-            <p className="text-white/55 text-sm leading-relaxed max-w-sm">
-              Thank you, <strong className="text-white">{form.contactName}</strong>. We've received {form.orgName}'s application to join the ESA-ORA Alliance. Our Secretariat will review your submission and be in touch within 10 business days.
+            <h3 className="text-brand-navy font-bold text-2xl mb-2">Application Submitted!</h3>
+            <p className="text-brand-navy/60 text-sm leading-relaxed max-w-sm">
+              Thank you, <strong className="text-brand-navy">{form.contactName}</strong>. We've received {form.orgName}'s application to join the ESA-ORA Alliance. Our Secretariat will review your submission and be in touch within 10 business days.
             </p>
             <button
               onClick={onClose}
-              className="mt-8 px-8 py-3 rounded-full text-[#000080] font-semibold text-sm transition-all hover:scale-105"
+              className="mt-8 px-8 py-3 rounded-lg text-brand-navy font-semibold text-sm transition-all hover:scale-105"
               style={{ background: '#00d2ff' }}
             >
               Close
@@ -326,16 +326,16 @@ export function MembershipModal({ open, onClose }: Props) {
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
+   return (
     <div>
-      <label className="block text-white/50 text-xs font-medium mb-1.5 uppercase tracking-wide">{label}</label>
+      <label className="block text-brand-navy/60 text-[10px] font-bold mb-1.5 uppercase tracking-wider">{label}</label>
       {children}
     </div>
   );
 }
 
 const input = [
-  'w-full bg-white/6 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm',
-  'focus:outline-none focus:border-[#00d2ff]/60 focus:bg-white/8 transition-all placeholder-white/25',
-  '[&>option]:bg-[#000080] [&>option]:text-white',
+  'w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-brand-navy text-sm',
+  'focus:outline-none focus:border-[#00d2ff]/60 focus:bg-white transition-all placeholder-gray-400',
+  '[&>option]:bg-white [&>option]:text-brand-navy',
 ].join(' ');

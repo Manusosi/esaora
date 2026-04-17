@@ -6,21 +6,21 @@ import { useLanguage } from '@/i18n/LanguageContext';
 gsap.registerPlugin(ScrollTrigger);
 
 const PILLAR_COLORS: Record<string, string> = {
-  'WASH': '#1A6BA0',
-  'Climate Action': '#2D7A4E',
+  'WASH': '#0097a6',
+  'MAJI & USAFI': '#0097a6',
+  'EAH': '#0097a6',
+  'Climate Action': '#22C55E',
+  'Hali ya Hewa': '#22C55E',
+  'Action climatique': '#22C55E',
+  'Ação Climática': '#22C55E',
   'Blue Economy': '#00d2ff',
-  'Public Health': '#D97706',
-  'Hali ya Hewa': '#2D7A4E',
   'Uchumi wa Bluu': '#00d2ff',
-  'Afya ya Umma': '#D97706',
-  'MAJI & USAFI': '#1A6BA0',
-  'EAH': '#1A6BA0',
-  'Action climatique': '#2D7A4E',
-  "Économie bleue": '#00d2ff',
-  "Santé publique": '#D97706',
-  'Ação Climática': '#2D7A4E',
+  'Économie bleue': '#00d2ff',
   'Economia Azul': '#00d2ff',
-  'Saúde Pública': '#D97706',
+  'Public Health': '#F59E0B',
+  'Afya ya Umma': '#F59E0B',
+  'Santé publique': '#F59E0B',
+  'Saúde Pública': '#F59E0B',
 };
 
 const PILLAR_ICONS: Record<string, React.ReactNode> = {
@@ -146,14 +146,25 @@ export function ObjectivesSlider() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [t.objectives.items.length]);
 
-  // Update scroll when activeIndex changes externally (dot click)
   const goToIndex = (i: number) => {
     setActiveIndex(i);
     scrollToIndex(i);
   };
 
+  const handleScroll = () => {
+    const container = trackRef.current;
+    if (!container) return;
+    const scrollLeft = container.scrollLeft;
+    const cardWidth = (container.firstElementChild as HTMLElement)?.offsetWidth || 304;
+    const gap = 24;
+    const index = Math.round(scrollLeft / (cardWidth + gap));
+    if (index !== activeIndex && index >= 0 && index < t.objectives.items.length) {
+      setActiveIndex(index);
+    }
+  };
+
   return (
-    <section ref={sectionRef} className="relative bg-[#070f33] py-24 px-4 overflow-hidden">
+    <section ref={sectionRef} className="relative bg-[#002659] py-24 px-4 overflow-hidden">
       {/* Deep Sea Narrative Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
         {/* Ocean Caustics (Light rays) */}
@@ -221,8 +232,9 @@ export function ObjectivesSlider() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div ref={headerRef} className="text-center mb-16">
-          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-full">
-            Strategic Impact
+          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-lg">
+            {/* @ts-ignore */}
+            {t.objectives.sectionLabel || 'Strategic Impact'}
           </span>
           <h2 className="font-display text-4xl lg:text-5xl text-white mt-6 font-bold">{t.objectives.headline}</h2>
           <p className="text-white/70 mt-4 text-lg max-w-4xl mx-auto">{t.objectives.subheadline}</p>
@@ -231,8 +243,8 @@ export function ObjectivesSlider() {
         {/* Scrollable card track */}
         <div
           ref={trackRef}
-          className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+          className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory hide-scrollbar"
+          onScroll={handleScroll}
           onMouseEnter={() => { isPausedRef.current = true; }}
           onMouseLeave={() => { isPausedRef.current = false; }}
         >
@@ -242,7 +254,12 @@ export function ObjectivesSlider() {
             return (
               <div
                 key={i}
-                className={`flex-shrink-0 w-80 rounded-2xl overflow-hidden snap-start cursor-pointer transition-all duration-500 border relative group`}
+                className={`flex-shrink-0 w-80 rounded-lg overflow-hidden snap-start cursor-pointer transition-all duration-500 border relative group`}
+                style={{ 
+                  backgroundColor: isActive ? color : '#001433',
+                  borderColor: isActive ? color : 'rgba(255,255,255,0.1)',
+                  boxShadow: isActive ? `0 20px 40px ${color}33` : 'none'
+                }}
                 onMouseEnter={() => {
                   isPausedRef.current = true;
                 }}
@@ -255,7 +272,7 @@ export function ObjectivesSlider() {
                   {/* Header row */}
                   <div className="flex items-center justify-between mb-4">
                     <span
-                      className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full transition-colors duration-300"
+                      className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg transition-colors duration-300"
                       style={{ 
                         color: isActive ? '#fff' : color, 
                         background: isActive ? color : color + '22' 
@@ -264,7 +281,7 @@ export function ObjectivesSlider() {
                       {item.pillar}
                     </span>
                     <span 
-                      style={{ color }} 
+                      style={{ color: isActive ? '#fff' : color }} 
                       className={`transition-transform duration-500 ${isActive ? 'scale-110 opacity-100' : 'opacity-70'}`}
                     >
                       {getIconForPillar(item.pillar)}
@@ -274,7 +291,7 @@ export function ObjectivesSlider() {
                   {/* Number */}
                   <div 
                     className="text-white/35 text-4xl font-bold mb-2 font-sora transition-colors duration-500"
-                    style={{ color: isActive ? color + '55' : undefined }}
+                    style={{ color: isActive ? 'rgba(255,255,255,0.45)' : undefined }}
                   >
                     {String(i + 1).padStart(2, '0')}
                   </div>
@@ -285,17 +302,19 @@ export function ObjectivesSlider() {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-white/75 text-sm leading-relaxed mb-6 group-hover:text-white/95 transition-colors">
+                  <p 
+                    className={`text-sm leading-relaxed mb-6 group-hover:text-white transition-colors ${isActive ? 'text-white' : 'text-white/75'}`}
+                  >
                     {item.description}
                   </p>
 
                   {/* Activities */}
                   <ul className="space-y-3">
                     {item.activities.map((a) => (
-                      <li key={a} className="flex items-start gap-3 text-white/65 text-sm group-hover:text-white/85 transition-colors">
+                      <li key={a} className={`flex items-start gap-3 text-sm group-hover:text-white transition-colors ${isActive ? 'text-white font-medium' : 'text-white/65'}`}>
                         <span 
                           className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 transition-all duration-300" 
-                          style={{ background: isActive ? color : 'rgba(255,255,255,0.4)' }}
+                          style={{ background: isActive ? '#fff' : 'rgba(255,255,255,0.4)' }}
                         />
                         {a}
                       </li>
@@ -307,26 +326,21 @@ export function ObjectivesSlider() {
           })}
         </div>
 
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-2 mt-2">
-          {t.objectives.items.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goToIndex(i)}
-              className="h-2 rounded-full transition-all duration-300"
-              style={{
-                width: activeIndex === i ? '28px' : '8px',
-                background: '#00d2ff',
-                opacity: activeIndex === i ? 1 : 0.3,
-              }}
-            />
-          ))}
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-2 mt-8">
+            {t.objectives.items.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goToIndex(i)}
+                className="h-2 rounded-full transition-all duration-300 pointer-events-auto"
+                style={{
+                  width: activeIndex === i ? '28px' : '8px',
+                  background: activeIndex === i ? '#00d2ff' : 'rgba(255,255,255,0.2)',
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-
-      <style>{`
-        div[style*="scrollbarWidth"]::-webkit-scrollbar { display: none; }
-      `}</style>
     </section>
   );
 }

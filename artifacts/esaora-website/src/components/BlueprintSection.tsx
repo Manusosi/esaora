@@ -2,19 +2,27 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PILLAR_COLORS = {
-  wash: '#1A6BA0',
-  climate: '#2D7A4E',
-  blueEconomy: '#00d2ff',
-  publicHealth: '#D97706',
+  wash: '#0097a6',         // Deep Teal/Cyan
+  climate: '#22C55E',      // Vibrant Green
+  blueEconomy: '#00d2ff',  // Consistent Cyan
+  publicHealth: '#F59E0B', // Vibrant Amber
 };
 
 const PILLAR_KEYS = ['wash', 'climate', 'blueEconomy', 'publicHealth'] as const;
 type PillarKey = typeof PILLAR_KEYS[number];
+
+const PILLAR_IMAGES: Record<PillarKey, string> = {
+  wash: '/images/sections/pillar-wash.jpeg',
+  climate: '/images/sections/pillar-climate-action.jpg',
+  blueEconomy: '/images/sections/pillar-blueeconomy.jpeg',
+  publicHealth: '/images/sections/pillar-public-health.jpeg',
+};
 
 const PILLAR_ICONS: Record<PillarKey, React.ReactNode> = {
   wash: (
@@ -70,18 +78,19 @@ function PillarDescCard({ pillarKey, side, active, onActivate }: PillarDescCardP
     >
       <h3
         className="font-bold text-base uppercase tracking-wide mb-1.5 transition-colors duration-200"
-        style={{ color: active ? color : 'rgba(255,255,255,0.9)' }}
+        style={{ color: active ? color : 'rgba(255,255,255,1)' }}
       >
         {pillar.name}
       </h3>
       <p className="text-white/55 text-sm leading-relaxed mb-2">{pillar.description}</p>
-      <button
+      <Link
+        href={`/our-work/${pillarKey === 'blueEconomy' ? 'blue-economy' : pillarKey === 'publicHealth' ? 'public-health' : pillarKey}`}
         className="inline-flex items-center gap-1 text-xs font-semibold transition-all duration-200 group-hover:gap-2"
         style={{ color }}
       >
         {side === 'right' && <><span>{t.blueprint.learnMore}</span><ArrowRight className="w-3 h-3" /></>}
         {side === 'left' && <><ArrowRight className="w-3 h-3 rotate-180" /><span>{t.blueprint.learnMore}</span></>}
-      </button>
+      </Link>
     </div>
   );
 }
@@ -133,7 +142,7 @@ export function BlueprintSection() {
   };
 
   return (
-    <section ref={sectionRef} className="bg-[#000080] py-20 md:py-28 px-4 overflow-hidden">
+    <section ref={sectionRef} className="bg-brand-navy py-20 md:py-28 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
@@ -156,14 +165,21 @@ export function BlueprintSection() {
               >
                 {/* Circle */}
                 <div
-                  className="flex-shrink-0 w-24 h-24 rounded-full flex flex-col items-center justify-center text-white text-center p-2 transition-all duration-300"
+                  className="flex-shrink-0 w-24 h-24 rounded-full flex flex-col items-center justify-center text-white text-center p-2 transition-all duration-300 overflow-hidden relative"
                   style={{
-                    background: isActive ? color : color + 'CC',
+                    backgroundColor: color,
+                    backgroundImage: `url(${PILLAR_IMAGES[key]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundBlendMode: isActive ? 'overlay' : 'multiply',
                     boxShadow: isActive ? `0 0 24px ${color}88` : 'none',
                   }}
                 >
-                  <div className="mb-1">{PILLAR_ICONS[key]}</div>
-                  <span className="font-bold text-xs uppercase leading-tight">{pillar.name}</span>
+                  <div className="absolute inset-0 bg-black/10 mix-blend-overlay"></div>
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="mb-1 drop-shadow-md">{PILLAR_ICONS[key]}</div>
+                    <span className="font-bold text-xs uppercase leading-tight drop-shadow-md">{pillar.name}</span>
+                  </div>
                 </div>
 
                 {/* Text */}
@@ -180,9 +196,13 @@ export function BlueprintSection() {
                       ))}
                     </ul>
                   )}
-                  <button className="mt-2 flex items-center gap-1 text-xs font-semibold" style={{ color }}>
+                  <Link 
+                    href={`/our-work/${key === 'blueEconomy' ? 'blue-economy' : key === 'publicHealth' ? 'public-health' : key}`}
+                    className="mt-2 flex items-center gap-1 text-xs font-semibold" 
+                    style={{ color }}
+                  >
                     {t.blueprint.learnMore} <ArrowRight className="w-3 h-3" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             );
@@ -190,7 +210,7 @@ export function BlueprintSection() {
         </div>
 
         {/* ── DESKTOP: flower diagram with side descriptions ── */}
-        <div className="hidden md:grid grid-cols-[1fr_auto_1fr] gap-x-8 items-center">
+        <div className="hidden md:grid grid-cols-[1fr_minmax(280px,460px)_1fr] gap-x-4 lg:gap-x-8 items-center">
 
           {/* LEFT descriptions: WASH (top-left) + Blue Economy (bottom-left) */}
           <div className="flex flex-col justify-center gap-12 pr-4">
@@ -206,8 +226,8 @@ export function BlueprintSection() {
           </div>
 
           {/* CENTER diagram */}
-          <div ref={diagramRef} className="flex-shrink-0" style={{ width: S, height: S }}>
-            <svg width={S} height={S} viewBox={`0 0 ${S} ${S}`}>
+          <div ref={diagramRef} className="flex-shrink-0 w-full mx-auto" style={{ maxWidth: S }}>
+            <svg width="100%" height="auto" viewBox={`0 0 ${S} ${S}`} preserveAspectRatio="xMidYMid meet">
               <defs>
                 <filter id="pillar-glow">
                   <feGaussianBlur stdDeviation="4" result="blur" />
@@ -234,14 +254,31 @@ export function BlueprintSection() {
                     onClick={() => togglePillar(key)}
                     style={{ cursor: 'pointer' }}
                   >
+                    <clipPath id={`clip-${key}`}>
+                      <circle cx={pos.x} cy={pos.y} r={R} />
+                    </clipPath>
+                    {/* Background image constrained to circle */}
+                    <image 
+                      x={pos.x - R} 
+                      y={pos.y - R} 
+                      width={R * 2} 
+                      height={R * 2} 
+                      href={PILLAR_IMAGES[key]} 
+                      preserveAspectRatio="xMidYMid slice" 
+                      clipPath={`url(#clip-${key})`}
+                      opacity={isOtherActive ? 0.25 : isActive ? 1 : 0.9}
+                      className="transition-all duration-300"
+                    />
+                    {/* Overlay color for Venn diagram effect */}
                     <circle
                       cx={pos.x}
                       cy={pos.y}
                       r={R}
                       fill={color}
-                      opacity={isOtherActive ? 0.35 : isActive ? 1 : 0.82}
+                      opacity={isActive ? 0.3 : 0.75}
+                      style={{ mixBlendMode: isActive ? 'overlay' : 'multiply' }}
                       filter={isActive ? 'url(#pillar-glow)' : undefined}
-                      className="transition-all duration-300"
+                      className="transition-all duration-300 pointer-events-none"
                     />
                     {/* Border circle when active */}
                     {isActive && (
@@ -285,7 +322,7 @@ export function BlueprintSection() {
                       fontSize="11"
                       fontWeight="700"
                       letterSpacing="0.8"
-                      opacity={isOtherActive ? 0.3 : 0.95}
+                      opacity={isOtherActive ? 0.3 : 1}
                       className="transition-all duration-300 select-none uppercase"
                     >
                       {pillar.name.split(' ').map((word, wi) => (
@@ -300,20 +337,20 @@ export function BlueprintSection() {
 
               {/* Center circle — ESA-ORA logo */}
               <g className="center-circle">
-                <circle cx={cx} cy={cy} r="66" fill="#000080" opacity="0.95" />
-                <circle cx={cx} cy={cy} r="62" fill="#000080" stroke="#00d2ff" strokeWidth="2" />
-                {/* Inner ring decoration */}
-                <circle cx={cx} cy={cy} r="56" fill="none" stroke="#00d2ff" strokeWidth="0.5" opacity="0.5" />
-                {/* Text */}
-                <text x={cx} y={cy - 12} textAnchor="middle" fill="#00d2ff" fontSize="10" fontWeight="800" letterSpacing="1.5">
-                  ESA-ORA
-                </text>
-                <text x={cx} y={cy + 3} textAnchor="middle" fill="white" fontSize="8" opacity="0.7" letterSpacing="0.5">
-                  RESILIENCE
-                </text>
-                <text x={cx} y={cy + 14} textAnchor="middle" fill="white" fontSize="8" opacity="0.7" letterSpacing="0.5">
-                  ALLIANCE
-                </text>
+                <circle cx={cx} cy={cy} r="66" fill="var(--color-brand-navy)" opacity="0.95" />
+                <circle cx={cx} cy={cy} r="62" fill="#ffffff" stroke="#00d2ff" strokeWidth="2" />
+                <clipPath id="logo-clip">
+                  <circle cx={cx} cy={cy} r="60" />
+                </clipPath>
+                <image
+                  x={cx - 48}
+                  y={cy - 48}
+                  width="96"
+                  height="96"
+                  href="/ESAORA-LOGO.png"
+                  clipPath="url(#logo-clip)"
+                  preserveAspectRatio="xMidYMid contain"
+                />
                 {/* Dot decorations on ring */}
                 {[0, 90, 180, 270].map((deg) => {
                   const rad = (deg * Math.PI) / 180;
@@ -349,13 +386,13 @@ export function BlueprintSection() {
         {activePillar && (
           <div className="hidden md:block mt-8 max-w-2xl mx-auto">
             <div
-              className="rounded-2xl p-5 border"
+              className="rounded-lg p-5 border"
               style={{
                 background: PILLAR_COLORS[activePillar] + '15',
                 borderColor: PILLAR_COLORS[activePillar] + '40',
               }}
             >
-              <p className="text-[#00d2ff] text-xs uppercase tracking-widest font-bold mb-3">Key Activities</p>
+              <p className="text-[#00d2ff] text-xs uppercase tracking-widest font-bold mb-3">{t.blueprint.keyActivities}</p>
               <ul className="grid grid-cols-2 gap-2">
                 {t.blueprint.pillars[activePillar].activities.map((a) => (
                   <li key={a} className="flex items-center gap-2 text-white/65 text-sm">

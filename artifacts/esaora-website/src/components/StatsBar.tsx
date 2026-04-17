@@ -40,10 +40,10 @@ function CounterStat({ target, label, suffix = '', prefix = '', active }: Counte
   const count = useCountUp(target, 2000, active);
   return (
     <div className="text-center flex-1 min-w-[120px]">
-      <div className="text-4xl sm:text-5xl font-bold text-[#000080] font-sora mb-1">
+      <div className="text-4xl sm:text-5xl font-bold text-brand-navy font-sora mb-1">
         {prefix}{count}{suffix}
       </div>
-      <div className="text-sm text-[#000080]/70 uppercase tracking-widest font-medium">{label}</div>
+      <div className="text-sm text-brand-navy/70 uppercase tracking-widest font-medium">{label}</div>
     </div>
   );
 }
@@ -64,9 +64,9 @@ export function StatsBar() {
 
   return (
     <section ref={ref} className="bg-white py-14 px-4 border-b border-gray-100">
-      <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-8 md:gap-0 md:divide-x md:divide-[#000080]/20">
+      <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-8 md:gap-0 md:divide-x md:divide-brand-navy/20">
         <CounterStat target={4} label={t.stats.countries} active={active} />
-        <CounterStat target={7} label={t.stats.objectives} suffix="+" active={active} />
+        <CounterStat target={7} label={t.stats.objectives} active={active} />
         <CounterStat target={5} label={t.stats.alliance} active={active} />
         <CounterStat target={4} label={t.stats.pillars} active={active} />
       </div>

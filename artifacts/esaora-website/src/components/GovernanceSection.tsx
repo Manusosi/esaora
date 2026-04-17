@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
+import { ArrowRight, Info, Users, Briefcase, MapPin, Settings2 } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -9,30 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 type TierKey = 'steering' | 'secretariat' | 'countryLeads' | 'twgs';
 
 const TIER_ICONS: Record<TierKey, React.ReactNode> = {
-  steering: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-    </svg>
-  ),
-  secretariat: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="3" width="20" height="14" rx="2" />
-      <path d="M8 21h8M12 17v4" />
-      <path d="M7 8h10M7 12h5" />
-    </svg>
-  ),
-  countryLeads: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  ),
-  twgs: (
-    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#00d2ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-    </svg>
-  ),
+  steering: <Users className="w-7 h-7 text-[#00d2ff]" />,
+  secretariat: <Briefcase className="w-7 h-7 text-[#00d2ff]" />,
+  countryLeads: <MapPin className="w-7 h-7 text-[#00d2ff]" />,
+  twgs: <Settings2 className="w-7 h-7 text-[#00d2ff]" />,
 };
 
 const TIER_DESCRIPTIONS: Record<TierKey, string> = {
@@ -49,29 +30,30 @@ const TIER_RESPONSIBILITIES_LIST: Record<TierKey, string[]> = {
   twgs: ['WASH technical guidance', 'Climate & environmental expertise', 'Blue economy program design', 'Public health integration', 'Research & innovation support', 'Knowledge sharing across countries'],
 };
 
-export function GovernanceSection() {
+export function GovernanceSection({ hideCTA = false }: { hideCTA?: boolean }) {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const [activeTier, setActiveTier] = useState<TierKey | null>(null);
+  const pyramidRef = useRef<HTMLDivElement>(null);
+  const [activeTier, setActiveTier] = useState<TierKey | null>('steering');
 
   const tierKeys: TierKey[] = ['steering', 'secretariat', 'countryLeads', 'twgs'];
 
   useEffect(() => {
-    const cards = cardsRef.current?.querySelectorAll('.gov-card');
-    if (!cards) return;
+    const tiers = pyramidRef.current?.querySelectorAll('.pyramid-tier');
+    if (!tiers) return;
     gsap.fromTo(
-      Array.from(cards),
-      { opacity: 0, y: 50 },
+      Array.from(tiers),
+      { opacity: 0, scale: 0.9, y: 30 },
       {
         opacity: 1,
+        scale: 1,
         y: 0,
-        duration: 0.7,
-        stagger: 0.2,
-        ease: 'power2.out',
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
         scrollTrigger: {
-          trigger: cardsRef.current,
-          start: 'top 75%',
+          trigger: pyramidRef.current,
+          start: 'top 80%',
         },
       }
     );
@@ -79,113 +61,139 @@ export function GovernanceSection() {
 
   const tiers = t.governance.tiers;
 
+  const TIER_WIDTHS: Record<TierKey, string> = {
+    steering: 'max-w-[480px]',
+    secretariat: 'max-w-[640px]',
+    countryLeads: 'max-w-[800px]',
+    twgs: 'max-w-[960px]',
+  };
   return (
-    <section ref={sectionRef} className="bg-white py-20 px-4">
-      <div className="max-w-5xl mx-auto">
+    <section 
+      ref={sectionRef} 
+      className="py-24 px-4 overflow-hidden relative"
+      style={{
+        backgroundColor: '#F8FAFC',
+        backgroundImage: 'radial-gradient(rgba(0, 210, 255, 0.15) 1.5px, transparent 0)',
+        backgroundSize: '32px 32px'
+      }}
+    >
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold">{t.governance.sectionLabel}</span>
-          <h2 className="font-display text-section text-[#000080] mt-2">{t.governance.headline}</h2>
-          <p className="text-[#718096] mt-3 text-base max-w-xl mx-auto">{t.governance.subheadline}</p>
+          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-lg leading-none inline-block">
+            {t.governance.sectionLabel}
+          </span>
+          <h2 className="font-display text-4xl sm:text-5xl text-brand-navy mt-3 font-bold tracking-tight">{t.governance.headline}</h2>
+          <p className="text-[#718096] mt-4 text-lg max-w-2xl mx-auto leading-relaxed">{t.governance.subheadline}</p>
         </div>
 
-        {/* Flowchart */}
-        <div ref={cardsRef} className="relative">
+        {/* Pyramid Structure */}
+        <div ref={pyramidRef} className="max-w-4xl mx-auto flex flex-col items-center space-y-0 mb-16 relative">
           {tierKeys.map((key, i) => {
             const isActive = activeTier === key;
-            const tierName = tiers[key].title;
+            
+            // Standardized trapezoidal percentages for a perfectly straight edge
+            const clipPaths = [
+              'polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)',
+              'polygon(11% 0%, 89% 0%, 100% 100%, 0% 100%)',
+              'polygon(8% 0%, 92% 0%, 100% 100%, 0% 100%)',
+              'polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%)'
+            ];
+
             return (
-              <div key={key} className="relative">
-                {/* Card */}
-                <div
-                  className={`gov-card relative bg-[#000080] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
-                    isActive ? 'ring-2 ring-[#00d2ff]/60 shadow-2xl shadow-blue-900/20' : 'hover:shadow-xl hover:shadow-black/20'
-                  }`}
-                  onClick={() => setActiveTier(isActive ? null : key)}
-                >
-                  <div className="p-6 sm:p-8">
-                    <div className="flex items-start gap-5">
-                      {/* Icon */}
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#00d2ff]/15 flex items-center justify-center">
-                        {TIER_ICONS[key]}
-                      </div>
+              <button
+                key={key}
+                onClick={() => setActiveTier(key)}
+                className={`pyramid-tier w-full ${TIER_WIDTHS[key]} h-16 sm:h-20 group relative transition-all duration-500 hover:scale-[1.01] active:scale-95`}
+              >
+                {/* Background Layer */}
+                <div 
+                  className={`
+                    absolute inset-0 transition-all duration-500
+                    ${isActive 
+                      ? 'bg-brand-navy shadow-2xl shadow-brand-navy/30 border-b border-white/5' 
+                      : 'bg-white border-y border-brand-navy/10 shadow-sm shadow-brand-navy/5'
+                    }
+                  `}
+                  style={{ clipPath: clipPaths[i] }}
+                />
 
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                          {/* Numbered badge */}
-                          <div className="w-7 h-7 rounded-full bg-[#00d2ff] flex items-center justify-center flex-shrink-0">
-                            <span className="text-white text-xs font-bold">{i + 1}</span>
-                          </div>
-                          <h3 className="text-white font-bold text-lg sm:text-xl">{tierName}</h3>
+                {/* Content Layer (NOT Clipped - Safe for Tooltips & Overlays) */}
+                <div className="relative z-10 h-full flex items-center justify-center px-12 sm:px-16">
+                  {/* Badge (Inside left) */}
+                  <div className={`
+                    absolute left-[10%] sm:left-[14%] w-6 h-6 sm:w-7 sm:h-7 rounded-sm flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all duration-500
+                    ${isActive ? 'bg-[#00d2ff] text-brand-navy scale-110 shadow-lg shadow-[#00d2ff]/30' : 'bg-brand-navy/5 text-brand-navy/40'}
+                  `}>
+                    {i + 1}
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className={`text-base sm:text-lg font-bold tracking-wide uppercase transition-colors duration-300 ${isActive ? 'text-white' : 'text-brand-navy/80 group-hover:text-brand-navy'}`}>
+                      {tiers[key].title}
+                    </span>
+                    
+                    {/* Info Icon & Tooltip - ONLY ON ACTIVE */}
+                    {isActive && (
+                      <div className="relative group/tooltip flex-shrink-0">
+                        <Info className="w-4 h-4 text-[#00d2ff] hover:text-white transition-colors cursor-help" />
+                        
+                        {/* Tooltip Content - Clean White/Black style, Sentence Case */}
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-3 py-2 bg-white text-brand-navy text-[10px] font-bold rounded-sm opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl border border-brand-navy/5 pointer-events-none">
+                          View detailed info about this below
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-white" />
                         </div>
-                        <p className="text-white/60 text-sm leading-relaxed">
-                          {TIER_DESCRIPTIONS[key]}
-                        </p>
-
-                        {/* Expanded responsibilities */}
-                        {isActive && (
-                          <div className="mt-5 pt-5 border-t border-white/10">
-                            <p className="text-[#00d2ff] text-xs font-bold uppercase tracking-widest mb-3">Key Responsibilities</p>
-                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {TIER_RESPONSIBILITIES_LIST[key].map((r) => (
-                                <li key={r} className="flex items-start gap-2 text-sm text-white/55">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 flex-shrink-0" />
-                                  {r}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
                       </div>
-
-                      {/* Expand indicator */}
-                      <div className="flex-shrink-0 ml-2">
-                        <svg
-                          viewBox="0 0 20 20"
-                          className="w-5 h-5 text-white/30 transition-transform duration-200"
-                          fill="currentColor"
-                          style={{ transform: isActive ? 'rotate(180deg)' : 'none' }}
-                        >
-                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                        </svg>
-                      </div>
-                    </div>
+                    )}
                   </div>
+
+                  {/* Active Indicator Glow */}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer pointer-events-none" style={{ clipPath: clipPaths[i] }} />
+                  )}
                 </div>
-
-                {/* Vertical connector line to next card */}
-                {i < 3 && (
-                  <div className="flex justify-center py-0">
-                    <div className="flex flex-col items-center">
-                      <div className="w-px h-6 bg-[#00d2ff]/40" />
-                      <div className="w-2 h-2 rounded-full bg-[#00d2ff]/60" />
-                      <div className="w-px h-6 bg-[#00d2ff]/40" />
-                    </div>
-                  </div>
-                )}
-              </div>
+              </button>
             );
           })}
         </div>
 
-        {/* Bottom TWGs detail - shows the 5 working groups */}
-        <div className="mt-10 bg-[#0D1B2E]/5 border border-[#0D1B2E]/10 rounded-2xl p-6">
-          <p className="text-[#00d2ff] text-xs font-bold uppercase tracking-widest mb-4">Technical Working Groups — 5 Thematic Areas</p>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {['WASH', 'Climate Action', 'Blue Economy', 'Public Health', 'Research & Innovation'].map((twg) => (
-              <div key={twg} className="bg-[#000080] rounded-xl px-3 py-2.5 text-center">
-                <span className="text-white/70 text-xs font-medium">{twg}</span>
+        {/* Detail Panel */}
+        <div className="max-w-4xl mx-auto bg-white rounded-lg p-8 sm:p-12 shadow-sm border border-brand-navy/5 min-h-[300px] flex flex-col">
+          {activeTier && (
+            <div key={activeTier} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-md bg-brand-navy/5 flex items-center justify-center">
+                  {TIER_ICONS[activeTier]}
+                </div>
+                <div>
+                  <h4 className="text-brand-navy text-2xl font-bold">{tiers[activeTier].title}</h4>
+                  <p className="text-brand-navy/40 text-xs font-bold uppercase tracking-widest mt-1">Level 0{tierKeys.indexOf(activeTier) + 1}</p>
+                </div>
               </div>
-            ))}
-          </div>
+
+              <p className="text-[#4A5568] text-lg leading-relaxed mb-8">
+                {tiers[activeTier].description}
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-4">
+                {tiers[activeTier].responsibilities.map((r, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <div className="mt-2 w-1.5 h-1.5 rounded-full bg-[#00d2ff] flex-shrink-0" />
+                    <span className="text-[#718096] text-base leading-snug">{r}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="text-center mt-10">
-          <button className="inline-flex items-center gap-2 text-[#00d2ff] font-semibold text-sm hover:gap-3 transition-all hover:text-[#000080]">
-            {t.governance.fullDetails} <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+        {!hideCTA && (
+          <div className="text-center mt-16">
+            <Link href="/governance" className="inline-flex items-center gap-3 py-4 px-8 rounded-lg bg-brand-navy text-white font-bold text-sm hover:gap-5 transition-all shadow-xl shadow-brand-navy/10 active:scale-95">
+              {t.governance.fullDetails} <ArrowRight className="w-4 h-4 text-[#00d2ff]" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

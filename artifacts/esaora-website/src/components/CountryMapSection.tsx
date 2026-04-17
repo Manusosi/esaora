@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
 import { useLanguage } from '@/i18n/LanguageContext';
 import {
   ComposableMap,
@@ -37,21 +38,14 @@ const FLAG_CODES: Record<CountryKey, string> = {
   madagascar: 'mg',
 };
 
-const COUNTRY_COASTLINE: Record<CountryKey, string> = {
-  kenya: '536 km coastline',
-  tanzania: '1,424 km coastline',
-  mozambique: '2,470 km coastline',
-  madagascar: '4,828 km coastline',
+const COUNTRY_COASTLINE_VALS: Record<CountryKey, string> = {
+  kenya: '536',
+  tanzania: '1,424',
+  mozambique: '2,470',
+  madagascar: '4,828',
 };
 
-const COUNTRY_IMAGES: Record<CountryKey, string> = {
-  kenya: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
-  tanzania: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80',
-  mozambique: 'https://images.unsplash.com/photo-1504184988885-f3c6e36f8db8?w=600&q=80',
-  madagascar: 'https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=600&q=80',
-};
-
-const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const GEO_URL = '/countries-110m.json';
 
 export function CountryMapSection() {
   const { t } = useLanguage();
@@ -76,9 +70,9 @@ export function CountryMapSection() {
   const getCountryFill = (isoNum: string) => {
     const key = MEMBER_COUNTRY_ISO[isoNum];
     if (key) {
-      if (key === activeCountry) return '#000080'; // Navy for active
-      if (key === hoveredCountry) return '#00b8e6'; // Dark Cyan for hover
-      return '#00d2ff'; // Brand Cyan for members
+      if (key === activeCountry) return '#00d2ff'; // Brand Cyan for active
+      if (key === hoveredCountry) return 'var(--color-brand-navy)'; // Navy for hover
+      return '#0097a6'; // Deep Teal/Cyan for members
     }
     return '#E2E8F0';
   };
@@ -86,7 +80,7 @@ export function CountryMapSection() {
   const getCountryStroke = (isoNum: string) => {
     const key = MEMBER_COUNTRY_ISO[isoNum];
     if (key === activeCountry) return '#00d2ff';
-    if (key) return '#000080';
+    if (key) return 'var(--color-brand-navy)';
     return '#CBD5E1';
   };
 
@@ -104,10 +98,10 @@ export function CountryMapSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-full">
-            Regional Presence
+          <span className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold bg-[#00d2ff]/10 px-4 py-1.5 rounded-lg">
+            {t.map.regionalPresence}
           </span>
-          <h2 className="font-display text-4xl lg:text-5xl text-[#000080] mt-6 font-bold">{t.map.headline}</h2>
+          <h2 className="font-display text-4xl lg:text-5xl text-brand-navy mt-6 font-bold">{t.map.headline}</h2>
           <p className="text-[#5A7080] mt-4 text-lg max-w-4xl mx-auto">{t.map.subheadline}</p>
         </div>
 
@@ -115,7 +109,7 @@ export function CountryMapSection() {
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
 
           {/* MAP — 60% */}
-          <div className="map-container lg:w-[60%] flex-shrink-0 bg-[#E2EFF6]/50 rounded-[8px] border border-black/5 overflow-hidden flex flex-col" style={{ minHeight: 520 }}>
+          <div className="map-container lg:w-[60%] flex-shrink-0 bg-[#E2EFF6]/50 rounded-[8px] border border-black/5 overflow-hidden flex flex-col" style={{ minHeight: 'clamp(280px, 50vw, 520px)' }}>
             <div className="flex-1 relative">
               <ComposableMap
                 projection="geoMercator"
@@ -139,7 +133,7 @@ export function CountryMapSection() {
                             strokeWidth={isMember ? 1.5 : 0.6}
                             style={{
                               default: { outline: 'none', cursor: isMember ? 'pointer' : 'default' },
-                              hover: { outline: 'none', fill: isMember ? '#00b8e6' : '#CBD5E1', cursor: isMember ? 'pointer' : 'default' },
+                              hover: { outline: 'none', fill: isMember ? 'var(--color-brand-navy)' : '#CBD5E1', cursor: isMember ? 'pointer' : 'default' },
                               pressed: { outline: 'none' },
                             }}
                             onMouseEnter={() => { if (memberKey) setHoveredCountry(memberKey); }}
@@ -158,12 +152,12 @@ export function CountryMapSection() {
             {/* Legend */}
             <div className="px-8 pb-6 pt-2 flex items-center gap-6 flex-wrap border-t border-black/5 bg-white/30 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 rounded-full bg-[#00d2ff] shadow-sm shadow-[#00d2ff]/40" />
-                <span className="text-xs font-bold text-[#000080] uppercase tracking-widest">ESA-ORA Members</span>
+                <div className="w-3.5 h-3.5 rounded-full bg-[#0097a6] shadow-sm shadow-[#0097a6]/40" />
+                <span className="text-xs font-bold text-brand-navy uppercase tracking-widest">{t.map.memberLegend}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3.5 h-3.5 rounded-full bg-[#C8D8E4] border border-black/5" />
-                <span className="text-xs font-bold text-[#000080]/70 uppercase tracking-widest">African Nations</span>
+                <span className="text-xs font-bold text-brand-navy/70 uppercase tracking-widest">{t.map.continentLegend}</span>
               </div>
             </div>
           </div>
@@ -191,20 +185,23 @@ export function CountryMapSection() {
                       }`} />
 
                       {/* Flag - Clean SVG Image */}
-                      <div className="w-12 h-8 rounded-md overflow-hidden bg-gray-100 border border-black/5 flex-shrink-0 shadow-sm">
+                      <div className="w-12 h-8 rounded-md overflow-hidden bg-gray-100 border border-black/5 flex-shrink-0 shadow-sm relative group-hover:scale-110 transition-transform">
                         <img 
-                          src={`https://flagcdn.com/w80/${FLAG_CODES[key]}.png`}
+                          src={`/images/countries/${key}.jpg`}
                           alt={country.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = `https://flagcdn.com/w80/${FLAG_CODES[key]}.png`;
+                          }}
                         />
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <p className={`font-display font-bold text-lg leading-none ${isActive ? 'text-[#000080]' : 'text-[#000080]/80'}`}>
+                        <p className={`font-display font-bold text-lg leading-none ${isActive ? 'text-brand-navy' : 'text-brand-navy/80'}`}>
                           {country.name}
                         </p>
                         <p className={`text-xs mt-1 font-medium tracking-wide uppercase ${isActive ? 'text-[#00d2ff]' : 'text-[#718096]'}`}>
-                          {COUNTRY_COASTLINE[key]}
+                          {COUNTRY_COASTLINE_VALS[key]} {t.map.kmLabel} {t.map.coastlineLabel}
                         </p>
                       </div>
 
@@ -235,9 +232,12 @@ export function CountryMapSection() {
                           ))}
                         </div>
 
-                        <button className="w-full bg-[#000080] text-white py-3 rounded-xl text-xs font-bold tracking-widest uppercase hover:bg-[#000080]/90 transition-all flex items-center justify-center gap-2">
+                        <Link 
+                          href={`/countries/${key}`}
+                          className="w-full bg-brand-navy text-white py-3 rounded-lg text-xs font-bold tracking-widest uppercase hover:bg-brand-navy/90 transition-all flex items-center justify-center gap-2"
+                        >
                           {t.map.visitCountry} <ArrowRight className="w-4 h-4" />
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -249,7 +249,7 @@ export function CountryMapSection() {
             <div className="p-4 flex items-center justify-center gap-3">
               <div className="h-px flex-1 bg-black/5" />
               <p className="text-[#1A6BA0] text-[10px] font-bold uppercase tracking-[0.2em] whitespace-nowrap opacity-60">
-                Shared Maritime Heritage
+                {t.map.sharedMaritimeHeritage}
               </p>
               <div className="h-px flex-1 bg-black/5" />
             </div>

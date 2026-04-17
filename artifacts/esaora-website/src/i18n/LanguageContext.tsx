@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { translations, Language, Translations } from './translations';
 
 interface LanguageContextType {
@@ -16,6 +16,11 @@ const LanguageContext = createContext<LanguageContextType>({
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
   const t = translations[language];
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}

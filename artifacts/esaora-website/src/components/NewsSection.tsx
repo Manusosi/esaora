@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Calendar } from 'lucide-react';
+import { Link } from 'wouter';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -47,56 +47,26 @@ export function NewsSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold block mb-2">Latest</span>
-            <h2 className="font-display text-section text-[#000080]">{t.news.headline}</h2>
+            <span className="text-[#00d2ff] uppercase tracking-widest text-sm font-semibold block mb-2">{t.news.latestLabel}</span>
+            <h2 className="font-display text-section text-brand-navy">{t.news.headline}</h2>
           </div>
-          <button className="hidden sm:flex items-center gap-2 text-[#00d2ff] font-semibold hover:gap-3 transition-all text-sm hover:text-[#000080]">
+          <Link href="/news" className="hidden sm:flex items-center gap-2 text-[#00d2ff] font-semibold hover:gap-3 transition-all text-sm hover:text-brand-navy">
             {t.news.viewAll} <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {t.news.articles.map((article, i) => {
-            const color = CATEGORY_COLORS[article.category] || '#00d2ff';
-            return (
-              <article key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 card-hover group cursor-pointer">
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={ARTICLE_IMAGES[i]}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span
-                      className="text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
-                      style={{ color, background: color + '15' }}
-                    >
-                      {article.category}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-gray-400">
-                      <Calendar className="w-3 h-3" />
-                      {article.date}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-[#000080] text-base leading-snug mb-2 group-hover:text-[#00d2ff] transition-colors">
-                    {article.title}
-                  </h3>
-                  <p className="text-[#718096] text-sm leading-relaxed mb-4">{article.excerpt}</p>
-                  <button className="flex items-center gap-1.5 text-sm font-semibold text-[#00d2ff] hover:gap-2.5 transition-all hover:text-[#000080]">
-                    {t.news.readMore} <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        <div className="text-center mt-8 sm:hidden">
-          <button className="inline-flex items-center gap-2 text-[#00d2ff] font-semibold text-sm border border-[#00d2ff] px-5 py-2.5 rounded-full hover:bg-[#00d2ff] hover:text-[#000080] transition-all">
+        <div className="bg-[#F0F4F8] rounded-lg p-12 text-center border border-black/5">
+          <div className="w-16 h-16 bg-brand-navy/5 rounded-lg flex items-center justify-center mx-auto mb-6">
+            <Calendar className="w-8 h-8 text-brand-navy opacity-30" />
+          </div>
+          <h3 className="font-display text-2xl text-brand-navy font-bold mb-3">{t.news.headline}</h3>
+          <p className="text-[#718096] text-base max-w-md mx-auto mb-8">
+            News and announcements from the ESA-ORA Alliance will be shared here soon. 
+            Stay tuned for updates from our member nations and technical working groups.
+          </p>
+          <Link href="/news" className="inline-flex items-center gap-2 bg-brand-navy text-white px-8 py-3 rounded-lg font-bold text-sm hover:gap-3 transition-all">
             {t.news.viewAll} <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>

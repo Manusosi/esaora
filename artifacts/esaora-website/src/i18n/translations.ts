@@ -7,9 +7,10 @@ export const translations = {
       about: 'About',
       ourWork: 'Our Work',
       countries: 'Countries',
-      programs: 'Programs & Projects',
-      partners: 'Partners & Members',
-      news: 'News & Insights',
+      programs: 'Programs',
+      partners: 'Partners',
+      news: 'News',
+      gallery: 'Gallery',
       contact: 'Contact',
       joinAlliance: 'Join the Alliance',
       ourStory: 'Our Story',
@@ -31,8 +32,9 @@ export const translations = {
       funders: 'Funders',
     },
     hero: {
-      headline: 'Resilient Oceans.\nResilient Communities.',
-      subheadline: 'A regional alliance uniting Kenya, Tanzania, Mozambique & Madagascar for water security, climate resilience, and a thriving blue economy.',
+      welcome: 'Welcome to the East & Southern Africa Ocean Resilience Alliance',
+      headline: 'Forging a Resilient Path for\nOur Shared Indian Ocean',
+      subheadline: 'As a unified regional platform, we bridge the gap between public health, water security, and ecosystem restoration uniting Kenya, Tanzania, Mozambique, and Madagascar to safeguard our maritime future.',
       discoverWork: 'Discover Our Work',
       joinAlliance: 'Join the Alliance',
       scrollDown: 'Scroll to explore',
@@ -40,14 +42,15 @@ export const translations = {
     stats: {
       countries: 'Countries',
       objectives: 'Strategic Objectives',
-      alliance: '5-Year Alliance',
+      alliance: 'Year Alliance',
       pillars: 'Thematic Pillars',
     },
     blueprint: {
       sectionLabel: 'How We Work',
       headline: 'The ESA-ORA Blueprint',
-      centerText: 'People for Resilience · Resilience for People',
+      centerText: 'Focusing regional operations through four foundational pillars: WASH, Climate Action, Sustainable Blue Economy, and Public Health.',
       learnMore: 'Learn More',
+      keyActivities: 'Key Activities',
       pillars: {
         wash: {
           name: 'WASH',
@@ -77,12 +80,18 @@ export const translations = {
     },
     videoQuote: {
       quote: 'Coastal communities are on the frontlines of climate change. ESA-ORA is their regional voice.',
-      attribution: '— ESA-ORA Alliance Charter, 2025',
+      attribution: 'ESA-ORA Alliance Charter, 2026',
     },
     map: {
+      regionalPresence: 'Regional Presence',
+      sharedMaritimeHeritage: 'Shared Maritime Heritage',
       headline: 'Our Region',
-      subheadline: 'The ESA-ORA Consortium brings together the founding member nations of Kenya, Tanzania, Mozambique, and Madagascar. With a shared coastline of over 8,000 km along the Indian Ocean, this alliance creates a unified regional network to synchronize maritime security, climate adaptation, and resource governance. This collective foundation allows us to act as one, driving the specific strategic objectives that define our shared mission for the region.',
+      subheadline: 'The ESA-ORA Consortium brings together the founding member nations of Kenya, Tanzania, Mozambique, and Madagascar. With a shared coastline of over 8,000 km along the Indian Ocean, this alliance creates a unified regional network to synchronize climate adaptation, water security, public health, and sustainable ocean governance. This collective foundation allows us to act as one in driving our shared mission for regional resilience.',
       visitCountry: 'Explore Country',
+      memberLegend: 'ESA-ORA Members',
+      continentLegend: 'African Nations',
+      coastlineLabel: 'coastline',
+      kmLabel: 'km',
       countries: {
         kenya: {
           name: 'Kenya',
@@ -158,32 +167,62 @@ export const translations = {
       sectionLabel: 'Governance',
       headline: 'How We Are Governed',
       subheadline: 'A transparent, multi-tier governance structure ensuring strategic oversight and regional accountability.',
+      twgTitle: 'Technical Working Groups, 5 Thematic Areas',
       tiers: {
         steering: {
           title: 'Steering Committee',
-          description: 'The highest decision-making body, comprising one senior representative from each founding organization. Meets at least twice per year.',
-          responsibilities: ['Strategic leadership', 'Budget approval', 'Membership decisions', 'Dispute resolution'],
+          description: 'The highest decision-making body, composed of one senior representative from each founding organization. Responsible for strategic leadership, approval of work plans and budgets, and full institutional oversight.',
+          responsibilities: [
+            'Strategic leadership and regional direction',
+            'Approval of annual work plans and budgets',
+            'Oversight of financial management and audits',
+            'Dispute resolution and internal mediation',
+            'Review and approval of membership applications',
+            'Final authority on charter amendments and policy'
+          ],
         },
         secretariat: {
           title: 'Consortium Secretariat',
-          description: 'Coordinates day-to-day operations, organizes meetings, maintains documentation, and serves as primary external contact.',
-          responsibilities: ['Day-to-day coordination', 'Stakeholder communications', 'Program development support', 'Monitoring & reporting'],
+          description: 'Coordinates the day-to-day operations of the Alliance, ensuring seamless communication between partners and the Steering Committee.',
+          responsibilities: [
+            'Operational coordination and daily administration',
+            'Organization of Steering Committee meetings',
+            'Maintenance of all alliance documentation',
+            'Facilitation of regional partner communication',
+            'Program development support and resource tracking',
+            'Primary point of contact for external stakeholders'
+          ],
         },
         countryLeads: {
-          title: 'Country Lead Organizations',
-          description: 'Designated leads in each of the four member countries, coordinating national implementation and reporting.',
-          responsibilities: ['National coordination', 'Local stakeholder liaison', 'Progress reporting', 'Implementation oversight'],
+          title: 'National Lead Organizations',
+          description: 'Designated leads in each member nation responsible for synchronizing regional strategies with national implementation frameworks.',
+          responsibilities: [
+            'National-level program implementation',
+            'Liaising with local partners and authorities',
+            'Facilitating national stakeholder consultations',
+            'Ensuring alignment with regional strategies',
+            'Programmatic and financial progress reporting',
+            'National capacity building and knowledge sharing'
+          ],
         },
         twgs: {
           title: 'Technical Working Groups',
-          description: 'Specialized groups providing expertise in WASH, climate action, blue economy, public health, and research & innovation.',
-          responsibilities: ['Technical guidance', 'Program design support', 'Knowledge sharing', 'Innovation & research'],
+          description: 'Specialized expert panels providing implementation guidance across five thematic domains: WASH, Climate, Blue Economy, Health, and Research.',
+          responsibilities: [
+            'Specialized technical guidance in thematic areas',
+            'Thematic program design and quality assurance',
+            'Implementation guidance and technical support',
+            'Cross-country knowledge sharing and innovation',
+            'Reporting to the SC via the Secretariat',
+            'Standardizing regional technical protocols'
+          ],
         },
       },
       fullDetails: 'Full Governance Details',
     },
     news: {
       headline: 'News & Insights',
+      latestLabel: 'Latest',
       viewAll: 'View All News',
       readMore: 'Read More',
       articles: [
@@ -209,11 +248,16 @@ export const translations = {
     },
     partners: {
       headline: 'Our Partners & Members',
+      marqueeHeadline: 'Building the regional blue alliance',
       subheadline: 'Building the alliance together',
       becomeMember: 'Become a Member',
     },
     cta: {
-      headline: 'Together, We Can Build Resilience Across the Region',
+      getInvolved: 'Get Involved',
+      headline: 'Together, We Build Resilience',
+      subheadline: 'Become part of a unified regional effort to safeguard our oceans, climate, and coastal communities.',
+      joinButton: 'Join the Alliance',
+      shareButton: 'Share Our Mission',
       fund: {
         title: 'Fund Our Work',
         description: 'Support climate resilience and ocean sustainability across East & Southern Africa.',
@@ -236,7 +280,7 @@ export const translations = {
       ourWork: 'Our Work',
       countries: 'Countries',
       resources: 'Resources',
-      charter: 'Alliance Charter valid 2025–2030, renewable by mutual agreement.',
+      charter: 'Alliance Charter valid 2025 to 2030, renewable by mutual agreement.',
       privacy: 'Privacy Policy',
       terms: 'Terms',
       cookies: 'Cookie Policy',
@@ -244,6 +288,8 @@ export const translations = {
       contact: 'Contact Us',
       email: 'info@esaora.org',
       website: 'esaora.org',
+      allianceConnectivity: 'Alliance Connectivity',
+      allianceFullTitle: 'East and Southern Africa Ocean Resilience Alliance',
     },
     langSelector: {
       language: 'Language',
@@ -255,9 +301,10 @@ export const translations = {
       about: 'Kuhusu',
       ourWork: 'Kazi Yetu',
       countries: 'Nchi',
-      programs: 'Programu & Miradi',
-      partners: 'Washirika & Wanachama',
-      news: 'Habari & Ufahamu',
+      programs: 'Programu',
+      partners: 'Washirika',
+      news: 'Habari',
+      gallery: 'Matunzio',
       contact: 'Wasiliana',
       joinAlliance: 'Jiunge na Muungano',
       ourStory: 'Hadithi Yetu',
@@ -279,23 +326,25 @@ export const translations = {
       funders: 'Wadau wa Fedha',
     },
     hero: {
-      headline: 'Bahari Imara.\nJamii Imara.',
-      subheadline: 'Muungano wa kikanda unaoungana Kenya, Tanzania, Msumbiji na Madagaska kwa usalama wa maji, ustawi wa hali ya hewa, na uchumi wa bluu unaostawi.',
+      welcome: 'Karibu ESA-ORA (Muungano wa Ustawi wa Bahari wa Afrika)',
+      headline: 'Kujenga Njia Imara kwa\nUstahimilivu wa Bahari Yetu',
+      subheadline: 'Kama jukwaa la kikanda, tunaunganisha afya ya umma na urejeshaji wa mazingira kati ya mataifa wanachama ili kulinda mustakabali wa bahari zetu.',
       discoverWork: 'Gundua Kazi Yetu',
       joinAlliance: 'Jiunge na Muungano',
-      scrollDown: 'Scroll ili kuchunguza',
+      scrollDown: 'Telezesha chini ili kuchunguza',
     },
     stats: {
       countries: 'Nchi',
       objectives: 'Malengo ya Kimkakati',
-      alliance: 'Muungano wa Miaka 5',
+      alliance: 'Miaka ya Muungano',
       pillars: 'Nguzo za Kimada',
     },
     blueprint: {
       sectionLabel: 'Jinsi Tunavyofanya Kazi',
       headline: 'Mpango wa ESA-ORA',
-      centerText: 'Watu kwa Ustawi · Ustawi kwa Watu',
+      centerText: 'Tunalenga operesheni za kikanda kupitia nguzo nne za msingi: WASH, Hatua za Tabianchi, Uchumi Endelevu wa Bluu, na Afya ya Umma.',
       learnMore: 'Jifunza Zaidi',
+      keyActivities: 'Shughuli Muhimu',
       pillars: {
         wash: {
           name: 'MAJI & USAFI',
@@ -325,17 +374,23 @@ export const translations = {
     },
     videoQuote: {
       quote: 'Jamii za pwani ziko mstari wa mbele wa mabadiliko ya hali ya hewa. ESA-ORA ni sauti yao ya kikanda.',
-      attribution: '— Hati ya Muungano wa ESA-ORA, 2025',
+      attribution: 'Hati ya Muungano wa ESA-ORA, 2026',
     },
     map: {
+      regionalPresence: 'Uwepo wa Kikanda',
+      sharedMaritimeHeritage: 'Urithi wa Pamoja wa Bahari',
       headline: 'Eneo Letu',
-      subheadline: 'Nchi nne zilizounganika. Bahari moja inayoshirikishwa. Mustakabali mmoja unaoshirikishwa.',
+      subheadline: 'Muungano wa ESA-ORA unaunganisha mataifa waanzilishi wa Kenya, Tanzania, Msumbiji, na Madagaska. Kwa kuwa na urefu wa pwani ya zaidi ya kilomita 8,000 kando ya Bahari ya Hindi, muungano huu unaunda mtandao wa kikanda uliounganishwa ili kusawazisha urekebishaji wa hali ya hewa, usalama wa maji, afya ya umma, na usimamizi endelevu wa bahari. Msingi huu wa pamoja unaturuhusu kutenda kama umoja katika kuendeleza dhamira yetu ya pamoja kwa ajili ya ustahimilivu wa kikanda.',
       visitCountry: 'Chunguza Nchi',
+      memberLegend: 'Wanachama wa ESA-ORA',
+      continentLegend: 'Mataifa ya Afrika',
+      coastlineLabel: 'pwani',
+      kmLabel: 'km',
       countries: {
-        kenya: { name: 'Kenya', description: 'Kituo cha Afrika Mashariki chenye urefu wa kilomita 536 wa pwani.', focus: ['Uhifadhi wa Bahari', 'WASH Inayostahimili Hali ya Hewa', 'Uchumi wa Bluu'] },
-        tanzania: { name: 'Tanzania', description: 'Nyumbani kwa mifumo ya kipekee ya bahari ya Zanzibar.', focus: ['Kilimo cha Mwani', 'Uvuvi Endelevu', 'Ustawi wa Pwani'] },
-        mozambique: { name: 'Msumbiji', description: 'Yenye kilomita 2,700 za pwani na misitu ya mikoko.', focus: ['Urejeshaji wa Mikoko', 'Uvuvi', 'Afya ya Umma'] },
-        madagascar: { name: 'Madagaska', description: 'Eneo la viumbe vya kipekee na mifumo ya miamba ya matumbawe.', focus: ['Ulinzi wa Miamba ya Matumbawe', 'Utalii wa Ikolojia', 'Uhifadhi wa Mazingira'] },
+        kenya: { name: 'Kenya', description: 'Kituo cha Afrika Mashariki chenye urefu wa kilomita 536 wa pwani, kikiongoza uvumbuzi katika uhifadhi wa bahari na programu za WASH zinazostahimili mabadiliko ya hali ya hewa.', focus: ['Uhifadhi wa Bahari', 'WASH ya Tabianchi', 'Uchumi wa Bluu'] },
+        tanzania: { name: 'Tanzania', description: 'Nyumbani kwa mifumo ya kipekee ya bahari ya Zanzibar, Tanzania inaendesha kilimo cha mwani, uvuvi endelevu, na ustahimilivu wa jamii za pwani.', focus: ['Kilimo cha Mwani', 'Uvuvi Endelevu', 'Ustahimilivu wa Pwani'] },
+        mozambique: { name: 'Msumbiji', description: 'Yenye urefu wa pwani ya kilomita 2,700 na misitu tajiri ya mikoko, Msumbiji inaongoza katika urejeshaji wa mfumo wa ikolojia na ujasiriamali wa uchumi wa bluu.', focus: ['Urejeshaji wa Mikoko', 'Uvuvi', 'Afya ya Umma'] },
+        madagascar: { name: 'Madagaska', description: 'Eneo kuu la viumbe hai lenye mifumo ya kipekee ya miamba ya matumbawe, Madagaska inaongoza katika usimamizi wa mazingira wa kikanda na suluhisho za asili.', focus: ['Ulinzi wa Miamba', 'Utalii wa Ikolojia', 'Uongozi wa Mazingira'] },
       },
     },
     objectives: {
@@ -354,17 +409,35 @@ export const translations = {
     governance: {
       sectionLabel: 'Utawala',
       headline: 'Jinsi Tunavyosimamiwa',
-      subheadline: 'Muundo wa utawala wa ngazi nyingi wenye uwazi.',
+      subheadline: 'Mfumo wa uongozi wa ngazi mbalimbali na wa uwazi unahakikisha usimamizi shirikishi na uwiano wa kikanda.',
+      twgTitle: 'Vikundi vya Kazi vya Kiufundi, Maeneo 5 ya Kimaudhui',
       tiers: {
-        steering: { title: 'Kamati ya Uongozi', description: 'Chombo cha juu zaidi cha kufanya maamuzi, chenye mwakilishi mmoja mkuu kutoka kila shirika la mwanzilishi.', responsibilities: ['Uongozi wa kimkakati', 'Idhini ya bajeti', 'Maamuzi ya uanachama', 'Utatuzi wa migogoro'] },
-        secretariat: { title: 'Sekretarieti ya Muungano', description: 'Inaratibu shughuli za kila siku, inaandaa mikutano, inadumisha hati.', responsibilities: ['Uratibu wa kila siku', 'Mawasiliano na wadau', 'Msaada wa ukuzaji wa programu', 'Ufuatiliaji & ripoti'] },
-        countryLeads: { title: 'Mashirika Yanayoongoza Nchi', description: 'Viongozi waliopo kila moja ya nchi wanne wanachama.', responsibilities: ['Uratibu wa kitaifa', 'Ushirikiano wa wadau wa ndani', 'Ripoti za maendeleo', 'Usimamizi wa utekelezaji'] },
-        twgs: { title: 'Vikundi vya Kazi vya Kiufundi', description: 'Vikundi maalum vinavyotoa utaalamu katika WASH, hali ya hewa, uchumi wa bluu, afya ya umma.', responsibilities: ['Mwongozo wa kiufundi', 'Msaada wa muundo wa programu', 'Kushiriki maarifa', 'Ubunifu & utafiti'] },
+        steering: { 
+          title: 'Kamati ya Uongozi', 
+          description: 'Chombo cha juu zaidi cha kufanya maamuzi chenye wawakilishi wakuu kutoka kila shirika mwanzilishi.', 
+          responsibilities: ['Uongozi wa kimkakati na mwelekeo', 'Utoaji idhini wa mpango kazi na bajeti', 'Usimamizi wa fedha na uwazi', 'Utatuzi wa migogoro', 'Mapitio ya maombi ya uanachama'] 
+        },
+        secretariat: { 
+          title: 'Sekretarieti ya Muungano', 
+          description: 'Huratibu shughuli za kila siku, huandaa mikutano ya Kamati ya Uongozi, na kutunza nyaraka.', 
+          responsibilities: ['Uratibu wa shughuli za kila siku', 'Maandalizi ya mikutano', 'Mawasiliano na wadau', 'Ufuatiliaji na utoaji ripoti'] 
+        },
+        countryLeads: { 
+          title: 'Mashirika ya Kitaifa ya Uongozi', 
+          description: 'Mashirika yaliyoteuliwa kuongoza katika kila nchi nne wanachama yanayosimamia utekelezaji wa kitaifa.', 
+          responsibilities: ['Uratibu wa utekelezaji wa kitaifa', 'Mawasiliano na wadau wa ndani', 'Usimamizi wa utekelezaji', 'Utoaji ripoti wa ngazi ya nchi'] 
+        },
+        twgs: { 
+          title: 'Vikundi vya Kazi vya Kiufundi', 
+          description: 'Vikundi maalum vinavyotoa utaalam katika maeneo ya kapaa: WASH, Hali ya Hewa, Uchumi wa Bluu, na Afya.', 
+          responsibilities: ['Mwongozo wa kiufundi', 'Usaidizi wa kusanifu programu', 'Kubadilishana maarifa', 'Uvumbuzi na utafiti'] 
+        },
       },
-      fullDetails: 'Maelezo Kamili ya Utawala',
+      fullDetails: 'Maelezo Kamili ya Uongozi',
     },
     news: {
       headline: 'Habari & Ufahamu',
+      latestLabel: 'Habari Mpya',
       viewAll: 'Tazama Habari Zote',
       readMore: 'Soma Zaidi',
       articles: [
@@ -375,11 +448,16 @@ export const translations = {
     },
     partners: {
       headline: 'Washirika & Wanachama Wetu',
+      marqueeHeadline: 'Kujenga muungano wa kikanda wa uchumi wa bluu',
       subheadline: 'Kujenga muungano pamoja',
       becomeMember: 'Kuwa Mwanachama',
     },
     cta: {
-      headline: 'Pamoja, Tunaweza Kujenga Ustawi Kote Barani',
+      getInvolved: 'Hushiriki',
+      headline: 'Pamoja, Tunajenga Ustahimilivu',
+      subheadline: 'Kuwa sehemu ya juhudi za kikanda za kulinda bahari, hali ya hewa na jamii za pwani.',
+      joinButton: 'Jiunge na Muungano',
+      shareButton: 'Shiriki Dhamira Yetu',
       fund: { title: 'Saidia Kazi Yetu', description: 'Saidia ustawi wa hali ya hewa na uendelevu wa bahari.', button: 'Saidia Kazi Yetu' },
       join: { title: 'Jiunge na Muungano', description: 'Kuwa shirika mwanachama na usaidie kuunda ajenda ya kikanda.', button: 'Omba Uanachama' },
       share: { title: 'Shiriki Dhamira Yetu', description: 'Saidia kusambaza habari za kazi ya ESA-ORA.', button: 'Shiriki Dhamira Yetu' },
@@ -390,7 +468,7 @@ export const translations = {
       ourWork: 'Kazi Yetu',
       countries: 'Nchi',
       resources: 'Rasilimali',
-      charter: 'Hati ya Muungano ina muda wa 2025–2030, inaweza kuhuishwa kwa makubaliano ya pamoja.',
+      charter: 'Hati ya Muungano ina muda wa 2025 mpaka 2030, inaweza kuhuishwa kwa makubaliano ya pamoja.',
       privacy: 'Sera ya Faragha',
       terms: 'Masharti',
       cookies: 'Sera ya Kuki',
@@ -398,6 +476,8 @@ export const translations = {
       contact: 'Wasiliana Nasi',
       email: 'info@esaora.org',
       website: 'esaora.org',
+      allianceConnectivity: 'Uhusiano wa Muungano',
+      allianceFullTitle: 'Muungano wa Ustawi wa Bahari wa Afrika Mashariki na Kusini',
     },
     langSelector: { language: 'Lugha' },
   },
@@ -407,9 +487,10 @@ export const translations = {
       about: 'À propos',
       ourWork: 'Notre travail',
       countries: 'Pays',
-      programs: 'Programmes & Projets',
-      partners: 'Partenaires & Membres',
-      news: 'Actualités & Perspectives',
+      programs: 'Programmes',
+      partners: 'Partenaires',
+      news: 'Actualités',
+      gallery: 'Galerie',
       contact: 'Contact',
       joinAlliance: "Rejoindre l'Alliance",
       ourStory: 'Notre histoire',
@@ -431,23 +512,25 @@ export const translations = {
       funders: 'Bailleurs de fonds',
     },
     hero: {
-      headline: 'Océans Résilients.\nCommunautés Résilientes.',
-      subheadline: "Une alliance régionale unissant le Kenya, la Tanzanie, le Mozambique et Madagascar pour la sécurité de l'eau, la résilience climatique et une économie bleue florissante.",
+      welcome: 'Bienvenue à l\'Alliance ESA-ORA de Résilience des Océans',
+      headline: 'Tracer une Voie Résiliente pour\nNotre Océan Indien',
+      subheadline: 'En tant que plateforme régionale, nous unissons la santé publique et la restauration écologique pour sauvegarder notre avenir maritime partagé.',
       discoverWork: 'Découvrir notre travail',
       joinAlliance: "Rejoindre l'Alliance",
       scrollDown: 'Défiler pour explorer',
     },
     stats: {
       countries: 'Pays',
-      objectives: 'Objectifs stratégiques',
-      alliance: 'Alliance de 5 ans',
+      objectives: 'Objectifs Stratégiques',
+      alliance: 'Ans d\'Alliance',
       pillars: 'Piliers thématiques',
     },
     blueprint: {
       sectionLabel: 'Comment nous travaillons',
       headline: 'Le Plan ESA-ORA',
-      centerText: 'Les Personnes pour la Résilience · La Résilience pour les Personnes',
-      learnMore: 'En savoir plus',
+      centerText: 'Concentrer les opérations régionales à travers quatre piliers fondamentaux : WASH, Action Climatique, Économie Bleue Durable et Santé Publique.',
+      learnMore: 'En Savoir Plus',
+      keyActivities: 'Activités Clés',
       pillars: {
         wash: {
           name: 'EAH',
@@ -477,17 +560,23 @@ export const translations = {
     },
     videoQuote: {
       quote: "Les communautés côtières sont en première ligne du changement climatique. ESA-ORA est leur voix régionale.",
-      attribution: '— Charte de l\'Alliance ESA-ORA, 2025',
+      attribution: 'Charte de l\'Alliance ESA-ORA, 2026',
     },
     map: {
+      regionalPresence: 'Présence Régionale',
+      sharedMaritimeHeritage: 'Héritage Maritime Partagé',
       headline: 'Notre Région',
-      subheadline: 'Quatre pays interconnectés. Un océan partagé. Un avenir partagé.',
-      visitCountry: 'Explorer le pays',
+      subheadline: 'Le Consortium ESA-ORA réunit les nations fondatrices que sont le Kenya, la Tanzanie, le Mozambique et Madagascar. Avec un littoral partagé de plus de 8 000 km le long de l\'océan Indien, cette alliance crée un réseau régional unifié pour synchroniser l\'adaptation climatique, la sécurité de l\'eau, la santé publique et la gouvernance durable des océans. Cette base collective nous permet d\'agir comme un seul bloc pour mener à bien notre mission commune de résilience régionale.',
+      visitCountry: 'Explorer le Pays',
+      memberLegend: "Membres de l'ESA-ORA",
+      continentLegend: 'Nations Africaines',
+      coastlineLabel: 'littoral',
+      kmLabel: 'km',
       countries: {
-        kenya: { name: 'Kenya', description: "Centre de l'Afrique de l'Est avec 536 km de littoral.", focus: ['Conservation marine', 'EAH résilient au climat', 'Économie bleue'] },
-        tanzania: { name: 'Tanzanie', description: "Berceau des écosystèmes marins uniques de Zanzibar.", focus: ["Culture d'algues", 'Pêches durables', 'Résilience côtière'] },
-        mozambique: { name: 'Mozambique', description: "Avec 2 700 km de littoral et de riches forêts de mangroves.", focus: ['Restauration des mangroves', 'Développement des pêches', 'Santé publique'] },
-        madagascar: { name: 'Madagascar', description: "Point chaud de biodiversité avec des systèmes récifaux uniques.", focus: ['Protection des récifs coralliens', 'Éco-tourisme', 'Gestion environnementale'] },
+        kenya: { name: 'Kenya', description: 'Hub est-africain avec 536 km de littoral, leader de l\'innovation dans la conservation marine et les programmes EAH résilients au climat.', focus: ['Conservation marine', 'EAH Climatique', 'Économie bleue'] },
+        tanzania: { name: 'Tanzanie', description: 'Berceau des écosystèmes marins uniques de Zanzibar, la Tanzanie stimule la culture d\'algues, la pêche durable et la résilience côtière.', focus: ['Culture d\'algues', 'Pêches durables', 'Résilience côtière'] },
+        mozambique: { name: 'Mozambique', description: 'Avec 2 700 km de littoral et de riches mangroves, le Mozambique ancre la restauration des écosystèmes et l\'entrepreneuriat de l\'économie bleue.', focus: ['Restauration mangroves', 'Développement pêches', 'Santé publique'] },
+        madagascar: { name: 'Madagascar', description: 'Haut lieu de biodiversité avec des récifs coralliens uniques, Madagascar mène l\'intendance environnementale et les solutions basées sur la nature.', focus: ['Protection récifs', 'Éco-tourisme', 'Gérance environnementale'] },
       },
     },
     objectives: {
@@ -506,17 +595,35 @@ export const translations = {
     governance: {
       sectionLabel: 'Gouvernance',
       headline: 'Notre Gouvernance',
-      subheadline: 'Une structure de gouvernance multi-niveaux transparente.',
+      subheadline: 'Une structure de gouvernance multi-niveaux et transparente assure une surveillance collaborative et un alignement régional.',
+      twgTitle: 'Groupes de Travail Techniques, 5 Domaines Thématiques',
       tiers: {
-        steering: { title: 'Comité directeur', description: "L'organe décisionnel suprême, composé d'un représentant senior de chaque organisation fondatrice.", responsibilities: ['Leadership stratégique', 'Approbation du budget', 'Décisions sur les membres', 'Résolution des conflits'] },
-        secretariat: { title: 'Secrétariat du Consortium', description: 'Coordonne les opérations quotidiennes, organise les réunions et maintient la documentation.', responsibilities: ['Coordination quotidienne', 'Communications avec les parties prenantes', 'Développement de programmes', 'Suivi & rapports'] },
-        countryLeads: { title: 'Organisations nationales pilotes', description: 'Des responsables désignés dans chacun des quatre pays membres.', responsibilities: ['Coordination nationale', 'Liaison avec les parties prenantes locales', 'Rapports de progrès', "Supervision de la mise en œuvre"] },
-        twgs: { title: 'Groupes de travail techniques', description: 'Groupes spécialisés fournissant une expertise en EAH, climat, économie bleue et santé publique.', responsibilities: ['Orientation technique', 'Soutien à la conception de programmes', 'Partage des connaissances', 'Innovation & recherche'] },
+        steering: { 
+          title: 'Comité directeur', 
+          description: "L'organe décisionnel suprême, composé d'un représentant senior de chaque organisation fondatrice.", 
+          responsibilities: ['Leadership stratégique et direction', "Approbation du plan de travail et du budget", 'Surveillance financière et transparence', 'Résolution des conflits', "Examen des demandes d'adhésion"] 
+        },
+        secretariat: { 
+          title: 'Secrétariat du Consortium', 
+          description: 'Coordonne les opérations quotidiennes, organise les réunions du Comité Directeur et maintient la documentation.', 
+          responsibilities: ['Coordination opérationnelle', 'Logistique des réunions', 'Communication avec les parties prenantes', 'Suivi et rapports'] 
+        },
+        countryLeads: { 
+          title: 'Organisations nationales pilotes', 
+          description: 'Des responsables désignés dans chacun des quatre pays membres gérant la mise en œuvre nationale.', 
+          responsibilities: ['Mise en œuvre nationale', 'Liaison avec les acteurs locaux', 'Supervision de la mise en œuvre', 'Rapports au niveau national'] 
+        },
+        twgs: { 
+          title: 'Groupes de travail techniques', 
+          description: 'Groupes spécialisés fournissant une expertise thématique en EAH, climat, économie bleue et santé publique.', 
+          responsibilities: ['Orientation technique', 'Soutien à la conception de programmes', 'Partage des connaissances', 'Innovation et recherche'] 
+        },
       },
       fullDetails: 'Détails complets sur la gouvernance',
     },
     news: {
       headline: 'Actualités & Perspectives',
+      latestLabel: 'Dernières',
       viewAll: 'Voir toutes les actualités',
       readMore: 'Lire la suite',
       articles: [
@@ -527,11 +634,16 @@ export const translations = {
     },
     partners: {
       headline: 'Nos Partenaires & Membres',
+      marqueeHeadline: 'Bâtir l\'alliance bleue régionale',
       subheadline: "Construire l'alliance ensemble",
       becomeMember: 'Devenir membre',
     },
     cta: {
-      headline: 'Ensemble, Construisons la Résilience Dans Toute la Région',
+      getInvolved: 'S\'impliquer',
+      headline: 'Ensemble, nous bâtissons la résilience',
+      subheadline: 'Faites partie d\'un effort régional unifié pour sauvegarder nos océans, notre climat et nos communautés côtières.',
+      joinButton: 'Rejoindre l\'Alliance',
+      shareButton: 'Partager notre mission',
       fund: { title: 'Financer Notre Travail', description: 'Soutenir la résilience climatique et la durabilité des océans.', button: 'Financer Notre Travail' },
       join: { title: "Rejoindre l'Alliance", description: "Devenez une organisation membre et participez à l'agenda régional.", button: "Demander l'adhésion" },
       share: { title: 'Partager Notre Mission', description: "Aidez à diffuser le travail d'ESA-ORA.", button: 'Partager Notre Mission' },
@@ -542,7 +654,7 @@ export const translations = {
       ourWork: 'Notre travail',
       countries: 'Pays',
       resources: 'Ressources',
-      charter: 'Charte de l\'Alliance valide 2025–2030, renouvelable par accord mutuel.',
+      charter: 'Charte de l\'Alliance valide de 2025 à 2030, renouvelable par accord mutuel.',
       privacy: 'Politique de confidentialité',
       terms: 'Conditions',
       cookies: 'Politique des cookies',
@@ -550,6 +662,8 @@ export const translations = {
       contact: 'Nous contacter',
       email: 'info@esaora.org',
       website: 'esaora.org',
+      allianceConnectivity: "Connectivité de l'Alliance",
+      allianceFullTitle: "Alliance pour la Résilience des Océans en Afrique Orientale et Australe",
     },
     langSelector: { language: 'Langue' },
   },
@@ -559,9 +673,10 @@ export const translations = {
       about: 'Sobre',
       ourWork: 'Nosso Trabalho',
       countries: 'Países',
-      programs: 'Programas & Projetos',
-      partners: 'Parceiros & Membros',
-      news: 'Notícias & Perspetivas',
+      programs: 'Programas',
+      partners: 'Parceiros',
+      news: 'Notícias',
+      gallery: 'Galeria',
       contact: 'Contacto',
       joinAlliance: 'Juntar-se à Aliança',
       ourStory: 'Nossa História',
@@ -583,8 +698,9 @@ export const translations = {
       funders: 'Financiadores',
     },
     hero: {
-      headline: 'Oceanos Resilientes.\nComunidades Resilientes.',
-      subheadline: 'Uma aliança regional unindo o Quénia, Tanzânia, Moçambique e Madagáscar para a segurança hídrica, resiliência climática e uma próspera economia azul.',
+      welcome: 'Bem-vindo à Aliança ESA-ORA para a Resiliência Oceânica',
+      headline: 'Traçando um Caminho para\no Nosso Oceano Índico',
+      subheadline: 'Como uma plataforma regional, unimos a saúde pública e a restauração de ecossistemas para salvaguardar o nosso futuro marítimo.',
       discoverWork: 'Descobrir Nosso Trabalho',
       joinAlliance: 'Juntar-se à Aliança',
       scrollDown: 'Role para explorar',
@@ -592,14 +708,15 @@ export const translations = {
     stats: {
       countries: 'Países',
       objectives: 'Objetivos Estratégicos',
-      alliance: 'Aliança de 5 Anos',
+      alliance: 'Anos de Aliança',
       pillars: 'Pilares Temáticos',
     },
     blueprint: {
       sectionLabel: 'Como Trabalhamos',
       headline: 'O Plano ESA-ORA',
-      centerText: 'Pessoas para a Resiliência · Resiliência para as Pessoas',
-      learnMore: 'Saber Mais',
+      centerText: 'Focar as operações regionais através de quatro pilares fundamentais: WASH, Acção Climática, Economia Azul Sustentável e Saúde Pública.',
+      learnMore: 'Saiba Mais',
+      keyActivities: 'Actividades Principais',
       pillars: {
         wash: {
           name: 'WASH',
@@ -629,17 +746,23 @@ export const translations = {
     },
     videoQuote: {
       quote: 'As comunidades costeiras estão na linha da frente das alterações climáticas. A ESA-ORA é a sua voz regional.',
-      attribution: '— Carta da Aliança ESA-ORA, 2025',
+      attribution: 'Carta da Aliança ESA-ORA, 2026',
     },
     map: {
+      regionalPresence: 'Presença Regional',
+      sharedMaritimeHeritage: 'Patrimônio Marítimo Compartilhado',
       headline: 'A Nossa Região',
-      subheadline: 'Quatro países interligados. Um oceano partilhado. Um futuro partilhado.',
-      visitCountry: 'Explorar País',
+      subheadline: 'O Consórcio ESA-ORA reúne as nações fundadoras Quénia, Tanzânia, Moçambique e Madagáscar. Com uma linha costeira partilhada de mais de 8.000 km ao longo do Oceano Índico, esta aliança cria uma rede regional unificada para sincronizar a adaptação climática, a segurança hídrica, a saúde pública e a governação sustentável dos oceanos. Esta base colectiva permite-nos agir como um só na condução da nossa missão partilhada para a resiliência regional.',
+      visitCountry: 'Explorar o País',
+      memberLegend: 'Membros da ESA-ORA',
+      continentLegend: 'Nações Africanas',
+      coastlineLabel: 'litoral',
+      kmLabel: 'km',
       countries: {
-        kenya: { name: 'Quénia', description: 'Centro da África Oriental com 536 km de costa.', focus: ['Conservação Marinha', 'WASH Resiliente ao Clima', 'Economia Azul'] },
-        tanzania: { name: 'Tanzânia', description: 'Lar dos ecossistemas marinhos únicos do Zanzibar.', focus: ['Cultivo de Algas', 'Pescas Sustentáveis', 'Resiliência Costeira'] },
-        mozambique: { name: 'Moçambique', description: 'Com 2 700 km de costa e ricas florestas de mangais.', focus: ['Restauro de Mangais', 'Desenvolvimento das Pescas', 'Saúde Pública'] },
-        madagascar: { name: 'Madagáscar', description: 'Ponto quente de biodiversidade com sistemas únicos de recifes de coral.', focus: ['Proteção de Recifes de Coral', 'Eco-turismo', 'Gestão Ambiental'] },
+        kenya: { name: 'Quénia', description: 'Hub da África Oriental com 536 km de costa, liderando a inovação na conservação marinha e programas WASH resilientes ao clima.', focus: ['Conservação Marinha', 'WASH Climático', 'Economia Azul'] },
+        tanzania: { name: 'Tanzânia', description: 'Lar dos ecossistemas marinhos únicos de Zanzibar, a Tanzânia impulsiona a cultivação de algas, pescas sustentáveis e resiliência costeira.', focus: ['Cultivo de Algas', 'Pescas Sustentáveis', 'Resiliência Costeira'] },
+        mozambique: { name: 'Moçambique', description: 'Com 2 700 km de costa e ricas florestas de mangais, Moçambique ancora a restauração de ecossistemas e o empreendedorismo da economia azul.', focus: ['Restauro de Mangais', 'Desenvolvimento Pescas', 'Saúde Pública'] },
+        madagascar: { name: 'Madagáscar', description: 'Ponto crucial de biodiversidade com sistemas únicos de recifes de coral, Madagascar lidera a gestão ambiental e soluções baseadas na natureza.', focus: ['Proteção de Recifes', 'Eco-turismo', 'Gestão Ambiental'] },
       },
     },
     objectives: {
@@ -657,18 +780,36 @@ export const translations = {
     },
     governance: {
       sectionLabel: 'Governança',
-      headline: 'Como Somos Governados',
-      subheadline: 'Uma estrutura de governança multi-nível e transparente.',
+      headline: 'A Nossa Governança',
+      subheadline: 'Uma estrutura de governança multinível e transparente garante supervisão colaborativa e alinhamento regional.',
+      twgTitle: 'Grupos de Trabalho Técnicos, 5 Áreas Temáticas',
       tiers: {
-        steering: { title: 'Comité Diretivo', description: 'O órgão de decisão mais elevado, composto por um representante sénior de cada organização fundadora.', responsibilities: ['Liderança estratégica', 'Aprovação do orçamento', 'Decisões de adesão', 'Resolução de disputas'] },
-        secretariat: { title: 'Secretariado do Consórcio', description: 'Coordena as operações diárias, organiza reuniões e mantém a documentação.', responsibilities: ['Coordenação diária', 'Comunicações com partes interessadas', 'Apoio ao desenvolvimento de programas', 'Monitorização & relatórios'] },
-        countryLeads: { title: 'Organizações Líderes de País', description: 'Líderes designados em cada um dos quatro países membros.', responsibilities: ['Coordenação nacional', 'Ligação com partes interessadas locais', 'Relatórios de progresso', 'Supervisão da implementação'] },
-        twgs: { title: 'Grupos de Trabalho Técnicos', description: 'Grupos especializados que fornecem expertise em WASH, clima, economia azul e saúde pública.', responsibilities: ['Orientação técnica', 'Apoio ao design de programas', 'Partilha de conhecimentos', 'Inovação & investigação'] },
+        steering: { 
+          title: 'Comité Diretor', 
+          description: 'O órgão máximo de decisão, composto por representantes seniores de cada organização fundadora.', 
+          responsibilities: ['Liderança estratégica e direção', 'Aprovação do plano de trabalho e orçamento', 'Supervisão financeira e transparência', 'Resolução de disputas', 'Revisão de pedidos de adesão'] 
+        },
+        secretariat: { 
+          title: 'Secretariado do Consórcio', 
+          description: 'Coordena as operações diárias, organiza reuniões do Comité Diretor e mantém a documentação.', 
+          responsibilities: ['Coordenação operacional', 'Logística de reuniões', 'Comunicação com partes interessadas', 'Monitorização e relatórios'] 
+        },
+        countryLeads: { 
+          title: 'Organizações Nacionais Líderes', 
+          description: 'Responsáveis designados em cada um dos quatro países membros para gerir a implementação nacional.', 
+          responsibilities: ['Coordenação da implementação nacional', 'Ligação com partes interessadas locais', 'Supervisão da implementação', 'Relatórios a nível nacional'] 
+        },
+        twgs: { 
+          title: 'Grupos de Trabalho Técnicos', 
+          description: 'Grupos especializados que fornecem perícia temática em WASH, clima, economia azul e saúde pública.', 
+          responsibilities: ['Orientação técnica', 'Apoio ao design de programas', 'Partilha de conhecimento', 'Inovação e investigação'] 
+        },
       },
-      fullDetails: 'Detalhes Completos de Governança',
+      fullDetails: 'Detalhes completos da governança',
     },
     news: {
       headline: 'Notícias & Perspetivas',
+      latestLabel: 'Últimas',
       viewAll: 'Ver Todas as Notícias',
       readMore: 'Ler Mais',
       articles: [
@@ -679,11 +820,16 @@ export const translations = {
     },
     partners: {
       headline: 'Os Nossos Parceiros & Membros',
+      marqueeHeadline: 'Construindo a aliança azul regional',
       subheadline: 'Construindo a aliança juntos',
       becomeMember: 'Tornar-se Membro',
     },
     cta: {
-      headline: 'Juntos, Podemos Construir Resiliência em Toda a Região',
+      getInvolved: 'Envolver-se',
+      headline: 'Juntos, Construímos a Resiliência',
+      subheadline: 'Faça parte de um esforço regional unificado para salvaguardar os nossos oceanos, clima e comunidades costeiras.',
+      joinButton: 'Juntar-se à Aliança',
+      shareButton: 'Partilhar a Nossa Missão',
       fund: { title: 'Financiar Nosso Trabalho', description: 'Apoiar a resiliência climática e a sustentabilidade dos oceanos.', button: 'Financiar Nosso Trabalho' },
       join: { title: 'Juntar-se à Aliança', description: 'Torne-se uma organização membro e ajude a moldar a agenda regional.', button: 'Solicitar Adesão' },
       share: { title: 'Partilhar a Nossa Missão', description: 'Ajude a divulgar o trabalho da ESA-ORA.', button: 'Partilhar a Nossa Missão' },
@@ -694,7 +840,7 @@ export const translations = {
       ourWork: 'Nosso Trabalho',
       countries: 'Países',
       resources: 'Recursos',
-      charter: 'Carta da Aliança válida 2025–2030, renovável por acordo mútuo.',
+      charter: 'Carta da Aliança válida de 2025 a 2030, renovável por acordo mútuo.',
       privacy: 'Política de Privacidade',
       terms: 'Termos',
       cookies: 'Política de Cookies',
@@ -702,6 +848,8 @@ export const translations = {
       contact: 'Contacte-nos',
       email: 'info@esaora.org',
       website: 'esaora.org',
+      allianceConnectivity: 'Conectividade da Aliança',
+      allianceFullTitle: 'Aliança para a Resiliência dos Oceanos na África Oriental e Austral',
     },
     langSelector: { language: 'Idioma' },
   },

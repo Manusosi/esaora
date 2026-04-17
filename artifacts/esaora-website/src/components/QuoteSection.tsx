@@ -5,11 +5,10 @@ import { useLanguage } from '@/i18n/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function VideoSection() {
+export function QuoteSection() {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const quoteRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -28,39 +27,32 @@ export function VideoSection() {
         },
       }
     );
-
-    gsap.to(bgRef.current, {
-      y: -60,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-      {/* Background image with parallax */}
-      <div
-        ref={bgRef}
-        className="absolute inset-0 scale-110"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=1920&q=80')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000080]/60 via-[#000080]/50 to-[#000080]/70" />
+    <section 
+      ref={sectionRef} 
+      className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden"
+      style={{ clipPath: 'inset(0)' }}
+    >
+      {/* Sticky Background Video */}
+      <div className="fixed top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden -z-10 bg-black">
+        <iframe
+          src="https://www.youtube.com/embed/QNjkeItYo9I?autoplay=1&mute=1&loop=1&playlist=QNjkeItYo9I&controls=0&showinfo=0&modestbranding=1&disablekb=1&playsinline=1&vq=hd1080"
+          className="absolute top-1/2 left-1/2 w-[150vw] h-[150vh] min-w-[177.77vh] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2"
+          frameBorder="0"
+          allow="autoplay; encrypted-media"
+        ></iframe>
+      </div>
+      
+      {/* Light Black Overlay */}
+      <div className="absolute inset-0 bg-black/30 -z-0 pointer-events-none" />
 
       {/* Content */}
-      <div ref={quoteRef} className="relative z-10 text-center px-6 max-w-3xl mx-auto">
+      <div ref={quoteRef} className="relative z-10 text-center px-6 max-w-3xl mx-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
         <div className="w-12 h-1 bg-[#00d2ff] mx-auto mb-6 rounded-full" />
         <blockquote className="font-display text-2xl sm:text-3xl md:text-4xl text-white leading-snug mb-6">
-          "{t.videoQuote.quote}"
+          &ldquo;{t.videoQuote.quote}&rdquo;
         </blockquote>
         <p className="text-white/60 text-sm tracking-wider">{t.videoQuote.attribution}</p>
       </div>

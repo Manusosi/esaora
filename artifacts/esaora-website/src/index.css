@@ -57,7 +57,7 @@
 
   /* ESA-ORA Brand Colors */
   --color-brand-primary: #00d2ff;
-  --color-brand-navy: #000080;
+  --color-brand-navy: #002659;
   --color-coral-amber: #E8682A;
   --color-off-white: #F0F4F8;
   --color-warm-white: #FAFAFA;
@@ -155,7 +155,7 @@
 
 /* Animated gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #00d2ff, #000080);
+  background: linear-gradient(135deg, #00d2ff, var(--color-brand-navy));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -232,12 +232,12 @@
 
 /* Ocean wave effect for footer */
 .wave-bg {
-  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 128, 0.95) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 38, 89, 0.95) 100%);
 }
 
 /* Responsive text clamp */
 .text-hero {
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-size: clamp(2.2rem, 5.2vw, 4.5rem);
   line-height: 1.1;
 }
 
@@ -249,9 +249,9 @@
 .video-overlay {
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 128, 0.75) 0%,
-    rgba(0, 0, 128, 0.4) 50%,
-    rgba(0, 0, 128, 0.8) 100%
+    rgba(0, 38, 89, 0.75) 0%,
+    rgba(0, 38, 89, 0.4) 50%,
+    rgba(0, 38, 89, 0.8) 100%
   );
 }
 
@@ -328,4 +328,12 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* --- Custom Scrollbar Utilities --- */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
