@@ -36,6 +36,7 @@ const ContactPage      = lazy(() => import('@/pages/ContactPage'));
 // ── Phase 6: Supporting ─────────────────────────────────────────────────────
 const ProgramsPage     = lazy(() => import('@/pages/ProgramsPage'));
 const ReportsPage      = lazy(() => import('@/pages/ReportsPage'));
+const LegalPage        = lazy(() => import('@/pages/LegalPage'));
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,11 @@ function Router() {
         <Route path="/news"     component={NewsPage} />
         <Route path="/gallery"  component={GalleryPage} />
         <Route path="/contact"  component={ContactPage} />
+
+        {/* Legal */}
+        <Route path="/privacy">{(params) => <LegalPage title="Privacy Policy" type="privacy" />}</Route>
+        <Route path="/terms">{(params) => <LegalPage title="Terms of Service" type="terms" />}</Route>
+        <Route path="/cookies">{(params) => <LegalPage title="Cookie Policy" type="cookies" />}</Route>
 
         {/* 404 */}
         <Route component={NotFound} />
