@@ -179,6 +179,7 @@ export default function ContactPage() {
               <div className="bg-brand-navy rounded-lg p-8 mt-8 relative overflow-hidden text-white shadow-2xl shadow-brand-navy/20">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#00d2ff] rounded-full blur-[120px] opacity-10 -mr-32 -mt-32" />
                 <div className="relative z-10">
+                  <p className="text-[#00d2ff] uppercase tracking-widest text-xs font-bold mb-6">
                     RESPONSE TIMES
                   </p>
                   <div className="space-y-4">

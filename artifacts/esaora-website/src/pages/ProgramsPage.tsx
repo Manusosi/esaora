@@ -189,7 +189,7 @@ export default function ProgramsPage() {
               { phase: 'Learning', num: '04', desc: 'Continuous monitoring, evaluation, and adaptive management guided by the MEL framework.' },
               { phase: 'Reporting', num: '05', desc: 'Quarterly operational and annual impact reports to the Steering Committee and all stakeholders.' },
             ].map((phase) => (
-              <div key={phase.num} className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">>
+              <div key={phase.num} className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
                 <div className="text-[#00d2ff] font-bold text-2xl font-display mb-2">{phase.num}</div>
                 <h3 className="text-white font-bold text-sm mb-3">{phase.phase}</h3>
                 <p className="text-white/50 text-xs leading-relaxed">{phase.desc}</p>
