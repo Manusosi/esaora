@@ -21,6 +21,8 @@ export default function AdminLogin() {
   const [attempts, setAttempts] = useState(0);
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
   const [lockoutTime, setLockoutTime] = useState(0);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [otpAuthType, setOtpAuthType] = useState<'signup' | 'magiclink'>('magiclink');
 
   useEffect(() => {
     if (lockoutTime > 0) {
@@ -28,6 +30,13 @@ export default function AdminLogin() {
       return () => clearInterval(timer);
     }
   }, [lockoutTime]);
+
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setInterval(() => setResendTimer(prev => prev - 1), 1000);
+      return () => clearInterval(timer);
+    }
+  }, [resendTimer]);
 
   const validatePassword = (pass: string) => {
     if (pass.length < 8) return "Password must be at least 8 characters long.";
@@ -67,7 +76,7 @@ export default function AdminLogin() {
       const code = otpCode.join('');
       if (code.length !== 6) throw new Error('Please enter the fully completed 6-digit code.');
       
-      await verifyOtp(email, code, view === 'signup' ? 'signup' : 'magiclink');
+      await verifyOtp(email, code, otpAuthType);
       // Let the App.tsx router dynamically redirect us to /admin
     } catch (err: any) {
       setError(err.message || 'Verification failed. Please check the code and try again.');
@@ -145,6 +154,8 @@ export default function AdminLogin() {
           // but guarantees the 2-step OTP flow that they requested natively.
           await sendOtp(email);
           
+          setOtpAuthType('magiclink');
+          setResendTimer(60);
           await new Promise(resolve => setTimeout(resolve, 600)); // Natural transition
           setView('otp');
         } catch (err: any) {
@@ -160,6 +171,8 @@ export default function AdminLogin() {
         if (response.user) {
           // Supabase auto-sends the confirmation email since autoconfirm is false.
           // We just transition to the OTP view to accept the token.
+          setOtpAuthType('signup');
+          setResendTimer(60);
           setView('otp');
         }
       } else if (view === 'forgot') {
@@ -312,6 +325,30 @@ export default function AdminLogin() {
                     className="w-full bg-brand-navy text-white hover:bg-[#002659]/90 px-8 py-4 rounded-[6px] font-bold text-xs tracking-widest transition-all flex items-center justify-center gap-3 relative overflow-hidden group"
                   >
                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Access'}
+                  </button>
+                  <button 
+                    type="button" 
+                    disabled={resendTimer > 0 || loading}
+                    onClick={async () => {
+                      if (resendTimer > 0) return;
+                      setLoading(true);
+                      try {
+                        if (otpAuthType === 'signup') {
+                          await supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo: window.location.origin } });
+                        } else {
+                          await sendOtp(email);
+                        }
+                        setResendTimer(60);
+                        setError("Code resent successfully.");
+                      } catch (err: any) {
+                        setError(err.message || 'Failed to resend code.');
+                      } finally {
+                        setLoading(false);
+                      }
+                    }}
+                    className={`text-center text-[10px] font-bold uppercase tracking-widest transition-colors mt-3 ${resendTimer > 0 ? 'text-gray-300' : 'text-[#00d2ff] hover:text-brand-navy'}`}
+                  >
+                    {resendTimer > 0 ? `Resend available in ${resendTimer}s` : 'Resend Code'}
                   </button>
                   <button 
                     type="button" 
