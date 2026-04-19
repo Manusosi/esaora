@@ -67,7 +67,7 @@ export default function AdminLogin() {
       const code = otpCode.join('');
       if (code.length !== 6) throw new Error('Please enter the fully completed 6-digit code.');
       
-      await verifyOtp(email, code);
+      await verifyOtp(email, code, view === 'signup' ? 'signup' : 'magiclink');
       // Let the App.tsx router dynamically redirect us to /admin
     } catch (err: any) {
       setError(err.message || 'Verification failed. Please check the code and try again.');
@@ -158,8 +158,8 @@ export default function AdminLogin() {
         });
         
         if (response.user) {
-          // Send OTP and transition to OTP validation
-          await sendOtp(email);
+          // Supabase auto-sends the confirmation email since autoconfirm is false.
+          // We just transition to the OTP view to accept the token.
           setView('otp');
         }
       } else if (view === 'forgot') {
