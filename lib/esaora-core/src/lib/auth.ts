@@ -16,6 +16,33 @@ export async function signIn(email: string, password: string) {
   return data;
 }
 
+export async function sendOtp(email: string) {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      // shouldCreateUser: false ensures this is a verification-only OTP call
+      // and forces Supabase to use the numeric token path (not magic link URL path).
+      // The email template must use {{ .Token }} to render the 6-digit code.
+      shouldCreateUser: false,
+    },
+  });
+  if (error) throw error;
+}
+
+export async function verifyOtp(email: string, token: string, type: 'email' | 'magiclink' | 'signup' = 'email') {
+  const { data, error } = await supabase.auth.verifyOtp({ email, token, type });
+  if (error) throw error;
+
+  if (data.user) {
+    await supabase
+      .from('admin_profiles')
+      .update({ last_login: new Date().toISOString() })
+      .eq('id', data.user.id);
+  }
+
+  return data;
+}
+
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;

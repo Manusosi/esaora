@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { LanguageProvider } from '@/i18n/LanguageContext';
 import { NavBar } from '@/components/NavBar';
 import { Footer } from '@/components/Footer';
+import { CookieConsent } from '@/components/CookieConsent';
 
 // ── Shared UI Hooks ──
 import { HomePage } from '@/pages/HomePage';
@@ -121,6 +122,7 @@ function App() {
           </WouterRouter>
         </LanguageProvider>
         <Toaster />
+        <CookieConsent />
       </TooltipProvider>
     </QueryClientProvider>
   );

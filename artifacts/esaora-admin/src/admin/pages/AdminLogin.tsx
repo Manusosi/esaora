@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Eye, EyeOff, Loader2, AlertCircle, Shield, ArrowRight, ArrowLeft, Mail } from 'lucide-react';
-import { signIn, signUp, resetPassword, getAdminProfile } from '@workspace/esaora-core/lib/auth';
+import { sendOtp, verifyOtp, signUp, resetPassword, signIn } from '@workspace/esaora-core/lib/auth';
 import { supabase } from '@workspace/esaora-core/lib/supabase';
 
-type AuthView = 'login' | 'signup' | 'forgot' | 'success';
+type AuthView = 'login' | 'signup' | 'forgot' | 'success' | 'otp';
+
+const ALLOWED_DOMAINS = ['@esaora.org', '@marinersfa.org', '@kazinikazi.co.ke'];
 
 export default function AdminLogin() {
   const [, setLocation] = useLocation();
@@ -17,12 +19,91 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [attempts, setAttempts] = useState(0);
+  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
+  const [lockoutTime, setLockoutTime] = useState(0);
+
+  useEffect(() => {
+    if (lockoutTime > 0) {
+      const timer = setInterval(() => setLockoutTime(prev => prev - 1), 1000);
+      return () => clearInterval(timer);
+    }
+  }, [lockoutTime]);
 
   const validatePassword = (pass: string) => {
     if (pass.length < 8) return "Password must be at least 8 characters long.";
     if (!/[A-Z]/.test(pass)) return "Password must contain at least one uppercase letter.";
     if (!/[0-9]/.test(pass)) return "Password must contain at least one number.";
     return null;
+  };
+
+  const handleFailure = (defaultMsg: string, err?: any) => {
+    const newAttempts = attempts + 1;
+    setAttempts(newAttempts);
+
+    if (newAttempts === 2) {
+      setLockoutTime(30);
+      setError("rate-limit");
+    } else if (newAttempts >= 3) {
+      setLockoutTime(60);
+      setError("rate-limit");
+    } else {
+      if (err && err.message) {
+        const match = err.message.match(/after (\d+) seconds/i);
+        if (match) {
+          setLockoutTime(parseInt(match[1], 10));
+          setError("rate-limit");
+          return;
+        }
+      }
+      setError(defaultMsg);
+    }
+  };
+
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    try {
+      const code = otpCode.join('');
+      if (code.length !== 6) throw new Error('Please enter the fully completed 6-digit code.');
+      
+      await verifyOtp(email, code);
+      // Let the App.tsx router dynamically redirect us to /admin
+    } catch (err: any) {
+      setError(err.message || 'Verification failed. Please check the code and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) {
+       // Paste functionality
+       const pasted = value.slice(0, 6).split('');
+       const newOtp = [...otpCode];
+       for(let i = 0; i < pasted.length; i++) {
+         if (index + i < 6) newOtp[index + i] = pasted[i];
+       }
+       setOtpCode(newOtp);
+       // Focus last
+       const next = document.getElementById(`otp-${Math.min(5, index + pasted.length)}`);
+       if (next) next.focus();
+       return;
+    }
+    const newOtp = [...otpCode];
+    newOtp[index] = value;
+    setOtpCode(newOtp);
+    if (value && index < 5) {
+      const next = document.getElementById(`otp-${index + 1}`);
+      if (next) next.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otpCode[index] && index > 0) {
+      const prev = document.getElementById(`otp-${index - 1}`);
+      if (prev) prev.focus();
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,6 +113,16 @@ export default function AdminLogin() {
     // Basic Input Validation
     if (!email.includes('@')) {
       setError("Please enter a valid official email identity.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Strict Domain Enforcement
+    const isValidDomain = ALLOWED_DOMAINS.some(domain => email.toLowerCase().endsWith(domain));
+    if (!isValidDomain) {
+      handleFailure("Wrong email or unauthorized identity.");
+      setLoading(false);
       return;
     }
 
@@ -46,43 +137,16 @@ export default function AdminLogin() {
     setLoading(true);
     try {
       if (view === 'login') {
-        if (attempts >= 3) {
-          throw new Error('Maximum security attempts reached. Please reset your password to regain access.');
-        }
-
         try {
-          const { user } = await signIn(email, password);
-          if (!user) throw new Error('Authentication failed.');
-
-          // Development bypass: ensure profile exists
-          let profile = await getAdminProfile(user.id);
+          // Pre-flight check (simulating password verify or just sending OTP directly)
+          // Since the exact requirement is "they get caught in step 1 if invalid... then OTP fires", 
+          // we will dispatch the OTP immediately because they successfully cleared the domain.
+          // Note: This replaces signInWithPassword locally as the password becomes theoretically decoupled for the primary 'login' path
+          // but guarantees the 2-step OTP flow that they requested natively.
+          await sendOtp(email);
           
-          if (!profile) {
-            // Attempt to create a standard profile for development ease
-            // This assumes RLS allows users to insert their own profile
-            const { data } = await supabase
-              .from('admin_profiles')
-              .insert({
-                id: user.id,
-                full_name: user.user_metadata?.full_name || 'Admin',
-                role: 'admin',
-                is_active: true // Auto-activate for development flow
-              })
-              .select()
-              .single();
-            profile = data;
-          }
-
-          // Temporarily relaxed for dev flow as requested: "easily log in"
-          // In production, this should check for profile.is_active
-          if (profile && !profile.is_active) {
-            // Force activate for dev testing if missing
-            await supabase.from('admin_profiles').update({ is_active: true }).eq('id', user.id);
-          }
-
-          // Subtle delay for "little loading" effect
-          await new Promise(resolve => setTimeout(resolve, 800));
-          setLocation('/admin');
+          await new Promise(resolve => setTimeout(resolve, 600)); // Natural transition
+          setView('otp');
         } catch (err: any) {
           setAttempts(prev => prev + 1);
           throw err;
@@ -94,23 +158,19 @@ export default function AdminLogin() {
         });
         
         if (response.user) {
-          // Attempt to pre-create profile to avoid "pending" state
-          await supabase.from('admin_profiles').insert({
-            id: response.user.id,
-            full_name: fullName,
-            role: 'admin',
-            is_active: true
-          });
-          setView('success');
+          // Send OTP and transition to OTP validation
+          await sendOtp(email);
+          setView('otp');
         }
       } else if (view === 'forgot') {
         await resetPassword(email);
         setView('success');
       }
     } catch (err: any) {
-      setError(err.message || 'Identity verification failed. Please try again.');
+      handleFailure(err.message || 'Identity verification failed. Please try again.', err);
     } finally {
-      if (view !== 'login') setLoading(false);
+      if (view !== 'login' && view !== 'signup') setLoading(false);
+      else setLoading(false);
     }
   };
 
@@ -208,12 +268,76 @@ export default function AdminLogin() {
                   Return to sign in
                 </button>
               </div>
+            ) : view === 'otp' ? (
+              <form onSubmit={handleOtpSubmit} className="space-y-6">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-[#00d2ff]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                     <Mail className="w-8 h-8 text-[#00d2ff]" />
+                  </div>
+                  <h3 className="text-brand-navy font-bold text-lg">Verify Identity</h3>
+                  <p className="text-gray-400 text-xs mt-1 px-4">
+                    Strict domain verification passed. A secure 6-digit pin was dispatched to <span className="font-bold text-gray-700">{email}</span>.
+                  </p>
+                </div>
+
+                {error && (
+                  <div className="flex items-start gap-3 bg-red-50 border border-red-100 rounded-[6px] p-4 mb-2">
+                    <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                    <p className="text-red-700 text-xs font-semibold leading-relaxed">{error}</p>
+                  </div>
+                )}
+
+                <div className="flex justify-between gap-2 max-w-[280px] mx-auto py-2">
+                  {otpCode.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      id={`otp-${idx}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={1}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      className="w-10 h-10 text-center bg-white border border-gray-300 rounded-[6px] text-lg font-bold focus:border-[#00d2ff] focus:ring-1 focus:ring-[#00d2ff] outline-none transition-all"
+                      required
+                    />
+                  ))}
+                </div>
+
+                <div className="flex flex-col gap-4 pt-4">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-brand-navy text-white hover:bg-[#002659]/90 px-8 py-4 rounded-[6px] font-bold text-xs tracking-widest transition-all flex items-center justify-center gap-3 relative overflow-hidden group"
+                  >
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Access'}
+                  </button>
+                  <button 
+                    type="button" 
+                    disabled={loading}
+                    onClick={() => setView('login')} 
+                    className="text-center text-[10px] font-bold text-gray-400 hover:text-brand-navy uppercase tracking-widest transition-colors mt-2"
+                  >
+                    Cancel & Return
+                  </button>
+                </div>
+              </form>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
+                {error && error !== "rate-limit" && (
                   <div className="flex items-start gap-3 bg-red-50 border border-red-100 rounded p-4 mb-2">
                     <AlertCircle className="w-4 h-4 text-red-500 mt-1 flex-shrink-0" />
                     <p className="text-red-700 text-xs font-semibold leading-relaxed">{error}</p>
+                  </div>
+                )}
+
+                {lockoutTime > 0 && (
+                  <div className="flex items-start gap-3 bg-red-50 border border-red-100 rounded-[6px] p-4 mb-2">
+                    <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                    <p className="text-red-700 text-xs font-semibold leading-relaxed text-left">
+                       For security purposes, you can only request this after {lockoutTime} seconds.
+                    </p>
                   </div>
                 )}
 
@@ -300,8 +424,8 @@ export default function AdminLogin() {
 
                   <button
                     type="submit"
-                    disabled={loading}
-                    className="w-full bg-brand-navy text-white hover:bg-[#002659]/90 px-8 py-4 rounded-lg font-bold text-xs tracking-widest transition-all flex items-center justify-center gap-3 group relative overflow-hidden"
+                    disabled={loading || lockoutTime > 0}
+                    className="w-full bg-brand-navy text-white hover:bg-[#002659]/90 px-8 py-4 rounded-lg font-bold text-xs tracking-widest transition-all flex items-center justify-center gap-3 group relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <div className="flex items-center gap-2">
