@@ -1,4 +1,4 @@
-const ACCESS_TOKEN = 'sbp_1f8ec9d7d71035c6fa4691ac2ad34c844313f963';
+const ACCESS_TOKEN = 'YOUR_SUPABASE_PAT_HERE';
 const PROJECT_REF  = 'lwolkwezafxnywngwvnj';
 const API_BASE     = 'https://api.supabase.com/v1';
 

@@ -22,7 +22,7 @@ export default function AdminLogin() {
   const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
   const [lockoutTime, setLockoutTime] = useState(0);
   const [resendTimer, setResendTimer] = useState(0);
-  const [otpAuthType, setOtpAuthType] = useState<'signup' | 'magiclink'>('magiclink');
+  const [otpAuthType, setOtpAuthType] = useState<'signup' | 'email' | 'recovery'>('email');
 
   useEffect(() => {
     if (lockoutTime > 0) {
@@ -77,7 +77,7 @@ export default function AdminLogin() {
       if (code.length !== 6) throw new Error('Please enter the fully completed 6-digit code.');
       
       await verifyOtp(email, code, otpAuthType);
-      // Let the App.tsx router dynamically redirect us to /admin
+      window.location.href = '/admin';
     } catch (err: any) {
       setError(err.message || 'Verification failed. Please check the code and try again.');
     } finally {
@@ -154,7 +154,7 @@ export default function AdminLogin() {
           // but guarantees the 2-step OTP flow that they requested natively.
           await sendOtp(email);
           
-          setOtpAuthType('magiclink');
+          setOtpAuthType('email');
           setResendTimer(60);
           await new Promise(resolve => setTimeout(resolve, 600)); // Natural transition
           setView('otp');
