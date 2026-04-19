@@ -26,7 +26,7 @@ interface RecentItem {
 }
 
 export default function AdminDashboard() {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [stats, setStats] = useState<Record<string, number>>({});
   const [recent, setRecent] = useState<RecentItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -108,7 +108,7 @@ export default function AdminDashboard() {
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const name = profile?.full_name?.split(' ')[0] || 'Admin';
+  const name = profile?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Admin';
 
   const timeAgo = (iso: string) => {
     const diff = Date.now() - new Date(iso).getTime();

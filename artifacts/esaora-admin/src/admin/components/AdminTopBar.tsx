@@ -100,7 +100,7 @@ export function AdminTopBar({ title, breadcrumbs }: AdminTopBarProps) {
             <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
             <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-50">
-                <p className="text-xs font-semibold text-gray-800 truncate">{profile?.full_name || 'Admin User'}</p>
+                <p className="text-xs font-semibold text-gray-800 truncate">{profile?.full_name || user?.email?.split('@')[0] || 'Admin User'}</p>
                 <p className="text-[10px] text-gray-400 truncate">{user?.email}</p>
               </div>
               <button
