@@ -60,7 +60,7 @@ const ORG_ITEMS: NavItem[] = [
   { icon: ShieldCheck, label: 'Users & Roles', href: '/admin/users' },
 ];
 
-function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
+function NavGroup({ item, collapsed, setMobileOpen }: { item: NavItem; collapsed: boolean; setMobileOpen?: (v: boolean) => void }) {
   const [location] = useLocation();
   const [open, setOpen] = useState(() =>
     item.children?.some((c) => location.startsWith(c.href)) ?? false
@@ -76,6 +76,7 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
     return (
       <Link href={item.href}>
         <div
+          onClick={() => setMobileOpen?.(false)}
           className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-150 group ${
             isActive
               ? 'bg-white/15 text-white'
@@ -118,6 +119,7 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
           {item.children.map((child) => (
             <Link key={child.href} href={child.href}>
               <div
+                onClick={() => setMobileOpen?.(false)}
                 className={`py-2 px-2 rounded-md text-xs cursor-pointer transition-colors duration-150 ${
                   location === child.href
                     ? 'text-[#00d2ff] font-semibold'
@@ -137,9 +139,11 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
 interface AdminSidebarProps {
   collapsed: boolean;
   onCollapse: (v: boolean) => void;
+  mobileOpen?: boolean;
+  setMobileOpen?: (v: boolean) => void;
 }
 
-export function AdminSidebar({ collapsed, onCollapse }: AdminSidebarProps) {
+export function AdminSidebar({ collapsed, onCollapse, mobileOpen, setMobileOpen }: AdminSidebarProps) {
   const handleSignOut = async () => {
     try { await signOut(); } catch { /* ignore */ }
     window.location.href = '/admin/login';
@@ -147,8 +151,8 @@ export function AdminSidebar({ collapsed, onCollapse }: AdminSidebarProps) {
 
   return (
     <aside
-      className={`flex flex-col h-screen bg-[#0D2417] border-r border-white/5 transition-all duration-300 ease-in-out flex-shrink-0 ${
-        collapsed ? 'w-[64px]' : 'w-[260px]'
+      className={`flex flex-col h-full bg-[#0D2417] border-r border-white/5 transition-all duration-300 ease-in-out flex-shrink-0 w-[260px] lg:h-screen lg:w-auto ${
+        collapsed ? 'lg:w-[64px]' : 'lg:w-[260px]'
       }`}
     >
       {/* Logo / Header */}
@@ -175,7 +179,7 @@ export function AdminSidebar({ collapsed, onCollapse }: AdminSidebarProps) {
       {/* Main Nav */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2 py-4 space-y-0.5 scrollbar-thin scrollbar-thumb-white/10">
         {NAV_ITEMS.map((item) => (
-          <NavGroup key={item.label} item={item} collapsed={collapsed} />
+          <NavGroup key={item.label} item={item} collapsed={collapsed} setMobileOpen={setMobileOpen} />
         ))}
 
         {/* Organization Section */}
@@ -184,10 +188,10 @@ export function AdminSidebar({ collapsed, onCollapse }: AdminSidebarProps) {
             <p className="text-white/25 text-[9px] uppercase tracking-[0.18em] font-bold">Organization</p>
           </div>
         )}
-        {collapsed && <div className="my-2 border-t border-white/10" />}
+        {collapsed && <div className="my-2 border-t border-white/10 hidden lg:block" />}
 
         {ORG_ITEMS.map((item) => (
-          <NavGroup key={item.label} item={item} collapsed={collapsed} />
+          <NavGroup key={item.label} item={item} collapsed={collapsed} setMobileOpen={setMobileOpen} />
         ))}
       </nav>
 

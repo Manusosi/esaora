@@ -1,4 +1,4 @@
-import { Bell, Search, ChevronDown } from 'lucide-react';
+import { Bell, Search, ChevronDown, Menu } from 'lucide-react';
 import { useAuth } from '@workspace/esaora-core/hooks/useAuth';
 import { useContactSubmissions, useMembershipApplications, useNewsletterSubscribers } from '@workspace/esaora-core/hooks/useData';
 import { useState } from 'react';
@@ -7,9 +7,10 @@ import { signOut } from '@workspace/esaora-core/lib/auth';
 interface AdminTopBarProps {
   title?: string;
   breadcrumbs?: { label: string; href?: string }[];
+  setMobileOpen?: (v: boolean) => void;
 }
 
-export function AdminTopBar({ title, breadcrumbs }: AdminTopBarProps) {
+export function AdminTopBar({ title, breadcrumbs, setMobileOpen }: AdminTopBarProps) {
   const { user, profile } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -37,7 +38,15 @@ export function AdminTopBar({ title, breadcrumbs }: AdminTopBarProps) {
     : user?.email?.slice(0, 2).toUpperCase() ?? 'AD';
 
   return (
-    <header className="h-[61px] bg-white border-b border-gray-100 flex items-center px-6 gap-4 flex-shrink-0">
+    <header className="h-[61px] bg-white border-b border-gray-100 flex items-center px-4 lg:px-6 gap-3 lg:gap-4 flex-shrink-0">
+      {/* Mobile Menu Toggle */}
+      <button 
+        onClick={() => setMobileOpen?.(true)}
+        className="lg:hidden p-1.5 -ml-1.5 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
       {/* Breadcrumb / Title */}
       <div className="flex-1 min-w-0">
         {breadcrumbs && breadcrumbs.length > 0 ? (
@@ -88,7 +97,7 @@ export function AdminTopBar({ title, breadcrumbs }: AdminTopBarProps) {
           </div>
           <div className="hidden md:block text-left">
             <p className="text-xs font-semibold text-gray-800 leading-tight">
-              {profile?.full_name || user?.email?.split('@')[0] || 'Admin'}
+              {profile?.full_name || (user?.email ? user.email.split('@')[0].split(/[._-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Admin')}
             </p>
             <p className="text-[10px] text-gray-400 capitalize">{profile?.role?.replace('_', ' ') || 'Admin'}</p>
           </div>
@@ -100,7 +109,7 @@ export function AdminTopBar({ title, breadcrumbs }: AdminTopBarProps) {
             <div className="fixed inset-0 z-10" onClick={() => setDropdownOpen(false)} />
             <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-hidden">
               <div className="px-4 py-3 border-b border-gray-50">
-                <p className="text-xs font-semibold text-gray-800 truncate">{profile?.full_name || user?.email?.split('@')[0] || 'Admin User'}</p>
+                <p className="text-xs font-semibold text-gray-800 truncate">{profile?.full_name || (user?.email ? user.email.split('@')[0].split(/[._-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Admin User')}</p>
                 <p className="text-[10px] text-gray-400 truncate">{user?.email}</p>
               </div>
               <button

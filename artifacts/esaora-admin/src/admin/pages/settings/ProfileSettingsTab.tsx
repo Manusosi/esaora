@@ -139,7 +139,7 @@ export default function ProfileSettingsTab() {
             />
           </div>
           <div>
-            <h4 className="text-gray-900 font-bold">{fullName || email.split('@')[0] || 'Administrator'}</h4>
+            <h4 className="text-gray-900 font-bold">{fullName || (email ? email.split('@')[0].split(/[._-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Administrator')}</h4>
             <p className="text-xs text-gray-500 mt-0.5">{formattedRole}</p>
           </div>
         </div>

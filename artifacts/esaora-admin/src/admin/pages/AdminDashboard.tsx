@@ -108,7 +108,8 @@ export default function AdminDashboard() {
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const name = profile?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Admin';
+  const fallback = user?.email ? user.email.split('@')[0].split(/[._-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Admin';
+  const name = profile?.full_name?.split(' ')[0] || fallback.split(' ')[0];
 
   const timeAgo = (iso: string) => {
     const diff = Date.now() - new Date(iso).getTime();
