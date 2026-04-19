@@ -4,10 +4,11 @@ This repository contains the source code for the ESAORA Consortium website and i
 
 ## Project Structure
 
-- `artifacts/esaora-website`: The main frontend application built with React, Vite, and TailwindCSS.
-- `artifacts/api-server`: The backend API service built with Express.
-- `lib/`: Shared libraries and utilities used across the workspace.
-- `scripts/`: Development and maintenance scripts.
+- `artifacts/esaora-website`: The primary public-facing portal built with React, Vite, and TailwindCSS.
+- `artifacts/esaora-admin`: The administrative management portal built with React and `@workspace/esaora-core`.
+- `artifacts/mockup-sandbox`: A sandbox for UI/UX prototyping and component development.
+- `lib/esaora-core`: Shared business logic, Supabase authentication, and database types.
+- `scripts/`: Development and utility scripts for the monorepo.
 
 ## Prerequisites
 
@@ -26,20 +27,20 @@ pnpm install
 
 ### 2. Start Development Servers
 
-You can start the frontend and backend services separately using the following commands from the root:
+You can start the different services separately using the following commands from the root:
 
-#### Start Website (Frontend)
+#### Start Public Website
 Accessible at http://localhost:5000
 
 ```bash
 pnpm --filter @workspace/esaora-website run dev
 ```
 
-#### Start API Server (Backend)
+#### Start Administrative Portal
 Accessible at http://localhost:5001
 
 ```bash
-pnpm --filter @workspace/api-server run dev
+pnpm --filter @workspace/esaora-admin run dev --port 5001
 ```
 
 #### Start Mockup Sandbox
@@ -48,7 +49,6 @@ Accessible at http://localhost:5002
 ```bash
 pnpm --filter @workspace/mockup-sandbox run dev
 ```
-
 
 ### 3. Build for Production
 
@@ -60,6 +60,8 @@ pnpm run build
 
 ## Technologies Used
 
-- **Frontend:** React, TypeScript, Vite, TailwindCSS, Framer Motion, GSAP, Radix UI.
-- **Backend:** Node.js, Express, TypeScript, Drizzle ORM.
+- **Frontend:** React, TypeScript, Vite, TailwindCSS.
+- **Backend/Auth:** Supabase (Auth, Postgres, Edge Functions).
+- **Styling:** Vanilla CSS, TailwindCSS, Lucide Icons.
 - **Package Management:** pnpm workspaces.
+- **Branding & UX:** KNK Digital.

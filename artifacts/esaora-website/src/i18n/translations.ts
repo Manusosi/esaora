@@ -30,6 +30,7 @@ export const translations = {
       partnerDirectory: 'Partner Directory',
       becomeMember: 'Become a Member',
       funders: 'Funders',
+      ourTeam: 'Our Team',
     },
     hero: {
       welcome: 'Welcome to the East & Southern Africa Ocean Resilience Alliance',
@@ -324,6 +325,7 @@ export const translations = {
       partnerDirectory: 'Orodha ya Washirika',
       becomeMember: 'Kuwa Mwanachama',
       funders: 'Wadau wa Fedha',
+      ourTeam: 'Timu Yetu',
     },
     hero: {
       welcome: 'Karibu ESA-ORA (Muungano wa Ustawi wa Bahari wa Afrika)',
@@ -510,6 +512,7 @@ export const translations = {
       partnerDirectory: 'Répertoire des partenaires',
       becomeMember: 'Devenir membre',
       funders: 'Bailleurs de fonds',
+      ourTeam: 'Notre Équipe',
     },
     hero: {
       welcome: 'Bienvenue à l\'Alliance ESA-ORA de Résilience des Océans',
@@ -696,6 +699,7 @@ export const translations = {
       partnerDirectory: 'Diretório de Parceiros',
       becomeMember: 'Tornar-se Membro',
       funders: 'Financiadores',
+      ourTeam: 'Nossa Equipa',
     },
     hero: {
       welcome: 'Bem-vindo à Aliança ESA-ORA para a Resiliência Oceânica',

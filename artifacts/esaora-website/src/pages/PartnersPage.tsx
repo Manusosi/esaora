@@ -1,36 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { ArrowRight, Check, ExternalLink } from 'lucide-react';
+import { ArrowRight, Check, ExternalLink, Globe } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { CTASection } from '@/components/CTASection';
 import { MembershipModal } from '@/components/MembershipModal';
-
-const PARTNERS = [
-  {
-    name: 'Mariners for Action',
-    logo: '/images/partners/Mariners-FA-official-logo.png',
-    country: 'KENYA',
-    desc: 'Leading marine conservation, climate-resilient ocean strategies, and community empowerment initiatives along the Kenyan coast.',
-  },
-  {
-    name: 'Wavu',
-    logo: '/images/partners/wavu.png',
-    country: 'EAST AFRICA (KENYA)',
-    desc: 'Connecting East African fish farmers with high-quality aquaculture inputs, financing options, and guaranteed offtake markets.',
-  },
-  {
-    name: 'Blue Economy Organisation',
-    logo: '/images/partners/BEO-Logo.png',
-    country: 'TANZANIA',
-    desc: 'Dedicated to restoring marine ecosystems while enhancing the livelihoods of coastal communities across Tanzania.',
-  },
-  {
-    name: 'Harona',
-    logo: '/images/partners/Harona.png',
-    country: 'MADAGASCAR',
-    desc: 'Protecting Madagascar\'s extraordinary world-class coral reefs and building critical environmental stewardship directly at the community level.',
-  },
-];
+import { usePublishedPartners } from '@workspace/esaora-core/hooks/useData';
 
 const MEMBERSHIP_BENEFITS = [
   'Formal seat on the Steering Committee (founding members) or observer status (associate members)',
@@ -52,6 +26,7 @@ const ELIGIBILITY = [
 
 export default function PartnersPage() {
   const [modalOpen, setModalOpen] = useState(false);
+  const { partners, loading } = usePublishedPartners();
 
   return (
     <main>
@@ -71,29 +46,50 @@ export default function PartnersPage() {
             <h2 className="font-display text-4xl text-brand-navy font-bold">Leading Organizations</h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PARTNERS.map((p) => (
-              <div key={p.name} className="bg-white rounded-xl border border-black/5 overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-brand-navy/5 transition-all duration-500 hover:-translate-y-1">
-                <div className="h-48 bg-white flex items-center justify-center p-8 border-b border-black/5">
-                  <img src={p.logo} alt={p.name} className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
-                </div>
-                <div className="p-8 flex-1 flex flex-col items-center text-center bg-[#F1F5F9]/30">
-                  <span className="bg-[#CCF2F4] text-[#0097a6] text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-lg mb-4">
-                    {p.country}
-                  </span>
-                  <h3 className="text-brand-navy font-bold text-lg mb-4 leading-tight">{p.name}</h3>
-                  <p className="text-[#718096] text-sm leading-relaxed mb-8 flex-grow">
-                    {p.desc}
-                  </p>
-                  <div className="w-full pt-6 border-t border-black/5">
-                    <button className="flex items-center justify-center gap-2 text-brand-navy font-bold text-xs uppercase tracking-widest group-hover:text-[#00d2ff] transition-colors mx-auto">
-                      VISIT WEBSITE <ExternalLink className="w-3.5 h-3.5" />
-                    </button>
+          {loading ? (
+             <div className="flex justify-center p-20">
+               <div className="w-10 h-10 border-4 border-brand-navy border-t-[#00d2ff] rounded-full animate-spin" />
+             </div>
+          ) : partners.length === 0 ? (
+            <div className="text-center py-20 text-gray-500">
+              No partners publicly listed at this time.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {partners.map((p) => (
+                <div key={p.id} className="bg-white rounded-xl border border-black/5 overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-brand-navy/5 transition-all duration-500 hover:-translate-y-1">
+                  <div className="h-48 bg-white flex items-center justify-center p-8 border-b border-black/5">
+                    {p.logo_url ? (
+                      <img src={p.logo_url} alt={p.name} className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
+                    ) : (
+                      <Globe className="w-16 h-16 text-gray-200" />
+                    )}
+                  </div>
+                  <div className="p-8 flex-1 flex flex-col items-center text-center bg-[#F1F5F9]/30">
+                    {p.country && (
+                      <span className="bg-[#CCF2F4] text-[#0097a6] text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-lg mb-4">
+                        {p.country}
+                      </span>
+                    )}
+                    <h3 className="text-brand-navy font-bold text-lg mb-4 leading-tight">{p.name}</h3>
+                    {p.description && (
+                      <p className="text-[#718096] text-sm leading-relaxed mb-8 flex-grow">
+                        {p.description}
+                      </p>
+                    )}
+                    
+                    {p.website_url && (
+                      <div className="w-full pt-6 border-t border-black/5">
+                        <a href={p.website_url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-brand-navy font-bold text-xs uppercase tracking-widest group-hover:text-[#00d2ff] transition-colors mx-auto">
+                          VISIT WEBSITE <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

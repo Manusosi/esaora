@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, ChevronDown, Check, Loader2 } from 'lucide-react';
+import { supabase } from '@workspace/esaora-core/lib/supabase';
 
 const AFRICAN_COUNTRIES = [
   'Algeria','Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde',
@@ -67,10 +68,11 @@ export function MembershipModal({ open, onClose }: Props) {
   const [form, setForm] = useState<FormData>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!open) { setStep(1); setForm(INITIAL); setSubmitted(false); }
+    if (!open) { setStep(1); setForm(INITIAL); setSubmitted(false); setErrorMsg(''); }
   }, [open]);
 
   useEffect(() => {
@@ -102,9 +104,31 @@ export function MembershipModal({ open, onClose }: Props) {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1800));
-    setSubmitting(false);
-    setSubmitted(true);
+    setErrorMsg('');
+
+    try {
+      const { error } = await supabase.from('membership_applications').insert({
+        org_name: form.orgName,
+        org_type: form.orgType,
+        country: form.country,
+        website: form.website || null,
+        contact_name: form.contactName,
+        contact_title: form.contactTitle || null,
+        contact_email: form.contactEmail,
+        contact_phone: form.contactPhone || null,
+        focus_areas: form.focusAreas,
+        motivation: form.motivation,
+        status: 'pending'
+      });
+
+      if (error) throw error;
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error('Submission error:', err);
+      setErrorMsg('An error occurred. Please try again or contact us directly.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const STEPS = ['Organisation', 'Contact & Focus', 'Motivation'];
@@ -290,14 +314,17 @@ export function MembershipModal({ open, onClose }: Props) {
                   Continue →
                 </button>
               ) : (
-                <button
-                  onClick={handleSubmit}
-                  disabled={!canSubmit || submitting}
-                  className="px-6 py-2.5 rounded-lg text-sm font-bold text-brand-navy flex items-center gap-2 transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed hover:brightness-105 active:scale-95 shadow-lg shadow-brand-navy/5"
-                  style={{ background: '#00d2ff' }}
-                >
-                  {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : 'Submit Application'}
-                </button>
+                <div className="flex items-center gap-3">
+                  {errorMsg && <span className="text-red-500 text-xs font-bold">{errorMsg}</span>}
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!canSubmit || submitting}
+                    className="px-6 py-2.5 rounded-lg text-sm font-bold text-brand-navy flex items-center gap-2 transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed hover:brightness-105 active:scale-95 shadow-lg shadow-brand-navy/5"
+                    style={{ background: '#00d2ff' }}
+                  >
+                    {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : 'Submit Application'}
+                  </button>
+                </div>
               )}
             </div>
           </>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { ArrowRight, Mail, Globe } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { CTASection } from '@/components/CTASection';
+import { supabase } from '@workspace/esaora-core/lib/supabase';
+import { Loader2 } from 'lucide-react';
 
 const PURPOSES = ['General Enquiry', 'Media & Press', 'Partnership', 'Funding & Investment', 'Membership Application', 'Other'];
 
@@ -24,10 +26,33 @@ export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({ name: '', org: '', email: '', country: '', purpose: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setSubmitting(true);
+    setErrorMsg('');
+
+    try {
+      const { error } = await supabase.from('contact_submissions').insert({
+        name: formData.name,
+        organization: formData.org || null,
+        email: formData.email,
+        country: formData.country || null,
+        purpose: formData.purpose,
+        message: formData.message,
+        status: 'new'
+      });
+
+      if (error) throw error;
+      setSent(true);
+    } catch (err: any) {
+      console.error('Submission error:', err);
+      setErrorMsg('An error occurred while sending your message. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -152,8 +177,10 @@ export default function ContactPage() {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     />
                   </div>
-                  <button type="submit" className="bg-[#00d2ff] hover:bg-[#00b8e6] text-brand-navy px-8 py-3.5 rounded-lg font-bold text-sm transition-all hover:scale-[1.02] active:scale-95 w-full shadow-lg shadow-brand-navy/10">
-                    Send Message
+                  {errorMsg && <div className="text-red-500 text-sm font-medium">{errorMsg}</div>}
+                  <button type="submit" disabled={submitting} className="flex items-center justify-center gap-2 bg-[#00d2ff] hover:bg-[#00b8e6] text-brand-navy px-8 py-3.5 rounded-lg font-bold text-sm transition-all hover:scale-[1.02] active:scale-95 w-full shadow-lg shadow-brand-navy/10 disabled:opacity-50 disabled:cursor-not-allowed">
+                    {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {submitting ? 'Sending...' : 'Send Message'}
                   </button>
                 </form>
               )}

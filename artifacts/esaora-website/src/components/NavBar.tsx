@@ -91,6 +91,7 @@ export function NavBar() {
         { label: t.nav.ourStory,    href: '/our-story' },
         { label: t.nav.vision,      href: '/vision' },
         { label: t.nav.governance,  href: '/governance' },
+        { label: t.nav.ourTeam,     href: '/team' },
       ],
     },
     {
