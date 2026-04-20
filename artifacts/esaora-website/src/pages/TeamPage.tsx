@@ -30,23 +30,16 @@ export default function TeamPage() {
         breadcrumb="Team"
       />
       
-      {/* Introduction */}
-      <section className="py-24 px-4 bg-[#FAFAFA] border-b border-gray-100">
-          <div className="max-w-4xl mx-auto text-center">
-              <span className="text-[#00d2ff] text-[10px] font-black uppercase tracking-[0.4em] block mb-6">Consortium Registry</span>
-              <h2 className="font-display text-4xl md:text-5xl text-brand-navy font-bold leading-tight mb-8">
-                  The leadership and technical experts driving <span className="text-brand-cyan italic">regional impact.</span>
-              </h2>
-              <div className="w-16 h-1 bg-brand-cyan mx-auto rounded-full" />
-          </div>
-      </section>
-
       {/* Leadership Section */}
       <section className="py-32 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-20 text-center">
-              <span className="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] block mb-4">Governance</span>
-              <h3 className="font-display text-4xl text-brand-navy font-bold">Board of Directors</h3>
+          <div className="mb-24 text-center">
+              <span className="text-[#00d2ff] text-[10px] font-black uppercase tracking-[0.4em] block mb-4">Consortium Registry</span>
+              <h3 className="font-display text-5xl text-brand-navy font-bold mb-6">Board of Directors</h3>
+              <p className="font-display text-2xl md:text-3xl text-gray-500 font-medium leading-tight max-w-3xl mx-auto mb-10">
+                  The leadership and technical experts driving <span className="text-brand-cyan italic">regional impact.</span>
+              </p>
+              <div className="w-16 h-1 bg-brand-cyan mx-auto rounded-full" />
           </div>
 
           {loading ? (

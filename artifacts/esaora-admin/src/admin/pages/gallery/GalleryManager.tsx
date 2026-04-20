@@ -75,8 +75,8 @@ export default function GalleryManager() {
           <p className="text-gray-400 text-sm mt-0.5">{items.length} assets documented</p>
         </div>
         <div className="flex gap-2">
-            <button onClick={openMultiAdd} className="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm">
-              <Layers className="w-4 h-4 text-[#00d2ff]" /> Bulk Upload
+            <button onClick={openMultiAdd} disabled={saving} className="flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+              {saving ? <Loader2 className="w-4 h-4 animate-spin text-[#00d2ff]" /> : <Layers className="w-4 h-4 text-[#00d2ff]" />} {saving ? 'Uploading…' : 'Bulk Upload'}
             </button>
             <button onClick={openAdd} className="flex items-center gap-2 bg-[#0D2417] hover:bg-[#1a3f28] text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-sm">
               <Plus className="w-4 h-4" /> Add Single
@@ -219,6 +219,7 @@ export default function GalleryManager() {
               }}
               onSelectMultiple={multiSelectMode ? handleMultiSave : undefined}
               multiSelect={multiSelectMode}
+              saving={saving}
               allowedBuckets={['images']}
               title={multiSelectMode ? "Bulk Documentation Upload" : "Select Gallery Image"}
           />

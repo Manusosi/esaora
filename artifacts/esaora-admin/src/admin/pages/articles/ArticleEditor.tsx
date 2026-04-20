@@ -116,20 +116,30 @@ export default function ArticleEditor() {
   const handleAddCategory = async () => {
     if (!newCatName.trim()) return;
     setSavingCat(true);
-    await createCategory(newCatName.trim(), toSlug(newCatName.trim()), newCatColor);
-    setNewCatName('');
-    setNewCatColor('#00d2ff');
-    setShowAddCategory(false);
-    setSavingCat(false);
+    try {
+      await createCategory(newCatName.trim(), toSlug(newCatName.trim()), newCatColor);
+      setNewCatName('');
+      setNewCatColor('#00d2ff');
+      setShowAddCategory(false);
+    } catch (err: any) {
+      setError(`Failed to add category: ${err.message}`);
+    } finally {
+      setSavingCat(false);
+    }
   };
 
   const handleAddTag = async () => {
     if (!newTagName.trim()) return;
     setSavingTag(true);
-    await createTag(newTagName.trim(), toSlug(newTagName.trim()));
-    setNewTagName('');
-    setShowAddTag(false);
-    setSavingTag(false);
+    try {
+      await createTag(newTagName.trim(), toSlug(newTagName.trim()));
+      setNewTagName('');
+      setShowAddTag(false);
+    } catch (err: any) {
+      setError(`Failed to add tag: ${err.message}`);
+    } finally {
+      setSavingTag(false);
+    }
   };
 
   // UI state
@@ -259,6 +269,8 @@ export default function ArticleEditor() {
     const body = editor.getHTML();
     const { data: { user } } = await supabase.auth.getUser();
     
+    const shouldPublish = mode === 'publish';
+
     const payload = {
       title: title.trim(),
       slug: slug.trim(),
@@ -267,9 +279,9 @@ export default function ArticleEditor() {
       category_id: categoryId || null,
       cover_image_url: coverImageUrl || null,
       author_id: user?.id || null,
-      is_published: publish,
+      is_published: shouldPublish,
       is_featured: isFeatured,
-      published_at: publish ? (publishedAt ? new Date(publishedAt).toISOString() : new Date().toISOString()) : null,
+      published_at: shouldPublish ? (publishedAt ? new Date(publishedAt).toISOString() : new Date().toISOString()) : null,
     };
 
     try {
@@ -278,7 +290,7 @@ export default function ArticleEditor() {
       } else {
         await create(payload as any, selectedTagIds);
       }
-      setIsPublished(publish); // Keep toggle in sync
+      setIsPublished(shouldPublish); // Keep toggle in sync
       setSuccess(true);
       setTimeout(() => setLocation('/admin/articles'), 1200);
     } catch (err: any) {

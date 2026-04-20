@@ -163,7 +163,8 @@ export function useCategories() {
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const create = useCallback(async (name: string, slug: string, color: string) => {
-    await supabase.from('categories').insert({ name, slug, color });
+    const { error } = await supabase.from('categories').insert({ name, slug, color });
+    if (error) throw error;
     await fetchAll();
   }, [fetchAll]);
 
@@ -190,7 +191,8 @@ export function useTags() {
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const create = useCallback(async (name: string, slug: string) => {
-    await supabase.from('tags').insert({ name, slug });
+    const { error } = await supabase.from('tags').insert({ name, slug });
+    if (error) throw error;
     await fetchAll();
   }, [fetchAll]);
 

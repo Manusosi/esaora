@@ -165,7 +165,7 @@ export default function AdminLogin() {
       } else if (view === 'signup') {
         const response = await signUp(email, password, { 
           full_name: fullName,
-          role: 'admin',
+          role: 'super_admin',
         });
         
         if (response.user) {

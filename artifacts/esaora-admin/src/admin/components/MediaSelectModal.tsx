@@ -9,6 +9,8 @@ interface MediaSelectModalProps {
   multiSelect?: boolean;
   allowedBuckets?: string[];
   title?: string;
+  /** Pass true while the parent is processing the selection to lock the confirm button */
+  saving?: boolean;
 }
 
 const ALL_BUCKETS = [
@@ -24,7 +26,8 @@ export function MediaSelectModal({
   onClose, 
   multiSelect = false,
   allowedBuckets = ['images', 'partner-logos', 'team-photos'], 
-  title = "Select Media" 
+  title = "Select Media",
+  saving = false,
 }: MediaSelectModalProps) {
   const buckets = ALL_BUCKETS.filter(b => allowedBuckets.includes(b.id));
   const [activeBucket, setActiveBucket] = useState(buckets[0]?.id || 'images');
@@ -37,6 +40,8 @@ export function MediaSelectModal({
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Reset input so the same file can be re-selected if needed
+    e.target.value = '';
     
     try {
       const url = await uploadFile(file);
@@ -208,10 +213,11 @@ export function MediaSelectModal({
                     </button>
                     <button 
                         onClick={handleConfirmSelection}
-                        disabled={selectedUrls.length === 0}
-                        className="px-6 py-2 bg-[#0D2417] text-white text-sm font-black uppercase tracking-widest rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:scale-[1.02]"
+                        disabled={selectedUrls.length === 0 || saving}
+                        className="px-6 py-2 bg-[#0D2417] text-white text-sm font-black uppercase tracking-widest rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:scale-[1.02] flex items-center gap-2"
                     >
-                        Add Selected Images
+                        {saving && <Loader2 className="w-4 h-4 animate-spin" />}
+                        {saving ? 'Uploading…' : 'Add Selected Images'}
                     </button>
                 </div>
             </div>

@@ -94,7 +94,7 @@ export default function NewsArticlePage() {
       <article className="pb-24">
         {/* Header Section */}
         <header className="max-w-4xl mx-auto px-4 lg:px-8 mb-12 text-center md:text-left">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-brand-navy font-bold leading-[1.1] mb-8">
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-brand-navy font-bold leading-[1.2] mb-6">
                 {article.title}
             </h1>
 
