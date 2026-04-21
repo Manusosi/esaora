@@ -67,11 +67,17 @@ export function NavBar() {
     setOpenMobileItems(new Set());
   }, [location]);
 
-  // Animate mobile menu on open
+  // Animate mobile menu on open and lock body scroll
   useEffect(() => {
-    if (mobileOpen && mobileMenuRef.current) {
-      gsap.fromTo(mobileMenuRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+      if (mobileMenuRef.current) {
+        gsap.fromTo(mobileMenuRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+      }
+    } else {
+      document.body.style.overflow = '';
     }
+    return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
   const toggleMobileItem = (key: string) => {
@@ -285,7 +291,7 @@ export function NavBar() {
                       onClick={() => item.sub ? toggleMobileItem(item.key) : undefined}
                     >
                       {item.href && !item.sub ? (
-                        <Link href={item.href} className="flex-1 text-left">{item.label}</Link>
+                        <Link href={item.href} className="flex-1 text-left" onClick={() => setMobileOpen(false)}>{item.label}</Link>
                       ) : (
                         <span>{item.label}</span>
                       )}
@@ -301,6 +307,7 @@ export function NavBar() {
                             key={s.label}
                             href={s.href}
                             className="block w-full text-left text-brand-navy/70 hover:text-brand-navy text-sm py-2.5 px-4 transition-colors font-medium"
+                            onClick={() => setMobileOpen(false)}
                           >
                             {s.label}
                           </Link>
@@ -331,6 +338,7 @@ export function NavBar() {
                 <Link
                   href="/contact"
                   className="bg-[#00d2ff] hover:bg-[#00b8e6] text-brand-navy px-6 py-3.5 rounded-lg font-semibold text-base w-full transition-colors text-center block"
+                  onClick={() => setMobileOpen(false)}
                 >
                   {t.nav.contact}
                 </Link>

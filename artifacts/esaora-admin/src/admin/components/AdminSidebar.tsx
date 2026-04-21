@@ -169,10 +169,14 @@ export function AdminSidebar({ collapsed, onCollapse, mobileOpen, setMobileOpen 
           </div>
         )}
         <button
-          onClick={() => onCollapse(!collapsed)}
+          onClick={() => {
+            if (window.innerWidth < 1024) setMobileOpen?.(false);
+            else onCollapse(!collapsed);
+          }}
           className={`ml-auto p-1 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-colors flex-shrink-0 ${collapsed ? 'ml-0' : ''}`}
         >
-          {collapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
+          <div className="hidden lg:block">{collapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}</div>
+          <div className="lg:hidden"><X className="w-4 h-4" /></div>
         </button>
       </div>
 

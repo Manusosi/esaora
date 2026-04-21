@@ -92,12 +92,11 @@ export function PageHero({
           </nav>
         )}
 
-        {/* Cyan pill label */}
+        {/* Label block */}
         <div ref={labelRef}>
-          <span className="inline-flex items-center gap-2 bg-brand-navy/85 border border-white/20 rounded-lg px-4 py-1.5 mb-6 text-[11px] sm:text-xs text-white/90 uppercase tracking-[0.18em] font-bold">
-            <span className="w-1.5 h-1.5 bg-[#00d2ff] rounded-full animate-pulse flex-shrink-0" />
+          <div className="mb-6 text-[11px] sm:text-xs text-white/90 uppercase tracking-[0.2em] font-bold leading-normal">
             {label}
-          </span>
+          </div>
         </div>
 
         {/* Heading */}

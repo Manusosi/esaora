@@ -71,8 +71,7 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto pt-20 md:pt-28">
-        <div className="inline-flex items-center gap-2 bg-brand-navy/60 border border-white/20 rounded-lg px-4 py-1.5 mb-8 text-xs sm:text-sm text-white/90">
-          <span className="w-2 h-2 bg-[#00d2ff] rounded-full animate-pulse flex-shrink-0" />
+        <div className="mb-8 text-xs sm:text-sm text-white/90 uppercase tracking-[0.2em] font-bold leading-normal">
           {t.hero.welcome}
         </div>
 

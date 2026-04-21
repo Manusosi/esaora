@@ -60,7 +60,7 @@ export default function PartnersPage() {
                 <div key={p.id} className="bg-white rounded-xl border border-black/5 overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-brand-navy/5 transition-all duration-500 hover:-translate-y-1">
                   <div className="h-48 bg-white flex items-center justify-center p-8 border-b border-black/5">
                     {p.logo_url ? (
-                      <img src={p.logo_url} alt={p.name} className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
+                      <img src={p.logo_url} alt={p.name} className="max-h-full max-w-full object-contain transition-all duration-500 group-hover:scale-110" />
                     ) : (
                       <Globe className="w-16 h-16 text-gray-200" />
                     )}

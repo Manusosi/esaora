@@ -1,6 +1,6 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 // HMR Trigger: Refreshing route manifest to resolve module fetch issues.
-import { Switch, Route, Router as WouterRouter } from 'wouter';
+import { Switch, Route, Router as WouterRouter, useLocation } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -62,6 +62,15 @@ function PageLoader() {
     </div>
   );
 }
+function ScrollToTop() {
+  const [pathname] = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const { settings, loading } = useSiteSettings('maintenance_mode');
@@ -85,6 +94,7 @@ function App() {
       <TooltipProvider>
         <LanguageProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <ScrollToTop />
             <Suspense fallback={<PageLoader />}>
               <NavBar />
               <Switch>
