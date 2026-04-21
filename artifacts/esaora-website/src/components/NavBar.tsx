@@ -154,8 +154,8 @@ export function NavBar() {
           <div className="flex items-center justify-between h-16 md:h-20">
 
             {/* ── Logo ── */}
-            <Link href="/" className="flex items-center cursor-pointer flex-shrink-0 max-w-[200px] sm:max-w-[240px]">
-              <img src="/ESAORA-LOGO.png" alt="ESA-ORA" className="h-10 sm:h-12 w-auto object-contain" />
+            <Link href="/" className="flex items-center cursor-pointer flex-shrink-0 max-w-[240px] sm:max-w-[320px]">
+              <img src="/ESAORA-LOGO.png" alt="ESA-ORA" className="h-12 sm:h-16 w-auto object-contain" />
             </Link>
 
             {/* ── Desktop Nav Items ── */}
