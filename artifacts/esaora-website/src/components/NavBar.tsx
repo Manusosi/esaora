@@ -67,13 +67,10 @@ export function NavBar() {
     setOpenMobileItems(new Set());
   }, [location]);
 
-  // Animate mobile menu on open and lock body scroll
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden';
-      if (mobileMenuRef.current) {
-        gsap.fromTo(mobileMenuRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
-      }
     } else {
       document.body.style.overflow = '';
     }
@@ -275,78 +272,79 @@ export function NavBar() {
           </div>
         </div>
 
-        {/* ── Mobile Menu — accordion per section ── */}
-        {mobileOpen && (
-          <div
-            ref={mobileMenuRef}
-            className="lg:hidden fixed inset-0 top-16 bg-white z-40 overflow-y-auto"
-          >
-            <div className="px-6 py-4 space-y-0.5">
-              {navItems.map((item) => {
-                const isExpanded = openMobileItems.has(item.key);
-                return (
-                  <div key={item.key}>
-                    <button
-                      className="w-full text-left text-brand-navy text-base font-semibold py-3.5 border-b border-brand-navy/10 flex items-center justify-between"
-                      onClick={() => item.sub ? toggleMobileItem(item.key) : undefined}
-                    >
-                      {item.href && !item.sub ? (
-                        <Link href={item.href} className="flex-1 text-left" onClick={() => setMobileOpen(false)}>{item.label}</Link>
-                      ) : (
-                        <span>{item.label}</span>
-                      )}
-                      {item.sub && (
-                        <ChevronDown className={`w-4 h-4 opacity-60 transition-transform duration-200 flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
-                      )}
-                    </button>
-
-                    {item.sub && isExpanded && (
-                      <div className="bg-brand-navy/5 border-b border-brand-navy/10">
-                        {item.sub.map((s) => (
-                          <Link
-                            key={s.label}
-                            href={s.href}
-                            className="block w-full text-left text-brand-navy/70 hover:text-brand-navy text-sm py-2.5 px-4 transition-colors font-medium"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            {s.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-
-              {/* Language switcher + CTA at bottom */}
-              <div className="pt-6 flex flex-col gap-4">
-                <div className="flex gap-2 flex-wrap">
-                  {LANGUAGES.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => setLanguage(lang.code)}
-                      className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                        language === lang.code
-                          ? 'border-[#00d2ff] bg-[#00d2ff] text-brand-navy font-semibold'
-                          : 'border-brand-navy/30 text-brand-navy/80 hover:border-brand-navy/60 hover:text-brand-navy font-medium'
-                      }`}
-                    >
-                      {lang.label}
-                    </button>
-                  ))}
-                </div>
-                <Link
-                  href="/contact"
-                  className="bg-[#00d2ff] hover:bg-[#00b8e6] text-brand-navy px-6 py-3.5 rounded-lg font-semibold text-base w-full transition-colors text-center block"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {t.nav.contact}
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
       </nav>
+      {/* ── Mobile Menu — accordion per section ── */}
+      <div
+        className={`lg:hidden fixed inset-0 top-16 bg-white z-40 overflow-y-auto transition-all duration-300 ease-in-out ${
+          mobileOpen 
+            ? 'opacity-100 translate-y-0 pointer-events-auto shadow-2xl' 
+            : 'opacity-0 -translate-y-4 pointer-events-none'
+        }`}
+      >
+        <div className="px-6 py-4 space-y-0.5">
+          {navItems.map((item) => {
+            const isExpanded = openMobileItems.has(item.key);
+            return (
+              <div key={item.key}>
+                <button
+                  className="w-full text-left text-brand-navy text-base font-semibold py-3.5 border-b border-brand-navy/10 flex items-center justify-between"
+                  onClick={() => item.sub ? toggleMobileItem(item.key) : undefined}
+                >
+                  {item.href && !item.sub ? (
+                    <Link href={item.href} className="flex-1 text-left" onClick={() => setMobileOpen(false)}>{item.label}</Link>
+                  ) : (
+                    <span>{item.label}</span>
+                  )}
+                  {item.sub && (
+                    <ChevronDown className={`w-4 h-4 opacity-60 transition-transform duration-200 flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
+                  )}
+                </button>
+
+                {item.sub && isExpanded && (
+                  <div className="bg-brand-navy/5 border-b border-brand-navy/10">
+                    {item.sub.map((s) => (
+                      <Link
+                        key={s.label}
+                        href={s.href}
+                        className="block w-full text-left text-brand-navy/70 hover:text-brand-navy text-sm py-2.5 px-4 transition-colors font-medium"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {s.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* Language switcher + CTA at bottom */}
+          <div className="pt-6 flex flex-col gap-4">
+            <div className="flex gap-2 flex-wrap">
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setLanguage(lang.code)}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                    language === lang.code
+                      ? 'border-[#00d2ff] bg-[#00d2ff] text-brand-navy font-semibold'
+                      : 'border-brand-navy/30 text-brand-navy/80 hover:border-brand-navy/60 hover:text-brand-navy font-medium'
+                  }`}
+                >
+                  {lang.label}
+                </button>
+              ))}
+            </div>
+            <Link
+              href="/contact"
+              className="bg-[#00d2ff] hover:bg-[#00b8e6] text-brand-navy px-6 py-3.5 rounded-lg font-semibold text-base w-full transition-colors text-center block"
+              onClick={() => setMobileOpen(false)}
+            >
+              {t.nav.contact}
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
