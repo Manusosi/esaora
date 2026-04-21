@@ -113,12 +113,22 @@ export default function GalleryPage() {
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
-        <div className="fixed inset-0 z-[100] bg-brand-navy/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-12 animate-in fade-in duration-300">
-            <button onClick={closeLightbox} className="absolute top-6 right-6 md:top-12 md:right-12 text-white/40 hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full">
+        <div 
+            className="fixed inset-0 z-[100] bg-brand-navy/95 backdrop-blur-xl flex flex-col items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
+            onClick={closeLightbox}
+        >
+            <button 
+                type="button"
+                onClick={(e) => { e.stopPropagation(); closeLightbox(); }} 
+                className="absolute z-[110] top-6 right-6 md:top-12 md:right-12 text-white/40 hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full"
+            >
                 <X className="w-8 h-8" />
             </button>
             
-            <div className="relative max-w-6xl w-full h-full flex flex-col items-center justify-center gap-8">
+            <div 
+                className="relative max-w-6xl w-full h-full flex flex-col items-center justify-center gap-8"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <img 
                     src={filteredItems[lightboxIndex].image_url} 
                     alt={filteredItems[lightboxIndex].caption || 'Large view'} 

@@ -35,15 +35,11 @@ export function QuoteSection() {
       className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden"
       style={{ clipPath: 'inset(0)' }}
     >
-      {/* Sticky Background Video */}
-      <div className="fixed top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden -z-10 bg-black">
-        <iframe
-          src="https://www.youtube.com/embed/QNjkeItYo9I?autoplay=1&mute=1&loop=1&playlist=QNjkeItYo9I&controls=0&showinfo=0&modestbranding=1&disablekb=1&playsinline=1&vq=hd1080"
-          className="absolute top-1/2 left-1/2 w-[150vw] h-[150vh] min-w-[177.77vh] min-h-[56.25vw] -translate-x-1/2 -translate-y-1/2"
-          frameBorder="0"
-          allow="autoplay; encrypted-media"
-        ></iframe>
-      </div>
+      {/* Sticky Background Image */}
+      <div 
+        className="fixed top-0 left-0 w-full h-[100vh] pointer-events-none overflow-hidden -z-10 bg-black bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/sections/homearea.jpg')" }}
+      />
       
       {/* Light Black Overlay */}
       <div className="absolute inset-0 bg-black/30 -z-0 pointer-events-none" />
